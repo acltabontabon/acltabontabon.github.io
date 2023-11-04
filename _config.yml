@@ -3,7 +3,7 @@ title: Alvin Cris Tabontabon
 bio: I code, therefore I am.
 
 # twitter summary info
-description: A blog about technology and stuff related
+description: An Asian man who codes to eat noodles
 
 # if it's an external image, update below for true
 # better with square images
@@ -44,7 +44,7 @@ email: me@acltabontabon.com
 authors:
   actabontabon:
     name: Alvin Cris Tabontabon
-    bio: A man who codes to eat noodles
+    bio: An Asian man who codes to eat noodles
     external-image: false
     picture: assets/images/profile.jpg
     twitter: acltabontabon
