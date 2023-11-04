@@ -51,7 +51,7 @@ of time is not just about having a plethora of hours to spend. For me, it’s ab
 deal with and nourish the different aspects of your life while still having the energy to give new
 experiences its chance.
 
-![Markdowm Image][1]
+![yay][1]
 
 Although, it may also come down to the circumstances of a person, so I asked my good friends on 
 what’s their take on it.
