@@ -2,7 +2,7 @@
 title: "Do you have the luxury of time?"
 layout: post
 date: 2022-06-15 00:00
-image: /assets/images/diverse-team.png
+image: /assets/images/city-lights.jpg
 headerImage: false
 tag:
 - life
