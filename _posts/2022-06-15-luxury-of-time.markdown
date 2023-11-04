@@ -1,5 +1,5 @@
 ---
-title: "Do you have the luxury of time?"
+title: "The Luxury of Time"
 layout: post
 date: 2022-06-15 00:00
 image: /assets/images/city-lights.jpg

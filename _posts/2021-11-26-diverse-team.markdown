@@ -1,5 +1,5 @@
 ---
-title: "What a diverse team has taught me?"
+title: "A Diverse Team"
 layout: post
 date: 2021-11-26 00:00
 image: /assets/images/diverse-team.png
@@ -10,7 +10,7 @@ tag:
 star: false
 category: blog
 author: actabontabon
-description: The lessons I've learned from a diverse team. Discover the power of embracing differences, fostering inclusivity, and how diversity enhances personal and professional growth.
+description: The lessons I've learned from a diverse team.
 ---
 
 ![Markdowm Image][0]
