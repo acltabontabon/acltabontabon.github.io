@@ -11,7 +11,7 @@ tag:
 star: false
 category: blog
 author: actabontabon
-description: Developer life as Ka-Globe
+description: Developer life as Ka-Globe.
 ---
 
 I finally decided that it’s about time to look for a new venture to another place...
