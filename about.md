@@ -4,42 +4,30 @@ layout: page
 ---
 ![Profile Image]({% if site.external-image %}{{ site.picture }}{% else %}{{ site.url }}/{{ site.picture }}{% endif %})
 
-<p>Lorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>
+Hey there! 👋 I'm a seasoned software developer on a quest to code my way through life, 
+one line at a time. With a penchant for all things Java, Spring Boot, and Microservices.
+</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>
+My dream? To ascend to the hallowed ranks of software architecture, shaping the digital realm into 
+a symphony of efficient solutions. 🏰
+</p>
 
-<h2>Skills</h2>
+<p>
+But hey, it's not all serious business! In my spare time, you'll find me conjuring up random 
+scripts and software that range from incredibly practical to absolutely absurd. I believe that 
+coding should be as fun as it is functional, and I'm not afraid to venture into the wild realms of
+"useless but fun" programming. 😄
+</p>
 
-<ul class="skill-list">
-	<li>HTML - Jade - Haml - Erb</li>
-	<li>Responsive (Mobile First)</li>
-	<li>CSS (Stylus, Sass, Less)</li>
-	<li>Css Frameworks (Bootstrap, Foundation)</li>
-	<li>Javascript (Design Patterns, Tests)</li>
-	<li>AngularJS - ReactJS</li>
-	<li>Grunt - Gulp - Yeoman</li>
-	<li>Git</li>
-	<li>PHP</li>
-	<li>Python</li>
-	<li>MySQL - MongoDB</li>
-	<li>Scrum and Kanban</li>
-	<li>TDD e Continuous Integration</li>
-</ul>
+<p>
+When I'm not buried in code, you'll catch me exploring the world of podcasts or diving headfirst
+into the sea of memes on reddit. 😂
+</p>
 
-<h2>Projects</h2>
-
-<ul>
-	<li><a href="https://github.com/">Lorem Lorem</a></li>
-	<li><a href="https://github.com/">Ipsum Dolor</a></li>
-	<li><a href="https://github.com/">Dolor Lorem</a></li>
-</ul>
+<p>
+So, whether you're here to discuss the intricate dance of java and microservices, or simply share 
+a good laugh over the latest viral meme, I'm your go-to guy! Let's connect, create, and code our 
+way to a brighter digital future. 💻🚀
+</p>
