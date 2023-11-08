@@ -52,10 +52,7 @@ authors:
 # normal = 560px / large = 810px
 width: normal
 
-# if you don't need projects, comment the *projects* configs below
 projects: true
-
-# if you don't need "about" or "blog", comment them out below
 about: true
 blog: true
 
@@ -73,8 +70,6 @@ post-advance-links: [blog]
 
 # show author block at the end of a post ?
 show-author: true
-
-# do you want some animations?
 animation: true
 
 # add default values to specific pages or layouts
