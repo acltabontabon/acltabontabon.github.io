@@ -10,7 +10,7 @@ picture: assets/images/profile.jpg
 
 # your site color theme, true for dark theme, 
 # false to light theme, auto to switch with system.
-dark-theme: false
+dark-theme: auto
 
 # If you want to include your resume, set to true
 # and specify source (external or local).
@@ -19,11 +19,7 @@ resume-external: true
 resume-url: https://google.com/?q=my+resume
 
 url: https://acltabontabon.com
-# your url: https://USERNAME.github.io
-
 permalink: /:title/
-
-# To enable google analytics, supply your token below
 analytics-google: 'G-B501PMT6GE'
 
 # if you don't want comments in your posts, leave categories empty
@@ -32,8 +28,8 @@ disqus:
   categories: [] # only show disqus for posts that have these categories
 
 # if you don't have any of social below, comment the line
-facebook: acrisph
-#twitter: mytwitter
+facebook: acltabontabon
+twitter: acltabontabon
 #instagram: myinstagram
 linkedin: acltabontabon
 github: acltabontabon
@@ -56,19 +52,11 @@ projects: true
 about: true
 blog: true
 
-# do you want to show the "read time" of the posts?
+# Posts config
 read-time: true
-
-# do you want to show the "tags" inside the posts?
 show-tags: true
-
-# related posts inside a post?
 related: true
-
-# Display links for next and previous posts for the specified categories
 post-advance-links: [blog]
-
-# show author block at the end of a post ?
 show-author: true
 animation: true
 
