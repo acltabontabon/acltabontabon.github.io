@@ -1,0 +1,30 @@
+---
+layout: page
+title: Gallery
+---
+<section class="list">
+
+    <p>
+        Peek behind the code! 🚀
+    </p>
+
+    <p>
+        This photo gallery is a lively mix of tech triumphs, goofy moments, and all the adventures
+        in between. From coding chaos to unexpected escapades, these snapshots weave together my
+        tech journey and cherished memories.
+    </p>
+
+    <p>
+        Feel free to flip through the pages of my digital scrapbook! 📸
+    </p>
+
+    <div class="text-center">
+        {% for image in site.static_files %}
+            {% if image.path contains 'gallery/' %}
+                <a href="{{ image.path }}">
+                    <img src="{{ image.path }}" class="image" height="90px"/>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</section>
