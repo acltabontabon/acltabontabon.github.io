@@ -1,7 +1,7 @@
 # main text of home
 title: Alvin Cris Tabontabon
-bio: An Asian man who codes to eat noodles
-description: An Asian man who codes to eat noodles
+bio: An asian man who codes to eat noodles
+description: An asian man who codes to eat noodles
 
 # if it's an external image, update below for true
 # better with square images
@@ -10,7 +10,7 @@ picture: assets/images/profile.jpg
 
 # your site color theme, true for dark theme, 
 # false to light theme, auto to switch with system.
-dark-theme: auto
+dark-theme: false
 
 # If you want to include your resume, set to true
 # and specify source (external or local).
@@ -51,6 +51,7 @@ width: normal
 projects: true
 about: true
 blog: true
+gallery: true
 
 # Posts config
 read-time: true
