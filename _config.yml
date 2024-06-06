@@ -51,7 +51,6 @@ width: normal
 projects: true
 about: true
 blog: true
-gallery: true
 
 # Posts config
 read-time: true
