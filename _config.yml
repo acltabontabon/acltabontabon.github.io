@@ -29,8 +29,6 @@ disqus:
 
 # if you don't have any of social below, comment the line
 facebook: acltabontabon
-twitter: acltabontabon
-#instagram: myinstagram
 linkedin: acltabontabon
 github: acltabontabon
 email: me@acltabontabon.com
@@ -41,7 +39,6 @@ authors:
     bio: An Asian man who codes to eat noodles
     external-image: false
     picture: assets/images/profile.jpg
-    twitter: acltabontabon
 
 # do you want a larger site? change the option below
 # options: [normal, large] | default: normal
