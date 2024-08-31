@@ -1,7 +1,7 @@
 ---
 title: "Personal Blueprint for a Tech Team"
 layout: post
-date: 2024-09-01S 00:00
+date: 2024-09-01 00:00
 image: /assets/images/afpfw.jpg
 headerImage: false
 tag:
