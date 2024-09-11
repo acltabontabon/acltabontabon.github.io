@@ -2,6 +2,7 @@
 title: "How to play PS5 games remotely on Steam Deck"
 layout: post
 date: 2024-09-11 00:00
+image: /assets/images/notes/n1_game_mode_sd.png
 tag: 
 - tutorial
 - ps5
