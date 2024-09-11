@@ -8,7 +8,7 @@ tag:
 - ps5
 - steam-deck
 headerImage: false
-description: 
+description: "Learn how to play your PS5 games on your SteamDeck—yes, even while pooping. You’re welcome!"
 category: note
 notes: true
 author: actabontabon
