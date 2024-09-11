@@ -2,6 +2,26 @@
 layout: page
 title: Notes
 ---
+
+<p>
+    You’ve found my Notes – a mix of tutorials, stupid ideas, and whatever pops into my brain.
+</p>
+
+<p>
+    Explore at your own risk! ⚠️
+</p>
+
 <section class="list">
-    <p class="text-center">Nothing published yet!</p>
+
+    {% for post in site.posts %}
+        {% if post.notes %}
+            <div class="item {% if post.star %}star{% endif %}">
+                <a class="url" href="{% if post.externalLink %}{{ post.externalLink }}{% else %}{{ site.url }}{{ post.url }}{% endif %}">
+                    <aside><time datetime="{{ post.date | date:"%d-%m-%Y" }}">{{ post.date | date: "%b %d %Y" }}</time></aside>
+                    <h3 class="title">{{ post.title }}</h3>
+                </a>
+                <span>{{ post.description }}</span>
+            </div>
+        {% endif %}
+    {% endfor %}
 </section>
