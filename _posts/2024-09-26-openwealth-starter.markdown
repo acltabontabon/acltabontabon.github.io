@@ -65,27 +65,27 @@ time doing what matters—like catching up on Netflix and playing
 
 ### Ambitious Next Features (if I'm still alive and kicking)
 
-1. Event-Driven Integration
+**1. Event-Driven Integration**
    - Add support for event-driven architectures using Spring Events or pub-sub mechanisms. Trigger events when customer data changes so other components can react asynchronously.
    - Let’s mess with Kafka and JMS!
 
-2. Metrics and Health Checks
+**2. Metrics and Health Checks**
    - Provide health checks and metrics for monitoring the OpenWealth API connection (e.g., response times, error rates).
 
-3. Caching Support
+**3. Caching Support**
    - Implement caching for frequently accessed customer data and give devs control over caching strategies like TTL and eviction policies.
 
-4. Customer Lifecycle Management (Status Tracking)
+**4. Customer Lifecycle Management (Status Tracking)**
    - Add lifecycle tracking features to make it easier for devs to check the status of customer onboarding and trigger workflows based on those changes.
 
-5. Custom Query Support
+**5. Custom Query Support**
    - Provide flexible querying support via a simple DSL or query builder. 
    - Let devs filter customer data based on attributes without breaking a sweat.
 
-6. Customizable Validations
+**6. Customizable Validations**
    - Allow developers to add custom validations before submitting customer data, using Spring’s Validator API or Bean Validation.
 
-7. Audit Logging
+**7. Audit Logging**
    - Enable audit logging for all operations on customer data (create, update, delete). 
    - Provide insights into what API calls were made and what data was affected.
 
