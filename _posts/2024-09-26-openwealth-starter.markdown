@@ -17,6 +17,8 @@ externalLink: false
 
 Welcome to my next grand open-source experiment! 🎉
 
+> **UPDATE:** Want a sneak peek at my progress? Dive into my [openwealth-starter](https://github.com/acltabontabon/openwealth-spring-starter) repo on Github and explore what’s cooking!
+
 ![Markdowm Image][0]
 
 I’m building a Spring Boot starter to make life easier for devs like me, so we can spend more 
