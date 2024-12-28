@@ -1,5 +1,5 @@
 ---
-title: "ISALIN"
+title: "Isalin"
 layout: post
 date: 2023-11-04 00:00
 tag: 
