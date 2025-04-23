@@ -33,8 +33,9 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
     - [Gradle](#gradle)
 - [Configuration](#configuration)
 - [Usage Guide](#usage-guide)
-    - [Customer Service Usage](#customer-service-usage)
+    - [Access Token Resolution](#access-token-resolution)
     - [Custody Service Usage](#custody-service-usage)
+    - [Customer Service Usage](#customer-service-usage)
     - [Order Service Usage](#order-service-usage)
 - [Development](#development)
 
@@ -85,7 +86,73 @@ Trust me I'm working on it!
 
 ## USAGE GUIDE
 
-Again... trust me I'm working on it!
+### Access Token Resolution
+
+To interact with the OpenWealth APIs, a valid access token is required for authentication.
+
+By default, the starter uses the `StaticTokenProvider`, which reads the token from:
+```yaml
+openwealth:
+  api:
+    access-token: your-access-token
+```
+
+To customize this, you can implement your own `TokenProvider`:
+```java
+import com.acltabontabon.openwealth.security.TokenProvider;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyCustomTokenProvider implements TokenProvider {
+
+    @Override
+    public String getAccessToken() {
+        return fetchAccessTokenFromSomewhere();
+    }
+}
+```
+
+Once detected, your custom `TokenProvider` bean will override the default implementation automatically.
+
+### Custody Service Usage
+
+`CustodyService` bean is a high-level abstraction over the [Custody Services API](https://sandbox.openwealth.synpulse8.com/docs?api=custody-services-2-0-3), enabling simple and readable interaction with OpenWealth resources.
+
+#### Retrieve customers and linked accounts
+```java
+import com.acltabontabon.openwealth.commons.Result;
+import com.acltabontabon.openwealth.models.custodyservices.Customer;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustodyServices;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class CustodyExample {
+
+    private final CustodyService custodyService;
+
+    public void listCustomers() {
+        Result<List<Customer>> result = custodyService
+            .customers()
+            .withCorrelationId("1234")
+            .fetch();
+
+        result.getData().forEach(customer -> {
+            log.info("Customer ID: {}", customer.getCustomerIdentification());
+            log.info("Accounts: {}", customer.getAccountInformationList().size());
+        });
+    }
+}
+```
+
+This corresponds to:
+
+```
+GET <custodyServices_baseUrl>/customers
+```
+
 
 ---
 
