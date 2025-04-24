@@ -31,10 +31,11 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
 - [Setup](#setup)
     - [Maven](#maven)
     - [Gradle](#gradle)
-- [Configuration](#configuration)
 - [Usage Guide](#usage-guide)
     - [Access Token Resolution](#access-token-resolution)
     - [Custody Service Usage](#custody-service-usage)
+      - [Retrieve all accessible customers](#example-retrieve-all-accessible-customers-with-their-accounts)
+      - [Retrieve a specific customer](#example-retrieve-a-specific-customer)
     - [Customer Service Usage](#customer-service-usage)
     - [Order Service Usage](#order-service-usage)
 - [Development](#development)
@@ -78,12 +79,6 @@ implementation 'com.acltabontabon:openwealth-spring-starter:1.0.0-Alpha.4'
 
 ---
 
-## CONFIGURATION
-
-Trust me I'm working on it!
-
----
-
 ## USAGE GUIDE
 
 ### Access Token Resolution
@@ -118,7 +113,7 @@ Once detected, your custom `TokenProvider` bean will override the default implem
 
 `CustodyService` bean is a high-level abstraction over the [Custody Services API](https://sandbox.openwealth.synpulse8.com/docs?api=custody-services-2-0-3), enabling simple and readable interaction with OpenWealth resources.
 
-#### Retrieve customers and linked accounts
+#### Example: Retrieve customers and linked accounts
 ```java
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
@@ -133,16 +128,18 @@ public class CustodyExample {
 
     private final CustodyService custodyService;
 
-    public void listCustomers() {
+    public void printCustomers() {
         Result<List<Customer>> result = custodyService
             .customers()
-            .withCorrelationId("1234")
+            .withLimit(1)               // Optional - maximum number of customers to return
+            .withCorrelationId("1234")  // Optional - will be auto-generated if not provided
             .fetch();
 
-        result.getData().forEach(customer -> {
-            log.info("Customer ID: {}", customer.getCustomerIdentification());
-            log.info("Accounts: {}", customer.getAccountInformationList().size());
-        });
+        if (result.isSuccess()) {
+            result.getData().forEach(customer -> log.info("Customer: {}", customer));
+        } else {
+            log.error(result.getMessage());
+        }
     }
 }
 ```
@@ -153,6 +150,24 @@ This corresponds to:
 GET <custodyServices_baseUrl>/customers
 ```
 
+#### Example: Retrieve a specific customer
+To fetch a single customer, pass the customer identifier explicitly.
+```java
+public void printCustomer() {
+    Result<Customer> result = custodyService
+        .customers()
+        .withCustomerId("customer_001")
+        .fetch();
+
+    log.info("Customer ID: {}", customer.getCustomerIdentification());
+}
+```
+
+This corresponds to:
+
+```
+GET <custodyServices_baseUrl>/customers/{customerId}
+```
 
 ---
 
