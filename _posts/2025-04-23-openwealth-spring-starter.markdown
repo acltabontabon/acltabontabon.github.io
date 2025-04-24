@@ -16,8 +16,7 @@ author: actabontabon
 externalLink: false
 ---
 
-![Markdowm Image][0]
-
+![Markdown Image][0]
 A lightweight and developer-friendly Spring Boot starter that simplifies integration with [OpenWealth APIs](https://openwealth.ch). It provides fluent, type-safe access to key OpenWealth services, enabling rapid development of wealth management related applications.
 
 > **Disclaimer**  
