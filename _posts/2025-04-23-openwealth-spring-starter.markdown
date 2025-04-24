@@ -159,7 +159,7 @@ public void printCustomer() {
         .withCustomerId("customer_001")
         .fetch();
 
-    log.info("Customer ID: {}", customer.getCustomerIdentification());
+    log.info("Customer ID: {}", result.getData().getCustomerIdentification());
 }
 ```
 
