@@ -2,6 +2,7 @@
 title: "OpenWealth Spring Starter"
 layout: post
 date: 2025-04-23 00:00
+image: /assets/images/openwealth/logo.png
 tag: 
 - open-source
 - spring-boot
@@ -14,6 +15,8 @@ category: project
 author: actabontabon
 externalLink: false
 ---
+
+![Markdowm Image][0]
 
 A lightweight and developer-friendly Spring Boot starter that simplifies integration with [OpenWealth APIs](https://openwealth.ch). It provides fluent, type-safe access to key OpenWealth services, enabling rapid development of wealth management related applications.
 
@@ -187,3 +190,5 @@ cd openwealth-spring-starter
 ```
 
 To contribute, please check the [contributing guide](https://github.com/acltabontabon/openwealth-spring-starter/blob/master/CONTRIBUTING.md).
+
+[0]: /assets/images/openwealth/logo.png
