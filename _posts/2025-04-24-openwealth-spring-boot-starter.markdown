@@ -1,7 +1,7 @@
 ---
-title: "OpenWealth Spring Starter"
+title: "OpenWealth Spring Boot Starter"
 layout: post
-date: 2025-04-23 00:00
+date: 2025-04-24 00:00
 image: /assets/images/openwealth/logo.png
 tag: 
 - open-source
