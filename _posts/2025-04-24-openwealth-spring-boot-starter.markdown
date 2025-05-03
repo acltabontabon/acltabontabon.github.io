@@ -163,11 +163,15 @@ To retrieve all positions (incl. investment cash accounts) for a specific custom
 
 ```java
 Result<CustomerPositionStatement> result = custodyService.customers()
-    .withCorrelationId(Application.CORRELATION_ID)
     .withCustomerId("customer_001")
-    .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+    .positionStatement(<date>, <eod>, <dateType>)
     .fetch();
 ```
+
+Required parameters for the `positionStatement` method:
+- `date`: The date for which the position statement is requested.
+- `eod`: Indicates if the position data is end-of-day (eod) data for the positions. If the parameter is set to false, the most recent data is shown, incl intraday changes on the position if the date is set to today.
+- `dateType`: Indicates which type of date is decisive for the data shown. (Supported values: `DateType.TRANSACTION_DATE`, `DateType.BOOKING_DATE`, `DateType.VALUE_DATE`).
 
 
 ---
