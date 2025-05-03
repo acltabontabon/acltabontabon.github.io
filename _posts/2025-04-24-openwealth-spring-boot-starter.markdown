@@ -1,7 +1,7 @@
 ---
 title: "OpenWealth Spring Boot Starter"
 layout: post
-date: 2025-04-24 00:00
+date: 2025-05-04 00:00
 image: /assets/images/openwealth/logo.png
 tag: 
 - open-source
@@ -36,8 +36,9 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
 - [Usage Guide](#usage-guide)
     - [Access Token Resolution](#access-token-resolution)
     - [Custody Service Usage](#custody-service-usage)
-      - [Retrieve all accessible customers](#example-retrieve-all-accessible-customers-with-their-accounts)
+      - [Retrieve a list of customers](#example-retrieve-a-list-of-customers)
       - [Retrieve a specific customer](#example-retrieve-a-specific-customer)
+      - [Retrieve a position statement for a specific customer](#example-retrieve-a-position-statement-for-a-specific-customer)
     - [Customer Service Usage](#customer-service-usage)
     - [Order Service Usage](#order-service-usage)
 - [Development](#development)
@@ -69,14 +70,14 @@ Once included, the starter provides ready-to-use service beans for interacting w
 ```xml
 <dependency>
   <groupId>com.acltabontabon</groupId>
-  <artifactId>openwealth-spring-starter</artifactId>
-  <version>1.0.0-Alpha.4</version>
+  <artifactId>openwealth-spring-boot-starter</artifactId>
+  <version>1.0.0-Alpha.5</version>
 </dependency>
 ```
 
 ### Gradle
 ```gradle
-implementation 'com.acltabontabon:openwealth-spring-starter:1.0.0-Alpha.4'
+implementation 'com.acltabontabon:openwealth-spring-boot-starter:1.0.0-Alpha.5'
 ```
 
 ---
@@ -115,7 +116,7 @@ Once detected, your custom `TokenProvider` bean will override the default implem
 
 `CustodyService` bean is a high-level abstraction over the [Custody Services API](https://sandbox.openwealth.synpulse8.com/docs?api=custody-services-2-0-3), enabling simple and readable interaction with OpenWealth resources.
 
-#### Example: Retrieve customers and linked accounts
+#### Example: Retrieve a list of customers
 ```java
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
@@ -146,30 +147,28 @@ public class CustodyExample {
 }
 ```
 
-This corresponds to:
-
-```
-GET <custodyServices_baseUrl>/customers
-```
-
 #### Example: Retrieve a specific customer
 To fetch a single customer, pass the customer identifier explicitly.
 ```java
-public void printCustomer() {
-    Result<Customer> result = custodyService
-        .customers()
-        .withCustomerId("customer_001")
-        .fetch();
-
-    log.info("Customer ID: {}", result.getData().getCustomerIdentification());
-}
+Result<Customer> result = custodyService
+    .customers()
+    .withCustomerId("customer_001")
+    .fetch();
 ```
 
-This corresponds to:
 
+#### Example: Retrieve a position statement for a specific customer
+
+To retrieve all positions (incl. investment cash accounts) for a specific customer.
+
+```java
+Result<CustomerPositionStatement> result = custodyService.customers()
+    .withCorrelationId(Application.CORRELATION_ID)
+    .withCustomerId("customer_001")
+    .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+    .fetch();
 ```
-GET <custodyServices_baseUrl>/customers/{customerId}
-```
+
 
 ---
 
