@@ -26,9 +26,8 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
 
 --- 
 
-## Table of Contents
+## TABLE OF CONTENTS
 
-- [Overview](#overview)
 - [Features](#features)
 - [Setup](#setup)
     - [Maven](#maven)
@@ -38,7 +37,8 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
     - [Custody Service Usage](#custody-service-usage)
       - [Retrieve a list of customers](#example-retrieve-a-list-of-customers)
       - [Retrieve a specific customer](#example-retrieve-a-specific-customer)
-      - [Retrieve a position statement for a specific customer](#example-retrieve-a-position-statement-for-a-specific-customer)
+      - [Retrieve a position statement](#example-retrieve-a-position-statement)
+      - [Retrieve a transaction statement](#example-retrieve-a-transaction-statement)
     - [Customer Service Usage](#customer-service-usage)
     - [Order Service Usage](#order-service-usage)
 - [Development](#development)
@@ -157,14 +157,25 @@ Result<Customer> result = custodyService
 ```
 
 
-#### Example: Retrieve a position statement for a specific customer
+#### Example: Retrieve a position statement
 
-To retrieve all positions (incl. investment cash accounts) for a specific customer.
+To retrieve all positions (incl. investment cash accounts) for a specific customer:
 
 ```java
 Result<CustomerPositionStatement> result = custodyService.customers()
     .withCustomerId("customer_001")
-    .positionStatement(<date>, <eod>, <dateType>)
+    .positionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+for a specific account:
+
+```java
+Result<AccountPositionStatement> result = custodyService.accounts()
+    .withAccountId("account_001")
+    .positionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
     .fetch();
 ```
 
@@ -173,6 +184,43 @@ Required parameters for the `positionStatement` method:
 - `eod`: Indicates if the position data is end-of-day (eod) data for the positions. If the parameter is set to false, the most recent data is shown, incl intraday changes on the position if the date is set to today.
 - `dateType`: Indicates which type of date is decisive for the data shown. (Supported values: `DateType.TRANSACTION_DATE`, `DateType.BOOKING_DATE`, `DateType.VALUE_DATE`).
 
+
+#### Example: Retrieve a transaction statement
+
+To retrieve all transactions for a specific customer:
+
+```java
+Result<TransactionStatement> result = custodyService.customers()
+    .withCustomerId("customer_001")
+    .transactionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+for a specific account:
+
+```java
+Result<TransactionStatement> result = custodyService.accounts()
+    .withAccountId("account_001")
+    .transactionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+for a specific position:
+
+```java
+Result<TransactionStatement> result = custodyService.positions()
+    .withPositionId("position_001")
+    .transactionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+Required parameters for the `transactionStatement` method:
+- `date`: The date for which the position statement is requested.
+- `eod`: Indicates if the position data is end-of-day (eod) data for the positions. If the parameter is set to false, the most recent data is shown, incl intraday changes on the position if the date is set today.
+- `dateType`: Indicates which type of date is decisive for the data shown. (Supported values: `DateType.TRANSACTION_DATE`, `DateType.BOOKING_DATE`, `DateType.VALUE_DATE`).
 
 ---
 
