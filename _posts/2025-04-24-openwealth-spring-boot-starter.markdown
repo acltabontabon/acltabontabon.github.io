@@ -42,6 +42,9 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
     - [Customer Service Usage](#customer-service-usage)
     - [Order Placement Service Usage](#order-placement-service-usage)
         - [Posting a new order](#example-posting-a-new-order)
+        - [Cancellation of an order](#example-cancellation-of-an-order)
+        - [Retrieve a list of open security orders](#example-retrieve-a-list-of-open-security-orders)
+        - [Retrieve a specific security order](#example-retrieve-a-specific-security-order)
 - [Development](#development)
 
 
@@ -115,7 +118,7 @@ Once detected, your custom `TokenProvider` bean will override the default implem
 
 ### Custody Service Usage
 
-`CustodyService` bean is a high-level abstraction over the [Custody Services API](https://sandbox.openwealth.synpulse8.com/docs?api=custody-services-2-0-3), enabling simple and readable interaction with OpenWealth resources.
+`CustodyService` bean is a high-level abstraction over the [Custody Services API](https://sandbox.openwealth.synpulse8.com/docs?api=custody-services-2-0-3), making it easier to interact with custody-related resources such as portfolios, positions, and transactions within the OpenWealth ecosystem.
 
 #### Example: Retrieve a list of customers
 ```java
@@ -225,6 +228,8 @@ Required parameters for the `transactionStatement` method:
 
 ### Order Placement Service Usage
 
+`OrderPlacementService` bean provides a high-level abstraction over the [Order Placement API](https://sandbox.openwealth.synpulse8.com/docs?api=order-placement-2-0-8), simplifying interactions with order-related operations such as posting new orders, retrieving order statuses, and managing order lifecycles in the OpenWealth ecosystem.
+
 #### Example: Posting a new order
 ```java
 Result<Order> result = orderPlacementService.orders()
@@ -234,6 +239,27 @@ Result<Order> result = orderPlacementService.orders()
         .addRequestedAllocation(RequestedAllocation.builder().build())
         .build())
     .submit();
+```
+
+#### Example: Cancellation of an order
+```java
+Result<Order> result = orderPlacementService.orders()
+    .withClientOrderId("XR002")
+    .cancel()
+    .submit();
+```
+
+#### Example: Retrieve a list of open security orders
+```java
+Result<List<Order>> result = orderPlacementService.orders()
+    .fetch();
+```
+
+#### Example: Retrieve a specific security order
+```java
+Result<Order> result = orderPlacementService.orders()
+    .withClientOrderId("XR002")
+    .fetch();
 ```
 
 ---
