@@ -1,7 +1,7 @@
 ---
 title: "OpenWealth Spring Boot Starter"
 layout: post
-date: 2025-05-03 00:00
+date: 2025-05-13 00:00
 image: /assets/images/openwealth/logo.png
 tag: 
 - open-source
@@ -39,7 +39,7 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
       - [Retrieve a specific customer](#example-retrieve-a-specific-customer)
       - [Retrieve a position statement](#example-retrieve-a-position-statement)
       - [Retrieve a transaction statement](#example-retrieve-a-transaction-statement)
-    - [Customer Service Usage](#customer-service-usage)
+    - [Customer Management Service Usage](#customer-management-service-usage)
     - [Order Placement Service Usage](#order-placement-service-usage)
         - [Posting a new order](#example-posting-a-new-order)
         - [Cancellation of an order](#example-cancellation-of-an-order)
@@ -225,6 +225,14 @@ Required parameters for the `transactionStatement` method:
 - `date`: The date for which the position statement is requested.
 - `eod`: Indicates if the position data is end-of-day (eod) data for the positions. If the parameter is set to false, the most recent data is shown, incl intraday changes on the position if the date is set today.
 - `dateType`: Indicates which type of date is decisive for the data shown. (Supported values: `DateType.TRANSACTION_DATE`, `DateType.BOOKING_DATE`, `DateType.VALUE_DATE`).
+
+---
+
+### Customer Management Service Usage
+
+⚠️ I'm still working on this part. Stay tuned for updates! ⚠️
+
+---
 
 ### Order Placement Service Usage
 
