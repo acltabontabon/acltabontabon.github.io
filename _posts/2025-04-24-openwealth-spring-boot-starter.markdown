@@ -40,7 +40,8 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
       - [Retrieve a position statement](#example-retrieve-a-position-statement)
       - [Retrieve a transaction statement](#example-retrieve-a-transaction-statement)
     - [Customer Service Usage](#customer-service-usage)
-    - [Order Service Usage](#order-service-usage)
+    - [Order Placement Service Usage](#order-placement-service-usage)
+        - [Posting a new order](#example-posting-a-new-order)
 - [Development](#development)
 
 
@@ -71,13 +72,13 @@ Once included, the starter provides ready-to-use service beans for interacting w
 <dependency>
   <groupId>com.acltabontabon</groupId>
   <artifactId>openwealth-spring-boot-starter</artifactId>
-  <version>1.0.0-Alpha.5</version>
+  <version>1.0.0-Alpha.6</version>
 </dependency>
 ```
 
 ### Gradle
 ```gradle
-implementation 'com.acltabontabon:openwealth-spring-boot-starter:1.0.0-Alpha.5'
+implementation 'com.acltabontabon:openwealth-spring-boot-starter:1.0.0-Alpha.6'
 ```
 
 ---
@@ -221,6 +222,19 @@ Required parameters for the `transactionStatement` method:
 - `date`: The date for which the position statement is requested.
 - `eod`: Indicates if the position data is end-of-day (eod) data for the positions. If the parameter is set to false, the most recent data is shown, incl intraday changes on the position if the date is set today.
 - `dateType`: Indicates which type of date is decisive for the data shown. (Supported values: `DateType.TRANSACTION_DATE`, `DateType.BOOKING_DATE`, `DateType.VALUE_DATE`).
+
+### Order Placement Service Usage
+
+#### Example: Posting a new order
+```java
+Result<Order> result = orderPlacementService.orders()
+    .createNew(RequestedOrder.builder()
+        .clientOrderIdentification("XR002")
+        .bulkOrderDetails(BulkOrderDetails.builder().build())
+        .addRequestedAllocation(RequestedAllocation.builder().build())
+        .build())
+    .submit();
+```
 
 ---
 
