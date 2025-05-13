@@ -1,7 +1,7 @@
 ---
 title: "OpenWealth Spring Boot Starter"
 layout: post
-date: 2025-05-03 00:00
+date: 2025-05-13 00:00
 image: /assets/images/openwealth/logo.png
 tag: 
 - open-source
@@ -26,9 +26,8 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
 
 --- 
 
-## Table of Contents
+## TABLE OF CONTENTS
 
-- [Overview](#overview)
 - [Features](#features)
 - [Setup](#setup)
     - [Maven](#maven)
@@ -38,9 +37,14 @@ A lightweight and developer-friendly Spring Boot starter that simplifies integra
     - [Custody Service Usage](#custody-service-usage)
       - [Retrieve a list of customers](#example-retrieve-a-list-of-customers)
       - [Retrieve a specific customer](#example-retrieve-a-specific-customer)
-      - [Retrieve a position statement for a specific customer](#example-retrieve-a-position-statement-for-a-specific-customer)
-    - [Customer Service Usage](#customer-service-usage)
-    - [Order Service Usage](#order-service-usage)
+      - [Retrieve a position statement](#example-retrieve-a-position-statement)
+      - [Retrieve a transaction statement](#example-retrieve-a-transaction-statement)
+    - [Customer Management Service Usage](#customer-management-service-usage)
+    - [Order Placement Service Usage](#order-placement-service-usage)
+        - [Posting a new order](#example-posting-a-new-order)
+        - [Cancellation of an order](#example-cancellation-of-an-order)
+        - [Retrieve a list of open security orders](#example-retrieve-a-list-of-open-security-orders)
+        - [Retrieve a specific security order](#example-retrieve-a-specific-security-order)
 - [Development](#development)
 
 
@@ -71,13 +75,13 @@ Once included, the starter provides ready-to-use service beans for interacting w
 <dependency>
   <groupId>com.acltabontabon</groupId>
   <artifactId>openwealth-spring-boot-starter</artifactId>
-  <version>1.0.0-Alpha.5</version>
+  <version>1.0.0-Alpha.6</version>
 </dependency>
 ```
 
 ### Gradle
 ```gradle
-implementation 'com.acltabontabon:openwealth-spring-boot-starter:1.0.0-Alpha.5'
+implementation 'com.acltabontabon:openwealth-spring-boot-starter:1.0.0-Alpha.6'
 ```
 
 ---
@@ -114,7 +118,7 @@ Once detected, your custom `TokenProvider` bean will override the default implem
 
 ### Custody Service Usage
 
-`CustodyService` bean is a high-level abstraction over the [Custody Services API](https://sandbox.openwealth.synpulse8.com/docs?api=custody-services-2-0-3), enabling simple and readable interaction with OpenWealth resources.
+`CustodyService` bean is a high-level abstraction over the [Custody Services API](https://sandbox.openwealth.synpulse8.com/docs?api=custody-services-2-0-3), making it easier to interact with custody-related resources such as portfolios, positions, and transactions within the OpenWealth ecosystem.
 
 #### Example: Retrieve a list of customers
 ```java
@@ -157,14 +161,25 @@ Result<Customer> result = custodyService
 ```
 
 
-#### Example: Retrieve a position statement for a specific customer
+#### Example: Retrieve a position statement
 
-To retrieve all positions (incl. investment cash accounts) for a specific customer.
+To retrieve all positions (incl. investment cash accounts) for a specific customer:
 
 ```java
 Result<CustomerPositionStatement> result = custodyService.customers()
     .withCustomerId("customer_001")
-    .positionStatement(<date>, <eod>, <dateType>)
+    .positionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+for a specific account:
+
+```java
+Result<AccountPositionStatement> result = custodyService.accounts()
+    .withAccountId("account_001")
+    .positionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
     .fetch();
 ```
 
@@ -173,6 +188,87 @@ Required parameters for the `positionStatement` method:
 - `eod`: Indicates if the position data is end-of-day (eod) data for the positions. If the parameter is set to false, the most recent data is shown, incl intraday changes on the position if the date is set to today.
 - `dateType`: Indicates which type of date is decisive for the data shown. (Supported values: `DateType.TRANSACTION_DATE`, `DateType.BOOKING_DATE`, `DateType.VALUE_DATE`).
 
+
+#### Example: Retrieve a transaction statement
+
+To retrieve all transactions for a specific customer:
+
+```java
+Result<TransactionStatement> result = custodyService.customers()
+    .withCustomerId("customer_001")
+    .transactionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+for a specific account:
+
+```java
+Result<TransactionStatement> result = custodyService.accounts()
+    .withAccountId("account_001")
+    .transactionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+for a specific position:
+
+```java
+Result<TransactionStatement> result = custodyService.positions()
+    .withPositionId("position_001")
+    .transactionStatement(date, eod, dateType)
+    .withLimit(1)  // Optional - maximum number of items to return
+    .fetch();
+```
+
+Required parameters for the `transactionStatement` method:
+- `date`: The date for which the position statement is requested.
+- `eod`: Indicates if the position data is end-of-day (eod) data for the positions. If the parameter is set to false, the most recent data is shown, incl intraday changes on the position if the date is set today.
+- `dateType`: Indicates which type of date is decisive for the data shown. (Supported values: `DateType.TRANSACTION_DATE`, `DateType.BOOKING_DATE`, `DateType.VALUE_DATE`).
+
+---
+
+### Customer Management Service Usage
+
+⚠️ I'm still working on this part. Stay tuned for updates! ⚠️
+
+---
+
+### Order Placement Service Usage
+
+`OrderPlacementService` bean provides a high-level abstraction over the [Order Placement API](https://sandbox.openwealth.synpulse8.com/docs?api=order-placement-2-0-8), simplifying interactions with order-related operations such as posting new orders, retrieving order statuses, and managing order lifecycles in the OpenWealth ecosystem.
+
+#### Example: Posting a new order
+```java
+Result<Order> result = orderPlacementService.orders()
+    .createNew(RequestedOrder.builder()
+        .clientOrderIdentification("XR002")
+        .bulkOrderDetails(BulkOrderDetails.builder().build())
+        .addRequestedAllocation(RequestedAllocation.builder().build())
+        .build())
+    .submit();
+```
+
+#### Example: Cancellation of an order
+```java
+Result<Order> result = orderPlacementService.orders()
+    .withClientOrderId("XR002")
+    .cancel()
+    .submit();
+```
+
+#### Example: Retrieve a list of open security orders
+```java
+Result<List<Order>> result = orderPlacementService.orders()
+    .fetch();
+```
+
+#### Example: Retrieve a specific security order
+```java
+Result<Order> result = orderPlacementService.orders()
+    .withClientOrderId("XR002")
+    .fetch();
+```
 
 ---
 
