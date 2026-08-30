@@ -9,7 +9,8 @@ tag:
 - openwealth
 - java
 headerImage: false
-projects: true
+garage: true
+wip: false
 description: "Makes OpenWealth integration so easy, it’s almost suspicious."
 category: project
 author: actabontabon

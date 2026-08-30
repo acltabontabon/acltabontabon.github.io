@@ -1,0 +1,101 @@
+.garage
+    margin-top: 125px
+
+    > .intro
+        text-align: center
+        color: $alpha
+        font-weight: 300
+        margin-bottom: 40px
+
+.tool-grid
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
+    gap: 20px
+    margin-top: 30px
+
+.tool-card
+    position: relative
+    display: flex
+    flex-direction: column
+    height: 100%
+    padding: 24px 22px 20px
+    border: 1px solid $epsilon
+    border-radius: 12px
+    background: $omega
+    text-decoration: none
+    color: inherit
+    overflow: hidden
+    transition: transform ease-in-out .2s, box-shadow ease-in-out .2s, border-color ease-in-out .2s
+    box-sizing: border-box
+
+    &:before
+        content: " "
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        height: 4px
+        background: linear-gradient(90deg, $delta, rgba($delta, .25))
+
+a.tool-card:hover,
+a.tool-card:focus-visible
+    transform: translateY(-4px)
+    border-color: $delta
+    box-shadow: 0 12px 24px rgba($delta, .18)
+
+    .tool-cta
+        color: $delta
+
+.tool-card.is-wip
+    border-style: dashed
+    opacity: .65
+    cursor: default
+
+.tool-name
+    margin: 0 0 8px
+    font-size: 1.8rem
+    color: $beta
+
+.tool-gist
+    flex-grow: 1
+    margin: 0 0 16px
+    color: $alpha
+    font-weight: 300
+    line-height: 1.6
+
+.tool-tags
+    display: flex
+    flex-wrap: wrap
+    gap: 8px
+    margin: 0 0 16px
+    padding: 0
+    list-style: none
+
+    li
+        margin: 0
+        padding: 3px 12px
+        border-radius: 20px
+        background: rgba($delta, .08)
+        color: $delta
+        font-size: 1.1rem
+        font-weight: 500
+        line-height: normal
+
+.tool-cta
+    margin-top: auto
+    font-weight: 500
+    color: $gama
+    transition: color ease-in-out .2s
+
+.badge
+    display: inline-block
+    align-self: flex-start
+    margin-bottom: 12px
+    padding: 3px 12px
+    border-radius: 20px
+    font-size: 1.1rem
+    font-weight: 500
+
+.badge-wip
+    background: rgba($delta, .12)
+    color: $delta

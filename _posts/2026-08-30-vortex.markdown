@@ -1,0 +1,73 @@
+---
+title: "Vortex"
+layout: post
+date: 2026-08-30 00:00
+headerImage: false
+garage: true
+wip: false
+externalLink: https://acltabontabon.com/vortex/
+description: "A local-first performance engineering workbench: point it at your OpenAPI spec, describe the traffic you're worried about, and it turns that into a real k6 workload with an actual pass/fail verdict instead of terminal noise."
+category: tool
+author: actabontabon
+tag:
+- open-source
+---
+
+Vortex is a local-first performance engineering workbench. Point it at your service's OpenAPI spec, describe the
+traffic you're worried about, and it turns that into a real k6 workload, runs it on your machine, and hands back
+evidence — not terminal noise.
+
+[![CI](https://github.com/acltabontabon/vortex/actions/workflows/ci.yml/badge.svg)](https://github.com/acltabontabon/vortex/actions/workflows/ci.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/acltabontabon/vortex/blob/main/LICENSE)
+
+## THE PROBLEM
+
+Running a load test isn't hard — k6 already does that extremely well. The hard part is everything else: what traffic
+your service actually receives, what "normal" vs "peak" actually look like, whether 50 req/s or 5,000 is the number
+worth testing, and whether it was your service that failed or your load generator. Most teams answer this by jumping
+between an observability dashboard, API specs, terminal output, and memory — and the honest answer that survives
+that process is often "probably enough." That's not evidence, that's a shrug with a chart. Vortex turns that chain
+into one coherent workflow.
+
+---
+
+## FEATURES
+
+- Parses your OpenAPI spec deterministically instead of hand-rolling boilerplate
+- Models production-realistic traffic: weighted operation mixes, distinct arrival rate and concurrency, optional
+  calibration from real Prometheus or Dynatrace data
+- Runs real k6 locally, with a preflight showing exactly what you're about to send and a typed confirmation before
+  hitting any non-local target
+- Returns a deterministic pass/fail verdict against your latency and error objectives — which resource ran out
+  first, and whether the run was even valid
+- Keeps execution history, capacity trends, and comparisons that only run when two tests actually measured the
+  same thing
+- Optional Ollama-backed assistant explains findings Vortex computed — it cannot invent numbers
+
+---
+
+## WHY LOCAL-FIRST
+
+Vortex runs on your machine, against your service, before you provision expensive test infrastructure — that's the
+entire point, not a limitation. A laptop isn't production, and Vortex will never claim a local run proves you'll
+handle Black Friday. What it will do is replace guessing with evidence before you spend money proving it: whether
+your service behaves under load, roughly where it struggles, what's likely to break first, and whether this build
+regressed.
+
+Vortex is not another load generator (k6 already does that), not an APM (Prometheus/Dynatrace stay your
+observability platform), and not a production-capacity oracle.
+
+---
+
+## STATUS
+
+Early alpha. The core workflow — import, model, run, evaluate, compare — works end to end with real k6 and real
+services. Production-informed calibration against Prometheus and Dynatrace is working. Configuration, APIs, and UX
+are still expected to change.
+
+<div class="breaker"></div>
+
+## LINKS
+- [Getting started](https://github.com/acltabontabon/vortex/blob/main/docs/01-product/getting-started.adoc)
+- [Documentation](https://github.com/acltabontabon/vortex/blob/main/docs/index.adoc)
+- [Roadmap](https://github.com/acltabontabon/vortex/blob/main/docs/01-product/roadmap.adoc)

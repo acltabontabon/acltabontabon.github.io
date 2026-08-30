@@ -8,7 +8,8 @@ tag:
 - google-translate
 - java
 headerImage: false
-projects: true
+garage: true
+wip: false
 description: "A Spring Boot library for a streamlined Google Translate API usage."
 category: project
 author: actabontabon
