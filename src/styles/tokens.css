@@ -1,0 +1,72 @@
+/* Dark is the site's default theme — it is what `:root` says, with no media
+   query involved, so a visitor gets it regardless of their OS setting.
+   The light palette is still here and still complete; it applies only when
+   something explicitly asks for it with `data-theme="light"` on <html>.
+   Every dark-mode rule elsewhere in the codebase follows the same shape: the
+   dark value is the plain declaration, and light is the override. */
+:root {
+  color-scheme: dark;
+
+  --color-text: #aaa;
+  --color-heading: #ededed;
+  --color-text-strong: #999;
+  --color-accent: #a855f7; /* violet-500 */
+  --color-accent-rgb: 168, 85, 247;
+  --color-accent-soft: rgba(168, 85, 247, 0.14);
+  --color-border: #2a2a2a;
+  --color-surface: #0b0b0d;
+  --color-surface-raised: #18181b;
+  --color-ink: #fff;
+  --shadow-color: 0, 0, 0;
+  --pegboard-dot: rgba(255, 255, 255, 0.08);
+  /* light noise reads weaker on near-black, and a warm dark surface goes
+     muddy fast — so the texture leans on grain here, not on hue. */
+  --grain-opacity: 0.042;
+  --sketch-opacity: 0.055;
+
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --weight-thin: 300;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-7: 56px;
+  --space-8: 80px;
+  --space-header: 125px;
+
+  --content-width: 560px;
+
+  --radius: 12px;
+  --radius-pill: 20px;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-text: #666;
+  --color-heading: #222;
+  --color-text-strong: #575757;
+  --color-accent: #4b0082; /* indigo/purple */
+  --color-accent-rgb: 75, 0, 130;
+  --color-accent-soft: rgba(75, 0, 130, 0.08);
+  --color-border: #ededed;
+  /* not quite white — just warm enough to stop the page reading as a blank
+     browser canvas. Paired with the grain in global.css. */
+  --color-surface: #fcfbf8;
+  /* a step above --color-surface for cards/sheets that need to read as
+     "raised" — identical to surface here (elevation comes from shadow in
+     light), a lighter shade of it in dark (shadows barely read against a dark
+     page, so elevation there comes from color contrast) */
+  --color-surface-raised: #fff;
+  --color-ink: #000;
+  --shadow-color: 20, 10, 30;
+  --pegboard-dot: rgba(30, 20, 40, 0.09);
+  --grain-opacity: 0.035;
+  --sketch-opacity: 0.05;
+}

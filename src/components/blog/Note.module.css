@@ -1,0 +1,108 @@
+/* One entry in the writing index. A single column, one alignment, no rules
+   between entries — spacing does the separating. */
+
+.note + .note {
+  margin-top: var(--space-5);
+}
+
+.link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Primary. Every title is identical — one size, one weight, one line-height —
+   so the list reads as one set rather than a ranked one. */
+.title {
+  position: relative;
+  display: block;
+  /* fit-content so the hand-drawn underline tracks the words, not the column */
+  width: fit-content;
+  max-width: 100%;
+  color: var(--color-heading);
+  font-size: 1.7rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  transition:
+    color 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+
+.link:hover .title,
+.link:focus-visible .title {
+  color: var(--color-accent);
+  transform: translateX(2px);
+}
+
+/* the same hand-drawn mark the active nav item uses */
+.underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  color: var(--color-accent);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition:
+    opacity 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+
+.link:hover .underline,
+.link:focus-visible .underline {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Secondary — the same family and weight as the intro, one step down. */
+.excerpt {
+  display: block;
+  margin-top: 6px;
+  color: var(--color-text);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Metadata — identical treatment to the WRITING / SIX NOTES labels above,
+   driven by the same inherited values. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.55em;
+  margin-top: 6px;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--meta-size);
+  font-weight: 400;
+  letter-spacing: var(--meta-tracking);
+  line-height: 1.6;
+  text-transform: uppercase;
+  opacity: var(--meta-opacity);
+  transition: opacity 0.15s var(--ease);
+}
+
+.link:hover .meta,
+.link:focus-visible .meta {
+  opacity: var(--meta-opacity-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title,
+  .underline,
+  .meta {
+    transition: none;
+  }
+
+  .link:hover .title,
+  .link:focus-visible .title {
+    transform: none;
+  }
+
+  .underline {
+    transform: none;
+  }
+}

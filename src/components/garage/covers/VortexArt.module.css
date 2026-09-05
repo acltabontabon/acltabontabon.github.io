@@ -1,0 +1,195 @@
+.art {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: 0 var(--cover-pad) var(--space-2);
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  max-height: 128px;
+  overflow: visible;
+}
+
+.objective {
+  stroke: var(--color-text);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+.objectiveLabel,
+.markerLabel {
+  fill: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.markerLabel {
+  fill: var(--project-accent);
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+
+.curve {
+  stroke: var(--project-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.marker {
+  fill: var(--color-surface);
+  stroke: var(--project-accent);
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The curve draws in, the capacity marker lands, then the figures appear —
+   once on entrance (gated by .entering, dropped after the sequence finishes;
+   see VortexArt.tsx), and again on hover/focus for pointer and keyboard users
+   who arrive after that one-time entrance has already played (the common
+   case — by the time a pointer reaches the cover, entrance is long over).
+   Fill-mode is deliberately left off: the resting state is the visible one,
+   so the composition is complete even if no animation ever runs. */
+:global(.revealed) .art.entering .curve {
+  animation: draw 0.3s var(--ease) backwards;
+}
+:global(.revealed) .art.entering .marker,
+:global(.revealed) .art.entering .markerLabel {
+  animation: land 0.16s var(--ease) 0.26s backwards;
+}
+:global(.revealed) .art.entering .figure {
+  animation: figureIn 0.2s var(--ease) backwards;
+  animation-delay: calc(0.34s + var(--i, 0) * 45ms);
+}
+
+/* the repeatable version — only reachable once .entering above is gone, so
+   there is never a moment where both rules compete (which is what would
+   cause a flicker on hover-out) */
+@media (hover: hover) {
+  :global(.cover):hover .curve {
+    animation: draw 0.3s var(--ease) backwards;
+  }
+  :global(.cover):hover .marker,
+  :global(.cover):hover .markerLabel {
+    animation: land 0.16s var(--ease) 0.26s backwards;
+  }
+  :global(.cover):hover .figure {
+    animation: figureIn 0.2s var(--ease) backwards;
+    animation-delay: calc(0.34s + var(--i, 0) * 45ms);
+  }
+}
+:global(.cover):focus-within .curve {
+  animation: draw 0.3s var(--ease) backwards;
+}
+:global(.cover):focus-within .marker,
+:global(.cover):focus-within .markerLabel {
+  animation: land 0.16s var(--ease) 0.26s backwards;
+}
+:global(.cover):focus-within .figure {
+  animation: figureIn 0.2s var(--ease) backwards;
+  animation-delay: calc(0.34s + var(--i, 0) * 45ms);
+}
+
+@keyframes draw {
+  from {
+    stroke-dasharray: 620;
+    stroke-dashoffset: 620;
+  }
+  to {
+    stroke-dasharray: 620;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes land {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes figureIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* the readout's final line: what the run measured */
+.figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  margin: 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.figure dt {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  opacity: 0.7;
+}
+
+.figure dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-heading);
+}
+
+.unit {
+  margin-left: 3px;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+@media (max-width: 620px) {
+  .figures {
+    gap: var(--space-1) var(--space-4);
+  }
+  .figure dd {
+    font-size: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.revealed) .art.entering .curve,
+  :global(.revealed) .art.entering .marker,
+  :global(.revealed) .art.entering .markerLabel,
+  :global(.revealed) .art.entering .figure,
+  :global(.cover):hover .curve,
+  :global(.cover):hover .marker,
+  :global(.cover):hover .markerLabel,
+  :global(.cover):hover .figure,
+  :global(.cover):focus-within .curve,
+  :global(.cover):focus-within .marker,
+  :global(.cover):focus-within .markerLabel,
+  :global(.cover):focus-within .figure {
+    animation: none;
+  }
+}

@@ -5,3 +5,9 @@ Gemfile.lock
 .bundle
 vendor/
 .idea
+
+node_modules
+dist
+generated/
+.vite-react-ssg-temp
+*.local

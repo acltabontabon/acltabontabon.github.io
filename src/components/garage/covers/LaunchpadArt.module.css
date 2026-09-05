@@ -1,0 +1,191 @@
+.art {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 var(--cover-pad) var(--space-2);
+}
+
+/* Proportioned to sit at roughly the same height as the other covers' art
+   rather than a thin strip at the bottom of a tall well; max-height keeps it
+   whole (scaled down, not clipped) if a card ever runs short. */
+.diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  overflow: visible;
+  color: var(--color-text);
+}
+
+/* fill-opacity, not opacity: these also run an opacity animation, and a
+   resting opacity below 1 would snap back when it finishes. */
+.colHead {
+  fill: var(--color-text);
+  fill-opacity: 0.6;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.box {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1.3;
+}
+
+.tick {
+  fill: none;
+  stroke: var(--project-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 14;
+  stroke-dashoffset: 0;
+}
+
+.checkLabel {
+  fill: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.edge {
+  stroke: var(--color-text);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  color: var(--color-text);
+  stroke-dasharray: 50;
+  stroke-dashoffset: 0;
+}
+
+/* the headline artifact — the one file the whole run exists to produce */
+.file {
+  fill: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.artifact {
+  fill: var(--color-text);
+  fill-opacity: 0.7;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+/* Entrance: the columns are named, the scan ticks off, the arrow draws, then
+   the artifacts appear in the order they're written — once (gated by
+   .entering, dropped when the sequence finishes; see LaunchpadArt.tsx), and
+   again on hover/focus for anyone arriving after that. Fill-mode is
+   deliberately left off: the resting state is the completed contract, so the
+   composition is whole even if no animation ever runs. */
+:global(.revealed) .art.entering .colHead {
+  animation: fade 0.3s var(--ease) backwards;
+}
+:global(.revealed) .art.entering .tick {
+  animation: tick 0.2s var(--ease) backwards;
+  animation-delay: calc(0.2s + var(--n, 0) * 100ms);
+}
+:global(.revealed) .art.entering .edge {
+  animation: drawLine 0.24s var(--ease) 0.64s backwards;
+}
+:global(.revealed) .art.entering .file {
+  animation: land 0.24s var(--ease) 0.84s backwards;
+}
+:global(.revealed) .art.entering .artifact {
+  animation: land 0.22s var(--ease) backwards;
+  animation-delay: calc(1s + var(--n, 0) * 70ms);
+}
+
+@media (hover: hover) {
+  :global(.cover):hover .tick {
+    animation: tick 0.2s var(--ease) backwards;
+    animation-delay: calc(var(--n, 0) * 90ms);
+  }
+  :global(.cover):hover .edge {
+    animation: drawLine 0.24s var(--ease) 0.4s backwards;
+  }
+  :global(.cover):hover .file {
+    animation: land 0.24s var(--ease) 0.58s backwards;
+  }
+  :global(.cover):hover .artifact {
+    animation: land 0.22s var(--ease) backwards;
+    animation-delay: calc(0.72s + var(--n, 0) * 70ms);
+  }
+}
+:global(.cover):focus-within .tick {
+  animation: tick 0.2s var(--ease) backwards;
+  animation-delay: calc(var(--n, 0) * 90ms);
+}
+:global(.cover):focus-within .edge {
+  animation: drawLine 0.24s var(--ease) 0.4s backwards;
+}
+:global(.cover):focus-within .file {
+  animation: land 0.24s var(--ease) 0.58s backwards;
+}
+:global(.cover):focus-within .artifact {
+  animation: land 0.22s var(--ease) backwards;
+  animation-delay: calc(0.72s + var(--n, 0) * 70ms);
+}
+
+@keyframes tick {
+  from {
+    stroke-dashoffset: 14;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 50;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes land {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 620px) {
+  .file {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.revealed) .art.entering .colHead,
+  :global(.revealed) .art.entering .tick,
+  :global(.revealed) .art.entering .edge,
+  :global(.revealed) .art.entering .file,
+  :global(.revealed) .art.entering .artifact,
+  :global(.cover):hover .tick,
+  :global(.cover):hover .edge,
+  :global(.cover):hover .file,
+  :global(.cover):hover .artifact,
+  :global(.cover):focus-within .tick,
+  :global(.cover):focus-within .edge,
+  :global(.cover):focus-within .file,
+  :global(.cover):focus-within .artifact {
+    animation: none;
+  }
+}

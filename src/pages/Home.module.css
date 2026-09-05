@@ -1,0 +1,48 @@
+/* The homepage is a composition rather than a document: it fills the viewport
+   (see `.wrapper--home` in global.css) and centres itself inside it. */
+.stage {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  /* Centring inside <main> — i.e. the viewport minus the footer — is what
+     makes the block read as composed in the usable space rather than floating
+     in a big empty canvas. */
+  justify-content: center;
+}
+
+.closer {
+  display: block;
+  width: clamp(14rem, min(11rem + 8.5vw, 22vh), 20rem);
+  height: auto;
+  aspect-ratio: 220 / 20;
+  margin: clamp(3rem, min(2.4rem + 2vw, 5vh), 4.8rem) auto 0;
+  color: var(--color-border);
+  overflow: visible;
+}
+
+.closer path {
+  fill: none;
+  stroke: currentColor;
+  /* User units: at ~200px rendered this resolves to ~1.4px, matching the
+     hairline weight of the prose divider at its smaller size. */
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+/* Draw-on-load, once. The dash properties exist ONLY inside this block, so
+   under `reduce` the path has no dash at all and simply renders finished.
+   232 >= the path's measured length of 230.09 user units, and dash lengths are
+   in viewBox units, so this holds at any rendered width. */
+@media (prefers-reduced-motion: no-preference) {
+  .closer path {
+    stroke-dasharray: 232;
+    stroke-dashoffset: 232;
+    animation: draw-squiggle 520ms var(--ease) 275ms forwards;
+  }
+}
+
+@keyframes draw-squiggle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

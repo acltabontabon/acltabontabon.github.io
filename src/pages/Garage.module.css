@@ -1,0 +1,119 @@
+/* The showcase needs more room than the site's 560px reading column, so this
+   page breaks out to its own editorial canvas. Everything inside stays on one
+   grid; nothing is placed by hand. */
+.breakout {
+  width: min(1240px, 100vw - 2 * var(--space-4));
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: var(--space-6);
+}
+
+/* Where the centered personal header ends and the left-aligned editorial
+   grid begins — whitespace only, no rule. The gap here is deliberately
+   tighter than the gap below the catalogue line, so the rhythm reads as one
+   composition opening up toward the projects rather than two stacked
+   sections. */
+/* Deliberately lopsided: a lot of air above the statement to break from the
+   centred identity block, and very little below it, so the statement binds
+   downward to the catalogue rail instead of floating between the two. */
+.intro {
+  padding: calc(var(--space-6) + var(--space-3)) 0 var(--space-4);
+}
+
+/* The opening runs on the same two columns as the covers below it, so the
+   statement, the voice line and the project grid all hang off one grid
+   rather than reading as stacked, unrelated blocks. */
+.opening {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.statement {
+  margin: 0;
+}
+
+/* deliberately the same size as a project title but at thin weight — the
+   statement carries the page, the projects stay the solid objects on it */
+.loud {
+  display: block;
+  font-size: 3.3rem;
+  font-weight: var(--weight-thin);
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  color: var(--color-heading);
+}
+
+.aside {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: 1.9rem;
+  font-weight: var(--weight-thin);
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+.colophon {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  opacity: 0.6;
+}
+
+/* the quiet catalogue line that makes this read as a released set, and the
+   rail the eye follows from the statement down into the projects */
+.catalogue {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  opacity: 0.65;
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.covers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 1000px) {
+  .covers,
+  .opening {
+    /* a quiet editorial imbalance instead of a rigid 50/50 split — ~55/45 */
+    grid-template-columns: 1.22fr 1fr;
+    gap: var(--space-5);
+  }
+  /* drops the voice line onto the statement's last baseline, and pins it to
+     the right margin so it stacks with the year range on the rail below */
+  .opening {
+    align-items: end;
+  }
+  .colophon {
+    padding-bottom: 3px;
+    text-align: right;
+  }
+}
+
+@media (max-width: 620px) {
+  .loud {
+    font-size: 2.6rem;
+  }
+  .aside {
+    font-size: 1.7rem;
+  }
+}

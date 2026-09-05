@@ -1,0 +1,12 @@
+.squiggle {
+  display: block;
+  width: 100%;
+  height: 6px;
+  overflow: visible;
+}
+.squiggle path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}

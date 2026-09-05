@@ -1,0 +1,625 @@
+/* ---------------------------------------------------------------------------
+   The typography system for every pre-rendered markdown body on the site.
+   The h1 lives in the page header, so bodies start at h2.
+
+   Layout knobs the caller may set (see blog/BlogArticle.module.css):
+     --prose-measure  width of the reading column       (default: full width)
+     --prose-wide     width media is allowed to occupy  (default: the measure)
+
+   Left at their defaults both side tracks collapse to zero and this behaves as
+   a plain single-column block, so callers that don't opt in are unaffected.
+
+   NOTE: this is a grid container, so child margins do NOT collapse. Every gap
+   below is the literal number, and adjacent margins add.
+--------------------------------------------------------------------------- */
+.prose {
+  /* Resolved here rather than defaulted on .prose itself: a custom property
+     declared on an element beats the one it would inherit, so defaulting
+     --prose-measure here would shadow whatever the caller set. */
+  --_measure: min(100%, var(--prose-measure, 100%));
+  --_wide: min(100%, var(--prose-wide, var(--prose-measure, 100%)));
+  --_bleed: max(0px, calc((var(--_wide) - var(--_measure)) / 2));
+
+  position: relative;
+  /* a stacking context, so an ambient layer at z-index -1 sits behind the words
+     but still above the page's own background and grain */
+  z-index: 0;
+
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(0, 1fr)
+    [wide-start] var(--_bleed)
+    [content-start] var(--_measure) [content-end]
+    var(--_bleed) [wide-end]
+    minmax(0, 1fr) [full-end];
+  /* The base vertical rhythm. A grid container doesn't collapse its children's
+     margins, so spacing block elements with margins made every gap the SUM of
+     two values — and left ornaments like the divider with more space above than
+     below. row-gap is uniform and symmetric; anything that wants more than the
+     base adds a margin on both sides. */
+  row-gap: 1.45em;
+
+  font-size: 1.85rem;
+  line-height: 1.72;
+  color: var(--color-text);
+}
+
+.prose > * {
+  grid-column: content;
+  min-width: 0; /* long code lines and wide tables shrink instead of overflowing */
+  margin-block: 0;
+}
+
+.prose > :global(figure.media),
+.prose > :global(figure[data-rehype-pretty-code-figure]),
+.prose > :global(table) {
+  grid-column: wide;
+}
+
+/* --- paragraphs ---------------------------------------------------------- */
+
+.prose > :global(p) {
+  text-wrap: pretty;
+}
+
+.prose :global(strong) {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+/* --- headings ------------------------------------------------------------
+   Generous space above, tight space below: the heading binds to the text it
+   introduces instead of floating halfway between two blocks. */
+
+.prose > :global(h2) {
+  margin: var(--space-5) 0 0;
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.prose > :global(h3) {
+  margin: var(--space-4) 0 0;
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+.prose > :global(h4) {
+  margin: var(--space-3) 0 0;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.prose > :global(h2:first-child),
+.prose > :global(h3:first-child) {
+  margin-top: 0;
+}
+
+/* A set piece already owns the space below it. A heading that follows one
+   shouldn't stack its own margin on top of that, or a divider ends up with
+   noticeably more air beneath it than above. */
+.prose > :global(:is(figure, blockquote, table, .prose-divider) + :is(h2, h3, h4, .prose-divider)) {
+  margin-top: 0;
+}
+
+/* --- links ---------------------------------------------------------------
+   The Garage underline-draw gesture, expressed as a decoration rather than a
+   background gradient: prose links wrap across lines, and a gradient underline
+   only paints the last one. Animating the decoration colour keeps the same
+   "the line arrives on hover" feel while staying correct on every line. */
+
+.prose :global(a) {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: rgba(var(--color-accent-rgb), 0.35);
+  transition: text-decoration-color 0.2s var(--ease);
+}
+
+.prose :global(a:hover),
+.prose :global(a:focus-visible) {
+  text-decoration-color: var(--color-accent);
+}
+
+/* --- lists --------------------------------------------------------------- */
+
+.prose > :global(ul),
+.prose > :global(ol) {
+  padding-left: 1.5em;
+}
+
+.prose :global(li) {
+  margin-bottom: 0.45em;
+  padding-left: 0.15em;
+}
+
+.prose :global(li:last-child) {
+  margin-bottom: 0;
+}
+
+.prose :global(li > ul),
+.prose :global(li > ol) {
+  margin: 0.45em 0 0;
+  padding-left: 1.35em;
+}
+
+.prose :global(li > p) {
+  margin: 0 0 0.6em;
+}
+
+/* the one place purple shows up in body copy — a marker, not a highlight */
+.prose :global(li)::marker {
+  color: rgba(var(--color-accent-rgb), 0.55);
+}
+
+.prose > :global(ol) {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- blockquote ----------------------------------------------------------
+   An editorial aside, not a card: no background, no radius, no quote glyph.
+   A 2px accent rule that fades out down the block, and type stepped up to
+   heading colour at thin weight so it reads as a lift out of the page. */
+
+.prose > :global(blockquote) {
+  position: relative;
+  margin: var(--space-3) 0;
+  padding-left: var(--space-4);
+  border: 0;
+  color: var(--color-heading);
+  font-size: 1.9rem;
+  font-weight: var(--weight-thin);
+  line-height: 1.55;
+  letter-spacing: -0.008em;
+}
+
+.prose > :global(blockquote)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  bottom: 0.25em;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-accent), rgba(var(--color-accent-rgb), 0.15));
+}
+
+.prose :global(blockquote p) {
+  margin: 0 0 0.7em;
+}
+
+.prose :global(blockquote p:last-child) {
+  margin-bottom: 0;
+}
+
+.prose :global(blockquote a) {
+  color: inherit;
+  text-decoration-color: rgba(var(--color-accent-rgb), 0.5);
+}
+
+/* --- figures and media ---------------------------------------------------
+   An artifact pulled out mid-story, not a block dropped into the page.
+
+   Everything shares the prose column's left edge — image, mark and caption —
+   so the reading edge never moves and the media reads as *placed* rather than
+   centred by a renderer. A landscape photograph is the only thing allowed to
+   break out, and it grows rightward into the margin: one repeatable rule, no
+   alternating sides.
+
+   Scale comes from the file's own dimensions in scripts/markdown.mjs. */
+
+.prose > :global(figure.media) {
+  display: grid;
+  justify-items: start;
+  margin: var(--space-3) 0;
+}
+
+/* text's left edge → page's right edge: ~1.15x the reading width */
+.prose > :global(figure.media[data-media="wide"]) {
+  grid-column: content-start / wide-end;
+}
+
+.prose > :global(figure.media[data-media="column"]),
+.prose > :global(figure.media[data-media="portrait"]),
+.prose > :global(figure.media[data-media="inset"]) {
+  grid-column: content;
+}
+
+
+/* The image and its mark are sized by the same expression, so the drawn line
+   always spans exactly the picture — never the column it sits in. Capped at the
+   file's own width, so nothing is ever scaled up. */
+.prose :global(figure.media img),
+.prose :global(figure.media .media-mark) {
+  width: min(100%, calc(var(--iw, 9999) * 1px));
+}
+
+.prose :global(figure.media img) {
+  height: auto;
+  border: 1px solid var(--color-border);
+}
+
+/* Media that fills the column reads as left aligned because its edge *is* the
+   text edge. Something much narrower doesn't — a 200px GIF held to the left
+   just looks stranded — so small media centres instead. */
+.prose > :global(figure.media[data-media="inset"]) :global(img),
+.prose > :global(figure.media[data-media="inset"]) :global(.media-mark) {
+  margin-inline: auto;
+}
+
+/* bounded by height instead of width — a tall photo at the full column width
+   would take over the page */
+.prose :global(figure.media[data-media="portrait"] img) {
+  width: auto;
+  max-width: 100%;
+  max-height: min(70vh, 560px);
+}
+
+/* a portrait is bounded by height, so its rendered width isn't known to CSS —
+   the mark falls back to the column rather than guessing */
+.prose :global(figure.media[data-media="portrait"] .media-mark) {
+  width: 100%;
+}
+
+/* --- tone -----------------------------------------------------------------
+   `#ambient+soft`, `#ambient+mono`, `#wide+mono`, or both together.
+
+   `soft` multiplies into whatever ceiling is in play — an opacity() filter
+   composes with the layer's own opacity, so one declaration covers both
+   themes and every breakpoint without restating a single number. */
+
+.prose > :global(figure.media[data-tone~="soft"]) {
+  --ambient-damp: opacity(0.6);
+}
+
+.prose > :global(figure.media[data-media="ambient"][data-tone~="mono"]) {
+  --ambient-tone: grayscale(1);
+}
+
+.prose :global(figure.media[data-tone~="mono"]:not([data-media="ambient"]) img) {
+  filter: grayscale(1);
+}
+
+/* The one media signature: the site's hand-drawn divider stroke, stretched the
+   width of the image so the picture sits *on* a drawn line instead of inside a
+   box. It's the same path the `---` dividers use, so nothing new was invented —
+   and it's the line the caption then hangs from. */
+.prose :global(figure.media .media-mark) {
+  display: block;
+  height: 11px;
+  margin-top: 7px;
+  color: var(--color-accent);
+  opacity: 0.55;
+  overflow: visible;
+}
+
+.prose :global(figure.media .media-mark path) {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  /* the squiggle is stretched horizontally; without this the stroke stretches
+     with it and the line goes lumpy */
+  vector-effect: non-scaling-stroke;
+}
+
+
+/* back on the prose column, left aligned — a note under the artifact rather
+   than a second centred block */
+.prose :global(figcaption) {
+  margin-top: 6px;
+  max-width: var(--_measure);
+  color: var(--color-text);
+  font-size: 1.3rem;
+  line-height: 1.5;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+/* --- ambient media -------------------------------------------------------
+   Opted into with `![alt](src#ambient)`. The photograph stops being a block in
+   the article and becomes a layer the section reads on top of: it takes no room
+   in the flow, bleeds well past the prose column, dissolves at every edge, and
+   surfaces and sinks as the reader scrolls through it.
+
+   Everything about it is bounded so the writing always wins — a hard opacity
+   ceiling, a blur, and a mask that never lets a rectangle edge appear. */
+
+.prose > :global(figure.media[data-media="ambient"]) {
+  --ambient-rise: 420px;
+  --ambient-height: 940px;
+  /* The four numbers that tune this effect. --ambient-max is the ceiling the
+     scroll reveal animates up to; --ambient-static is the flat value used when
+     the visitor prefers reduced motion. Light-theme and mobile overrides sit
+     further down. Nudge these first if the photo reads too strong or too shy. */
+  --ambient-max: 0.24;
+  --ambient-static: 0.14;
+
+  grid-column: full;
+  position: relative;
+  /* no height of its own: the layer is positioned out of flow, so the prose
+     rhythm is untouched and the photo lives *behind* the paragraphs */
+  height: 0;
+  margin: 0;
+}
+
+/* An opening ambient image has nothing above it to surface over — rising the
+   full amount would put the photograph behind the title and tags. It leans
+   downward over the first paragraphs instead, clearing the header rule. */
+.prose > :global(figure.media[data-media="ambient"]:first-child) {
+  --ambient-rise: 40px;
+  --ambient-height: 760px;
+}
+
+/* A trailing ambient image has nothing below it to surface over, so it leans
+   upward into the prose instead of hanging past the end of the article and
+   adding empty scroll space under the footer. */
+.prose > :global(figure.media[data-media="ambient"]:last-child) {
+  --ambient-rise: 560px;
+  --ambient-height: 640px;
+}
+
+.prose :global(figure.media[data-media="ambient"] .ambient) {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  top: calc(var(--ambient-rise) * -1);
+  width: min(1240px, 100vw - 2 * var(--space-4));
+  height: var(--ambient-height);
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.prose :global(figure.media[data-media="ambient"] img) {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+  /* the group sits high in this frame — keep faces in the crop */
+  object-position: 50% 38%;
+  filter: blur(3px) var(--ambient-tone, saturate(0.85)) contrast(0.92)
+    var(--ambient-damp, opacity(1));
+  /* every edge dissolves, so no boundary is ever perceivable */
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 26%, #000 72%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 20%, #000 80%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, #000 26%, #000 72%, transparent 100%),
+    linear-gradient(to right, transparent 0%, #000 20%, #000 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
+}
+
+/* a photograph reads further on a near-black page before it competes, so the
+   dark ceiling is the default and light pulls it back */
+:global(html[data-theme="light"]) .prose > :global(figure.media[data-media="ambient"]) {
+  --ambient-max: 0.12;
+  --ambient-static: 0.07;
+}
+
+:global(html[data-theme="light"]) .prose :global(figure.media[data-media="ambient"] img) {
+  filter: blur(4px) var(--ambient-tone, saturate(0.75)) contrast(0.94)
+    var(--ambient-damp, opacity(1));
+}
+
+/* The reveal itself. Scroll-driven where the browser has it — no JS, nothing
+   running per scroll event. BlogArticle falls back to IntersectionObserver
+   where it doesn't. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .prose :global(figure.media[data-media="ambient"] .ambient) {
+      animation: ambient-surface linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+
+  /* fallback path: the observer adds this class */
+  .prose :global(figure.media[data-media="ambient"] .ambient.is-present) {
+    opacity: var(--ambient-max);
+    transition: opacity 1.2s var(--ease);
+  }
+}
+
+@keyframes ambient-surface {
+  0% {
+    opacity: 0;
+  }
+  34%,
+  66% {
+    opacity: var(--ambient-max);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* No scroll dependency at all — the memory is simply there, quieter. */
+@media (prefers-reduced-motion: reduce) {
+  .prose :global(figure.media[data-media="ambient"] .ambient) {
+    opacity: var(--ambient-static);
+  }
+}
+
+@media (max-width: 720px) {
+  .prose > :global(figure.media[data-media="ambient"]) {
+    --ambient-rise: 260px;
+    --ambient-height: 620px;
+    /* narrower column, less room to lose contrast in */
+    --ambient-max: 0.18;
+    --ambient-static: 0.11;
+  }
+
+  .prose > :global(figure.media[data-media="ambient"]:first-child) {
+    --ambient-rise: 24px;
+    --ambient-height: 480px;
+  }
+
+  .prose > :global(figure.media[data-media="ambient"]:last-child) {
+    --ambient-rise: 360px;
+    --ambient-height: 420px;
+  }
+
+  .prose :global(figure.media[data-media="ambient"] .ambient) {
+    width: 100%;
+  }
+
+  .prose :global(figure.media[data-media="ambient"] img) {
+    /* less extreme crop on a narrow viewport */
+    object-position: 50% 45%;
+  }
+}
+
+@media (max-width: 720px) {
+  :global(html[data-theme="light"]) .prose > :global(figure.media[data-media="ambient"]) {
+    --ambient-max: 0.09;
+    --ambient-static: 0.06;
+  }
+}
+
+/* --- code ---------------------------------------------------------------- */
+
+.prose :global(:not(pre) > code) {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  padding: 0.12em 0.36em;
+  border-radius: 3px;
+  font-size: 0.87em;
+  word-break: break-word;
+}
+
+/* rehype-pretty-code wraps every block in a <figure>; without this it keeps the
+   browser default margin: 1em 40px. */
+.prose > :global(figure[data-rehype-pretty-code-figure]) {
+  margin: var(--space-3) 0;
+}
+
+.prose :global(figcaption[data-rehype-pretty-code-title]) {
+  margin: 0 0 -1px;
+  padding: 0.5em 1em;
+  max-width: none;
+  border: 1px solid var(--color-border);
+  border-bottom: 0;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+/* square, with one accent edge — the poster idiom from the Garage covers */
+.prose :global(pre) {
+  margin: 0;
+  padding: var(--space-3) 0;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-top: 2px solid rgba(var(--color-accent-rgb), 0.45);
+  background: var(--color-surface-raised);
+  color: var(--color-heading);
+  font-size: 1.4rem;
+  line-height: 1.65;
+  tab-size: 2;
+}
+
+.prose :global(pre code) {
+  display: grid; /* so each data-line span is a full-width row */
+  padding: 0;
+  background: none;
+  font-size: inherit;
+}
+
+.prose :global(pre code span[data-line]) {
+  padding: 0 var(--space-3);
+}
+
+.prose :global(pre code [data-highlighted-line]) {
+  background: var(--color-accent-soft);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+/* rehype-pretty-code's dual-theme output carries both colours on every token;
+   the page picks one. Replaces the old `filter: invert(1) hue-rotate(180deg)`,
+   which inverted the border, the background and anything else in the block. */
+.prose :global(pre code span) {
+  color: var(--shiki-dark, inherit);
+}
+
+/* --- rules and tables ---------------------------------------------------- */
+
+.prose > :global(.prose-divider) {
+  margin: var(--space-4) auto;
+}
+
+.prose > :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-3) 0;
+  font-size: 1.5rem;
+}
+
+.prose :global(th),
+.prose :global(td) {
+  text-align: left;
+  padding: var(--space-2) var(--space-3) var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prose :global(th) {
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Bright media glares against a near-black page — a white-background diagram
+   worst of all. Compositing it slightly toward the surface takes the edge off
+   the whites without touching legibility or dulling a photograph. */
+.prose :global(figure.media img) {
+  opacity: 0.9;
+}
+
+:global(html[data-theme="light"]) .prose :global(pre code span) {
+  color: var(--shiki-light, inherit);
+}
+
+:global(html[data-theme="light"]) .prose :global(figure.media img) {
+  opacity: 1;
+}
+
+@media (max-width: 620px) {
+  .prose {
+    font-size: 1.7rem;
+    line-height: 1.68;
+  }
+
+  .prose > :global(h2) {
+    margin-top: var(--space-4);
+    font-size: 2.1rem;
+  }
+
+  .prose > :global(h3) {
+    font-size: 1.8rem;
+  }
+
+  .prose > :global(blockquote) {
+    font-size: 1.75rem;
+  }
+
+  .prose > :global(.prose-divider) {
+    margin: var(--space-3) auto;
+  }
+
+  .prose > :global(table) {
+    display: block;
+    overflow-x: auto;
+  }
+}

@@ -1,0 +1,12 @@
+.section {
+  padding-top: var(--space-6);
+}
+
+.prose {
+  font-size: 1.6rem;
+  line-height: 1.8;
+}
+
+.prose p {
+  margin-bottom: var(--space-4);
+}

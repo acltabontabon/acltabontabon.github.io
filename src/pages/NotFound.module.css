@@ -1,0 +1,21 @@
+.section {
+  padding-top: var(--space-header);
+  text-align: center;
+}
+
+.illustration {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto var(--space-4);
+  color: var(--color-border);
+}
+
+.message {
+  color: var(--color-text);
+  font-weight: var(--weight-thin);
+  margin-bottom: var(--space-4);
+}
+
+.home {
+  color: var(--color-accent);
+}

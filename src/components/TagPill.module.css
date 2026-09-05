@@ -1,0 +1,47 @@
+.pill {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  line-height: normal;
+  transition: transform 0.15s var(--ease);
+}
+
+.pill:hover,
+.pill:focus-visible {
+  transform: translateY(-1px);
+}
+
+.quiet {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  opacity: 0.7;
+  transition:
+    color 0.2s var(--ease),
+    opacity 0.2s var(--ease);
+}
+
+.quiet:hover,
+.quiet:focus-visible {
+  color: var(--color-accent);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill,
+  .quiet {
+    transition: none;
+  }
+
+  .pill:hover,
+  .pill:focus-visible {
+    transform: none;
+  }
+}

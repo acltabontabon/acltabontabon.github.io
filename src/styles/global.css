@@ -1,0 +1,167 @@
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1.6rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 var(--space-3);
+}
+
+h1 {
+  font-size: 3rem;
+  letter-spacing: -1px;
+}
+h2 {
+  font-size: 2.2rem;
+}
+h3 {
+  font-size: 1.8rem;
+}
+
+p {
+  margin: 0 0 var(--space-3);
+}
+
+a {
+  color: var(--color-accent);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul,
+ol {
+  padding-left: 1.4em;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* visible, deliberate focus ring everywhere — no invisible :focus-visible: none anywhere */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* A barely-there paper grain over the whole site. The turbulence is baked into
+   a background *image*, not a live CSS filter, so the browser rasterises one
+   140x140 tile at decode and then just repeats a bitmap — no per-frame or
+   per-scroll cost. `stitchTiles` hides the seams; `fixed` keeps it off the
+   scroll path. ~390 bytes. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+.wrapper {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 var(--space-4) var(--space-6);
+}
+
+/* Homepage only: a full-height column, so the composition can centre itself
+   (via <main>'s flex:1) and the footer sits at the bottom of the viewport
+   instead of directly under the content. `svh` avoids the mobile URL-bar jump;
+   the `vh` line above it is the fallback for older engines. */
+.wrapper--home {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.prose-divider {
+  display: block;
+  width: 140px;
+  height: 16px;
+  margin: var(--space-6) auto;
+  color: var(--color-border);
+  overflow: visible;
+}
+.prose-divider path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-in {
+    animation: fade-in-down 0.6s var(--ease) 0.2s both;
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll-reveal utility (see src/components/Reveal.tsx) */
+.reveal {
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+.reveal:not(.revealed) {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+/* Project cover artwork animates off `.revealed` from its own stylesheet —
+   this only has to guarantee the wrapper itself never moves. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

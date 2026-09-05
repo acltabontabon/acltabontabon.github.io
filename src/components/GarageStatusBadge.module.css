@@ -1,0 +1,56 @@
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 2px 9px;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transform: rotate(-2deg);
+  margin-bottom: var(--space-2);
+}
+
+.led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .led {
+    animation: blink 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.stable {
+  color: #4ade80;
+}
+:global(html[data-theme="light"]) .stable {
+  color: #1e7a1e;
+}
+.alpha {
+  color: var(--color-accent);
+}
+.wip {
+  color: var(--color-accent);
+}
+.archived {
+  color: var(--color-text-strong);
+}

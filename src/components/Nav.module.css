@@ -1,0 +1,56 @@
+/* --nav-* are theming hooks: the homepage (HeaderAvatar.module.css .headerHome)
+   sets them to scale the nav with its larger composition. Every fallback here
+   is the value interior pages have always used, and nothing between <body> and
+   an interior <nav> defines them — so those pages render unchanged. */
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--nav-gap, var(--space-4));
+  margin: var(--nav-mt, var(--space-6)) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--nav-font-size, 1.5rem);
+}
+
+/* Interior pages sit the nav closer to the identity above it — the homepage
+   needs the nav to clear the social row, an interior page doesn't. */
+.navCompact {
+  margin-top: var(--space-4);
+}
+
+.link {
+  position: relative;
+  color: var(--color-text-strong);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-1);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--color-accent);
+}
+
+.underline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--nav-underline-drop, -4px);
+  color: var(--color-accent);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition:
+    opacity 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+
+.link:hover .underline,
+.link:focus-visible .underline,
+.linkActive .underline {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.linkActive {
+  color: var(--color-accent);
+  font-weight: 700;
+}

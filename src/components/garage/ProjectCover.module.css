@@ -1,0 +1,238 @@
+.wrap {
+  display: flex;
+  min-width: 0;
+}
+
+@media (min-width: 1000px) {
+  .wide {
+    grid-column: span 2;
+  }
+}
+
+/* A poster, not a card: one heavy accent rule at the top, hairlines elsewhere,
+   square corners, and a tint that comes from the project's own colour. */
+.cover {
+  --cover-pad: 28px;
+  --project-accent: var(--pa-dark, var(--color-accent));
+  --project-accent-rgb: var(--pa-dark-rgb, var(--color-accent-rgb));
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--color-border);
+  border-top: 2px solid var(--project-accent);
+  background:
+    linear-gradient(to bottom, rgba(var(--project-accent-rgb), 0.05), transparent 46%),
+    var(--color-surface);
+  transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+:global(html[data-theme="light"]) .cover {
+  --project-accent: var(--pa-light, var(--color-accent));
+  --project-accent-rgb: var(--pa-light-rgb, var(--color-accent-rgb));
+}
+
+.cover:hover,
+.cover:focus-within {
+  border-color: rgba(var(--project-accent-rgb), 0.35);
+}
+
+/* The title link is stretched over the whole poster, so the poster — not the
+   few words of the title — is what shows focus. The Source link keeps the
+   site's normal ring. */
+.cover:has(.stretch:focus-visible) {
+  outline: 2px solid var(--project-accent);
+  outline-offset: 3px;
+}
+.stretch:focus-visible {
+  outline: none;
+}
+
+.body {
+  padding: var(--space-4) var(--cover-pad) 0;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.release {
+  color: var(--project-accent);
+  font-variant-numeric: tabular-nums;
+}
+.slash {
+  color: var(--color-border);
+}
+.status {
+  color: var(--color-text);
+}
+
+/* the release slug sits at the far end of the catalogue line */
+.version {
+  margin-left: auto;
+  color: var(--color-text);
+  opacity: 0.6;
+  text-transform: none;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.name {
+  margin: 0;
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  color: var(--color-heading);
+}
+
+.name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* stretches the title link over the whole poster so anywhere is clickable,
+   while keeping exactly one tab stop for the primary destination */
+.stretch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hook {
+  margin: var(--space-2) 0 0;
+  max-width: 20ch;
+  font-size: 2.2rem;
+  font-weight: var(--weight-thin);
+  line-height: 1.24;
+  letter-spacing: -0.012em;
+  color: var(--color-heading);
+  text-wrap: balance;
+}
+
+.blurb {
+  margin: var(--space-3) 0 0;
+  max-width: 44ch;
+  font-size: 1.5rem;
+  font-weight: var(--weight-thin);
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+.art {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: var(--space-3);
+  overflow: hidden;
+}
+
+/* The navigation layer, deliberately set apart from the artwork above it: no
+   rule, no bar, and pushed to the right so it never lines up with the
+   illustration's own data on the left (the legend, the figures). Those belong
+   to the drawing; these belong to the catalogue. */
+.foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--cover-pad) var(--space-4);
+  font-size: 1.4rem;
+}
+
+.cover[data-rhythm="open"] .art {
+  margin-top: var(--space-2);
+}
+
+.primaryAction {
+  color: var(--project-accent);
+  font-weight: 500;
+  /* the rule draws itself under the label on hover, same gesture as the
+     index rows below */
+  background-image: linear-gradient(var(--project-accent), var(--project-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.25s var(--ease);
+}
+
+.cover:hover .primaryAction,
+.cover:focus-within .primaryAction {
+  background-size: 100% 1px;
+}
+
+/* the same connective slash the eyebrow and the index rows already use */
+.sep {
+  color: var(--color-border);
+}
+
+.source {
+  position: relative;
+  z-index: 2;
+  color: var(--color-text);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.source:hover,
+.source:focus-visible {
+  opacity: 1;
+  color: var(--color-heading);
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.2s var(--ease);
+}
+
+.cover:hover .primaryAction .arrow,
+.cover:focus-within .primaryAction .arrow {
+  transform: translateX(3px);
+}
+
+.source:hover .arrow,
+.source:focus-visible .arrow {
+  transform: translateX(2px);
+}
+
+@media (max-width: 620px) {
+  .cover {
+    --cover-pad: 20px;
+    min-height: 0;
+  }
+  .name {
+    font-size: 2.6rem;
+  }
+  .hook {
+    font-size: 1.9rem;
+    max-width: 24ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover,
+  .primaryAction,
+  .source,
+  .arrow {
+    transition: none;
+  }
+  .cover:hover .primaryAction .arrow,
+  .cover:focus-within .primaryAction .arrow,
+  .source:hover .arrow,
+  .source:focus-visible .arrow {
+    transform: none;
+  }
+}

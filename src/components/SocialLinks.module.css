@@ -1,0 +1,43 @@
+.list {
+  display: flex;
+  gap: var(--social-gap, var(--space-2));
+  justify-content: center;
+  list-style: none;
+  margin: var(--social-mt, var(--space-4)) 0 0;
+  padding: 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--social-box, 36px);
+  height: var(--social-box, 36px);
+  color: var(--color-text-strong);
+  opacity: 0.78;
+  transition:
+    color 0.15s var(--ease),
+    opacity 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+
+/* Sizing the icons here rather than in icons.tsx — CSS beats the hard-coded
+   width/height presentation attributes on the SVGs. */
+.link svg {
+  width: var(--social-icon, 18px);
+  height: var(--social-icon, 18px);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--color-accent);
+  opacity: 1;
+  transform: translateY(-2px) rotate(-3deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link:hover,
+  .link:focus-visible {
+    transform: none;
+  }
+}

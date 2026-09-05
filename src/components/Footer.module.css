@@ -1,0 +1,12 @@
+.footer {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+  font-size: 1.3rem;
+  color: var(--color-text-strong);
+}
+
+.link {
+  color: inherit;
+}

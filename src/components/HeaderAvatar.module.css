@@ -1,0 +1,170 @@
+.header {
+  text-align: center;
+}
+
+.headerCompact {
+  padding-top: var(--space-4);
+}
+
+/* ---------------------------------------------------------------------------
+   Homepage composition.
+
+   Every size follows the same shape: clamp(floor, min(<width term>, <height
+   term>), ceiling). The width term grows the composition on a big desktop; the
+   `min()` height term stops a wide-but-short laptop from being crowded out;
+   the clamp floor keeps it sane on a phone. At the ceiling this lands ~25-30%
+   larger than the old fixed sizes without becoming a hero.
+
+   The --social-* / --nav-* values are theming hooks read by SocialLinks and Nav
+   (both of which keep their old values as var() fallbacks, so interior pages —
+   which never set these — are untouched).
+--------------------------------------------------------------------------- */
+.headerHome {
+  --avatar: clamp(8.8rem, min(7.6rem + 3.4vw, 13.5vh), 12.4rem);
+  --name-size: clamp(2.2rem, min(1.95rem + 0.75vw, 3.3vh), 3rem);
+  --tagline-size: clamp(1.5rem, min(1.36rem + 0.45vw, 2.2vh), 2rem);
+
+  --gap-name: clamp(1.6rem, min(1.2rem + 1.2vw, 3.2vh), 2.8rem);
+  --gap-tagline: clamp(0.4rem, 0.8vh, 0.8rem);
+  --gap-socials: clamp(2.4rem, min(1.8rem + 1.6vw, 4.2vh), 4rem);
+
+  --social-box: clamp(3.6rem, min(3.2rem + 1.15vw, 4.8vh), 4.4rem);
+  --social-icon: clamp(1.8rem, min(1.6rem + 0.58vw, 2.4vh), 2.2rem);
+  --social-gap: clamp(0.8rem, 1.1vw, 1.6rem);
+  --social-mt: 0;
+
+  --nav-font-size: clamp(1.5rem, min(1.4rem + 0.28vw, 2vh), 1.8rem);
+  --nav-gap: clamp(2.4rem, min(1.8rem + 1.6vw, 4vh), 3.6rem);
+  --nav-mt: clamp(3rem, min(2.4rem + 2.2vw, 5.2vh), 5rem);
+  --nav-underline-drop: -6px;
+}
+
+.avatarLink {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition:
+    transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+
+.headerCompact .avatar {
+  width: 48px;
+  height: 48px;
+}
+
+.avatarLink:hover .avatar,
+.avatarLink:focus-visible .avatar {
+  transform: rotate(-4deg) scale(1.04);
+  box-shadow: 0 8px 20px rgba(var(--color-accent-rgb), 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatarLink:hover .avatar,
+  .avatarLink:focus-visible .avatar {
+    transform: none;
+  }
+}
+
+/* --- homepage avatar: a fixed circular frame the photo drifts inside ------ */
+
+.headerHome .avatarLink {
+  width: var(--avatar);
+  height: var(--avatar);
+  /* the frame clips, so the circle itself never moves */
+  overflow: hidden;
+}
+
+.headerHome .avatar {
+  width: 100%;
+  height: 100%;
+  /* Translate before scaling so --eye-x/--eye-y stay in real pixels. The 1.12
+     overscan guarantees image pixels exist under the full 5px drift even at the
+     smallest (88px) avatar size: (88 + 2 * 5) / 88 = 1.114. */
+  transform: translate(var(--eye-x, 0px), var(--eye-y, 0px)) scale(1.12);
+  transition: none;
+}
+
+/* The pointer-tracking *is* the interaction here — a hover transform on top of
+   it would just fight it. Interior pages keep the tilt. */
+.headerHome .avatarLink:hover .avatar,
+.headerHome .avatarLink:focus-visible .avatar {
+  transform: translate(var(--eye-x, 0px), var(--eye-y, 0px)) scale(1.12);
+  box-shadow: none;
+}
+
+/* colour/weight/line-height are declared here rather than inherited from the
+   global heading rule, so `nameAs="p"` renders identically to `nameAs="h1"`. */
+.name {
+  margin: var(--space-3) 0 var(--space-1);
+  color: var(--color-heading);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.headerCompact .name {
+  font-size: 1.8rem;
+  margin-top: var(--space-2);
+}
+
+.headerHome .name {
+  margin: var(--gap-name) 0 0;
+  font-size: var(--name-size);
+}
+
+.tagline {
+  margin: 0;
+  color: var(--color-text);
+  font-weight: var(--weight-thin);
+  font-size: 1.6rem;
+}
+
+.headerCompact .tagline {
+  font-size: 1.4rem;
+}
+
+.headerHome .tagline {
+  margin-top: var(--gap-tagline);
+  font-size: var(--tagline-size);
+}
+
+/* --- entrance: a short stagger down the composition ----------------------
+   Replaces the blanket `.animate-in` on the homepage only. Explicit delays
+   rather than an inline --i, since the order is fixed. The last element
+   settles at 220 + 380 = 600ms; the closing squiggle finishes drawing at
+   ~795ms. Everything is interactive throughout. */
+@media (prefers-reduced-motion: no-preference) {
+  .headerHome > * {
+    animation: header-enter 380ms var(--ease) both;
+  }
+  .headerHome > :nth-child(2) {
+    animation-delay: 55ms;
+  }
+  .headerHome > :nth-child(3) {
+    animation-delay: 110ms;
+  }
+  .headerHome > :nth-child(4) {
+    animation-delay: 165ms;
+  }
+  .headerHome > :nth-child(5) {
+    animation-delay: 220ms;
+  }
+}
+
+@keyframes header-enter {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

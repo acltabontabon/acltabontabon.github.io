@@ -1,0 +1,158 @@
+/* A reading page needs more air than the site's 560px column. Local width, not
+   a token — this measure has exactly one consumer, and Garage.module.css
+   already sets the precedent for a page owning its own canvas. */
+.article {
+  /* 680px of prose plus the margin a landscape photo breaks out into — the
+     breakout lands at ~1.16x the reading width. */
+  width: min(900px, 100vw - 2 * var(--space-4));
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-6) 0 var(--space-6);
+
+  /* the knobs Prose.module.css reads: text stays at a comfortable measure,
+     media is allowed out to the full canvas */
+  /* 680px at 1.85rem lands ~75 characters a line in this face — Helvetica is
+     narrower than the usual ch-based rule of thumb assumes. */
+  --prose-measure: 680px;
+  --prose-wide: 100%;
+}
+
+/* The header, the rule and the closing furniture all share the prose column, so
+   the title sits on the same left edge as the body text it introduces. Media is
+   the only thing that leaves this column. */
+.header,
+.rule,
+.footer {
+  max-width: var(--prose-measure);
+  margin-inline: auto;
+}
+
+.title {
+  margin: 0;
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.slash {
+  color: var(--color-border);
+}
+
+.standfirst {
+  margin: var(--space-3) 0 0;
+  max-width: 46ch;
+  color: var(--color-text);
+  font-size: 1.9rem;
+  font-weight: var(--weight-thin);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rule {
+  position: relative;
+  height: 1px;
+  margin-block: var(--space-5) var(--space-6);
+  background: var(--color-border);
+}
+
+.rule::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40px;
+  background: var(--color-accent);
+}
+
+.footer {
+  position: relative;
+  /* an ambient layer on the last image reaches past the end of the prose —
+     the closing furniture stays above it */
+  z-index: 1;
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.backLink {
+  display: inline-block;
+  margin-top: var(--space-6);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  opacity: 0.6;
+  transition:
+    color 0.2s var(--ease),
+    opacity 0.2s var(--ease);
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  color: var(--color-accent);
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .article {
+    padding-top: var(--space-5);
+  }
+
+  .title {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .article {
+    padding-top: var(--space-4);
+  }
+
+  .title {
+    font-size: 2.6rem;
+    letter-spacing: -0.025em;
+  }
+
+  .standfirst {
+    max-width: none;
+    font-size: 1.75rem;
+  }
+
+  .rule {
+    margin-block: var(--space-4) var(--space-5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backLink {
+    transition: none;
+  }
+}

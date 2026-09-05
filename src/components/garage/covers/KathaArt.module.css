@@ -1,0 +1,164 @@
+/* The one place on the site that sets type in a serif: this is a page out of
+   a Katha, and it should read as one next to the sans everywhere else. */
+.art {
+  --katha-serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 var(--cover-pad) var(--space-2);
+}
+
+/* max-height keeps the page inside the art well on short cards; with the
+   default preserveAspectRatio it scales down whole rather than clipping. */
+.page {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  overflow: visible;
+}
+
+.chapterMark {
+  fill: var(--project-accent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* fill-opacity, not opacity: these also run an opacity animation, and a
+   resting opacity below 1 would snap back when it finishes. */
+.dateRange {
+  fill: var(--color-text);
+  fill-opacity: 0.65;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  fill: var(--color-heading);
+  font-family: var(--katha-serif);
+  font-size: 26px;
+}
+
+.cap {
+  fill: var(--project-accent);
+  font-family: var(--katha-serif);
+  font-size: 46px;
+}
+
+/* The narrative itself. At rest it's continuous prose — the finished Katha —
+   and only the entrance/hover replay shows where it came from. */
+.line {
+  stroke: var(--color-text);
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0.32;
+  stroke-dasharray: 540 0;
+}
+
+.rule {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.structure {
+  fill: var(--color-text);
+  fill-opacity: 0.6;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+/* Entrance: the chapter heading arrives, the drop cap lands, then each line
+   of prose closes up out of fragments — the tool's actual claim, that the
+   story was already there in the activity. Plays once (gated by .entering,
+   dropped when the sequence finishes; see KathaArt.tsx), then hover/focus
+   replays only the coalescing, since the chapter heading is a static fact of
+   the page and shouldn't re-announce itself on every pass. Fill-mode is
+   deliberately left off: the resting state is the finished page, so the
+   composition is complete even if no animation ever runs. */
+:global(.revealed) .art.entering .chapterMark,
+:global(.revealed) .art.entering .dateRange {
+  animation: fade 0.3s var(--ease) backwards;
+}
+:global(.revealed) .art.entering .title {
+  animation: land 0.28s var(--ease) 0.12s backwards;
+}
+:global(.revealed) .art.entering .cap {
+  animation: land 0.26s var(--ease) 0.3s backwards;
+}
+:global(.revealed) .art.entering .line {
+  animation: coalesce 0.5s var(--ease) backwards;
+  animation-delay: calc(0.42s + var(--n, 0) * 90ms);
+}
+:global(.revealed) .art.entering .rule,
+:global(.revealed) .art.entering .structure {
+  animation: fade 0.3s var(--ease) 1.24s backwards;
+}
+
+@media (hover: hover) {
+  :global(.cover):hover .line {
+    animation: coalesce 0.5s var(--ease) backwards;
+    animation-delay: calc(var(--n, 0) * 80ms);
+  }
+}
+:global(.cover):focus-within .line {
+  animation: coalesce 0.5s var(--ease) backwards;
+  animation-delay: calc(var(--n, 0) * 80ms);
+}
+
+@keyframes coalesce {
+  from {
+    stroke-dasharray: 3 6;
+  }
+  to {
+    stroke-dasharray: 540 0;
+  }
+}
+@keyframes land {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 620px) {
+  .title {
+    font-size: 22px;
+  }
+  .cap {
+    font-size: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.revealed) .art.entering .chapterMark,
+  :global(.revealed) .art.entering .dateRange,
+  :global(.revealed) .art.entering .title,
+  :global(.revealed) .art.entering .cap,
+  :global(.revealed) .art.entering .line,
+  :global(.revealed) .art.entering .rule,
+  :global(.revealed) .art.entering .structure,
+  :global(.cover):hover .line,
+  :global(.cover):focus-within .line {
+    animation: none;
+  }
+}

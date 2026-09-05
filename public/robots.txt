@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://acltabontabon.com/sitemap.xml
