@@ -3,8 +3,8 @@ title: "Draft Canvas"
 hook: "Architecture at meeting speed."
 description: "A local-first whiteboard for developers who suddenly need to explain a system, then get back to the conversation."
 status: stable
-version: "0.3.1"
-date: 2026-09-04
+version: "1.0.0"
+date: 2026-09-12
 featured: true
 tags: [open-source, react, typescript]
 tech: [React, TypeScript, Local-first]
