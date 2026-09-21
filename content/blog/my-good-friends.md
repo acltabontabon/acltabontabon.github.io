@@ -27,7 +27,7 @@ When all jokes were set aside, they did give sound advice and were even kind eno
 opportunities for me to try on. And this is when I realized that life gets easier when you surround
 yourself with the right people.
 
-![My good friends](/images/blog/good-friends.jpg)
+![My good friends](/images/blog/good-friends.jpg#photo)
 
 ---
 

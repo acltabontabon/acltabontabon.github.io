@@ -39,4 +39,7 @@ export interface Entry<Meta> {
 }
 
 export type BlogEntry = Entry<BlogMeta>;
-export type GarageEntry = Entry<GarageMeta>;
+export type GarageEntry = Entry<GarageMeta> & {
+  /** Intrinsic size of `meta.screenshot`, read at build time. */
+  screenshotSize?: { width: number; height: number };
+};

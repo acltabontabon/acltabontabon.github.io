@@ -9,7 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { schemaFor } from "./schema.mjs";
-import { renderMarkdown } from "./markdown.mjs";
+import { intrinsicSize, renderMarkdown } from "./markdown.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CONTENT_DIR = path.join(ROOT, "content");
@@ -44,6 +44,12 @@ async function buildType(type) {
 
     const html = content.trim() ? await renderMarkdown(content) : "";
     const entry = { slug, meta, html, readingTime: readingTime(content) };
+    // Pages that show a garage screenshot outside the markdown body reserve
+    // its box from these, so it never shifts the layout as it loads.
+    if (meta.screenshot) {
+      const size = intrinsicSize(meta.screenshot);
+      if (size) entry.screenshotSize = size;
+    }
     fs.writeFileSync(path.join(outDir, `${slug}.json`), JSON.stringify(entry));
     count++;
   }

@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import HeaderAvatar from "@/components/HeaderAvatar";
 import BlogArticle from "@/components/blog/BlogArticle";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import Seo from "@/components/Seo";
@@ -23,14 +22,11 @@ export default function BlogPost() {
         type="article"
       />
       <ReadingProgress />
-      {/* the article's own title takes the <h1> here */}
-      <HeaderAvatar compact nameAs="p" />
       <BlogArticle
         title={entry.meta.title}
         date={entry.meta.date}
         readingTime={entry.readingTime}
         description={entry.meta.description}
-        tags={entry.meta.tags}
         html={entry.html}
         newer={newer}
         older={older}

@@ -24,8 +24,12 @@
   --grain-opacity: 0.042;
   --sketch-opacity: 0.055;
 
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  /* One family, everywhere: Geist for words, Geist Mono for labels, data
+     and code. */
+  --font-sans: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Geist Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-display: var(--font-sans);
+  --font-display-mono: var(--font-mono);
   --weight-thin: 300;
 
   --space-1: 4px;
@@ -44,6 +48,43 @@
   --radius-pill: 20px;
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- the site system (first built for the homepage) -------------------
+     ink: three steps of the heading colour mixed into the surface, so they
+     follow the theme — primary text, descriptions, labels/metadata. */
+  --ink-1: var(--color-heading);
+  --ink-2: color-mix(in srgb, var(--color-heading) 74%, var(--color-surface));
+  --ink-3: color-mix(in srgb, var(--color-heading) 58%, var(--color-surface));
+  --rule: 1px solid var(--color-border);
+
+  --gutter: clamp(1.6rem, 4vw, 6.4rem);
+  --shell-max: 180rem;
+
+  /* type: the oversized display sizes, and the one small mono label size */
+  --t-display: clamp(4.4rem, 5.6vw, 9.6rem);
+  --t-headline: clamp(3.2rem, 3.6vw, 5.6rem);
+  --t-title: clamp(1.8rem, 1.5vw, 2.2rem);
+  --t-body: clamp(1.45rem, 1.05vw, 1.6rem);
+  --t-label: 1.2rem;
+
+  /* widths for the kinds of page the site has */
+  --w-prose: 68ch;
+  --w-index: 104rem;
+}
+
+/* The display size tightens once the page is a single column; titles and
+   body text step up a touch on phones, where they're read at arm's length. */
+@media (max-width: 900px) {
+  :root {
+    --t-display: clamp(4.8rem, 9vw, 7.2rem);
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --t-title: 1.9rem;
+    --t-body: 1.5rem;
+  }
 }
 
 :root[data-theme="light"] {

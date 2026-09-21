@@ -1,29 +1,21 @@
-.section {
-  padding-top: var(--space-6);
-}
-
-.intro {
-  text-align: center;
-  color: var(--color-text);
-  font-weight: var(--weight-thin);
-  margin-bottom: var(--space-5);
-}
-
 .list {
-  margin-top: var(--space-4);
+  max-width: var(--w-index);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule);
 }
 
-.empty {
-  text-align: center;
-  color: var(--color-text-strong);
+.list li {
+  border-bottom: var(--rule);
 }
 
 .tagCloud {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-1);
-  list-style: none;
+  gap: 1rem;
+  max-width: var(--w-index);
+  margin: 0;
   padding: 0;
-  margin-top: var(--space-4);
+  list-style: none;
 }

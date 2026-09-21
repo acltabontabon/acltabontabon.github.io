@@ -1,48 +1,319 @@
-/* The homepage is a composition rather than a document: it fills the viewport
-   (see `.wrapper--home` in global.css) and centres itself inside it. */
-.stage {
-  flex: 1 1 auto;
+/* The homepage: a 1-bit display, then identity + project index. The header,
+   footer, gutters and the type/ink/rule system all come from the shared
+   shell and tokens (Layout, SiteHeader, Footer, tokens.css); what's here is
+   only what's particular to this page. It flows at its natural height — on
+   a typical laptop it happens to fit one screen, but nothing is squeezed to
+   make that true. */
+
+.page {
+  /* the band is the page's main statement; on very short screens it gives a
+     little, never below a size where the eyes still read */
+  --band: clamp(22rem, min(25vw, 40vh), 52rem);
+}
+
+/* =============================================================== display */
+
+.display {
+  position: relative;
+  height: var(--band);
+  margin: 0;
+  padding: 1.2rem;
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+}
+
+/* registration marks at the four corners, like a print proof */
+.corner {
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0 solid var(--ink-3);
+}
+
+.tl {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+.tr {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+.bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+.br {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+.caption,
+.label,
+.num,
+.all {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* hangs just below the frame, inset to the image's edges */
+.caption {
+  position: absolute;
+  inset: calc(100% + 0.8rem) 1.2rem auto;
   display: flex;
-  flex-direction: column;
-  /* Centring inside <main> — i.e. the viewport minus the footer — is what
-     makes the block read as composed in the usable space rather than floating
-     in a big empty canvas. */
-  justify-content: center;
+  justify-content: space-between;
+  gap: 2rem;
+  white-space: nowrap;
 }
 
-.closer {
-  display: block;
-  width: clamp(14rem, min(11rem + 8.5vw, 22vh), 20rem);
-  height: auto;
-  aspect-ratio: 220 / 20;
-  margin: clamp(3rem, min(2.4rem + 2vw, 5vh), 4.8rem) auto 0;
-  color: var(--color-border);
-  overflow: visible;
+/* ====================================================== identity + index */
+
+/* Close enough to the portrait to read as one composition, with room for
+   the caption and a clear pause before the text begins. */
+.lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(4.8rem, 5vw, 6.4rem) clamp(4rem, 6vw, 10rem);
+  align-items: start;
+  margin-top: clamp(6.4rem, 6vw, 8.8rem);
 }
 
-.closer path {
-  fill: none;
-  stroke: currentColor;
-  /* User units: at ~200px rendered this resolves to ~1.4px, matching the
-     hairline weight of the prose divider at its smaller size. */
-  stroke-width: 1.6;
-  stroke-linecap: round;
+.label {
+  margin: 0 0 1.2rem;
 }
 
-/* Draw-on-load, once. The dash properties exist ONLY inside this block, so
-   under `reduce` the path has no dash at all and simply renders finished.
-   232 >= the path's measured length of 230.09 user units, and dash lengths are
-   in viewBox units, so this holds at any rendered width. */
-@media (prefers-reduced-motion: no-preference) {
-  .closer path {
-    stroke-dasharray: 232;
-    stroke-dashoffset: 232;
-    animation: draw-squiggle 520ms var(--ease) 275ms forwards;
+/* label → name → bio, as one connected block */
+.name {
+  margin: 0;
+  font-size: var(--t-display);
+  font-weight: 500;
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+  color: var(--ink-1);
+}
+
+.about {
+  max-width: 38ch;
+  margin-top: clamp(1.8rem, 1.8vw, 2.8rem);
+}
+
+.tagline {
+  margin: 0;
+  font-size: var(--t-body);
+  line-height: 1.55;
+  text-wrap: pretty;
+  color: var(--ink-1);
+}
+
+/* ---- index */
+
+.index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule);
+}
+
+.index li {
+  border-bottom: var(--rule);
+}
+
+/* One link per row. Every cell sits on the first line's baseline, so when a
+   description wraps, the number, title and arrow stay level with its first
+   line. */
+.row {
+  display: grid;
+  grid-template-columns: 3.2rem calc(var(--t-title) * 7.6) minmax(0, 1fr) 2rem;
+  align-items: first baseline;
+  gap: 0.4rem 1.6rem;
+  padding-block: clamp(1.3rem, 1.2vw, 1.7rem);
+  color: var(--ink-2);
+  text-decoration: none;
+  outline-offset: 0.4rem;
+}
+
+.num {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-size: var(--t-title);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+}
+
+.hook {
+  font-size: var(--t-body);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.arrow {
+  justify-self: end;
+  color: var(--ink-3);
+}
+
+/* The active row — the one the display is showing, whether by pointer or
+   keyboard — is marked by brightness rather than by dimming everything else:
+   its description comes up to full ink, its arrow lights and leans toward
+   where the link goes, and its rule underneath firms up. The other rows only
+   ease their titles back a step, and stay fully readable. :hover and
+   :focus-visible are here too, so the rows respond before hydration. */
+.index[data-engaged] .row:not([data-active]) .title {
+  color: var(--ink-2);
+}
+
+.row[data-active] .hook,
+.row:focus-visible .hook {
+  color: var(--ink-1);
+}
+
+.row[data-active] .arrow,
+.row:focus-visible .arrow {
+  color: var(--ink-1);
+  transform: translate(0.2rem, -0.2rem);
+}
+
+.index li:has(> .row[data-active]) {
+  border-bottom-color: var(--ink-3);
+}
+
+@media (hover: hover) {
+  .row:hover .hook,
+  .row:hover .arrow {
+    color: var(--ink-1);
+  }
+  .row:hover .arrow {
+    transform: translate(0.2rem, -0.2rem);
   }
 }
 
-@keyframes draw-squiggle {
-  to {
-    stroke-dashoffset: 0;
+.row:focus-visible {
+  outline: 2px solid var(--ink-1);
+  border-radius: 2px;
+}
+
+.all {
+  display: inline-block;
+  margin-top: 2rem;
+  padding-block: 0.4rem;
+  color: var(--ink-1);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink-3);
+}
+
+.all:hover,
+.all:focus-visible {
+  border-color: var(--ink-1);
+}
+
+.all span {
+  display: inline-block;
+}
+
+.all:hover span,
+.all:focus-visible span {
+  transform: translateX(0.3rem);
+}
+
+/* ================================================================ motion */
+
+@media (prefers-reduced-motion: no-preference) {
+  .display {
+    animation: fade 0.8s var(--ease) both;
+  }
+  .lower {
+    animation: rise 0.9s var(--ease) 0.5s both;
+  }
+  .title,
+  .hook,
+  .index li {
+    transition:
+      color 0.16s var(--ease),
+      border-color 0.16s var(--ease);
+  }
+  .arrow {
+    transition:
+      color 0.16s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .all span {
+    transition: transform 0.35s var(--ease);
+  }
+  .all {
+    transition:
+      color 0.25s var(--ease),
+      border-color 0.25s var(--ease);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ============================================================ responsive */
+
+/* Tablets and phones: one column. The band takes a fixed shape so the crop
+   stays deliberate instead of following the viewport height. */
+@media (max-width: 900px) {
+  .display {
+    height: auto;
+  }
+  .screen {
+    aspect-ratio: 16 / 7;
+  }
+  .lower {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: clamp(5.6rem, 9vw, 7.2rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .screen {
+    aspect-ratio: 2 / 1;
+  }
+  /* number · title · arrow on the first line, the description under the
+     title, wrapping as it needs to */
+  .row {
+    grid-template-columns: 2.8rem minmax(0, 1fr) 2rem;
+    grid-template-areas:
+      "num title arrow"
+      ".   hook  .";
+  }
+  .num {
+    grid-area: num;
+  }
+  .title {
+    grid-area: title;
+  }
+  .hook {
+    grid-area: hook;
+  }
+  .arrow {
+    grid-area: arrow;
+  }
+  .caption span:last-child {
+    display: none;
   }
 }

@@ -1,21 +1,16 @@
-.section {
-  padding-top: var(--space-header);
-  text-align: center;
-}
-
-.illustration {
-  width: 140px;
-  height: 140px;
-  margin: 0 auto var(--space-4);
-  color: var(--color-border);
-}
-
-.message {
-  color: var(--color-text);
-  font-weight: var(--weight-thin);
-  margin-bottom: var(--space-4);
-}
-
 .home {
-  color: var(--color-accent);
+  display: inline-block;
+  padding-block: 0.4rem;
+  border-bottom: 1px solid var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-1);
+  text-decoration: none;
+}
+
+.home:hover,
+.home:focus-visible {
+  border-color: var(--ink-1);
 }

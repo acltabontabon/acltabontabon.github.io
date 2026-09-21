@@ -1,119 +1,325 @@
-/* The showcase needs more room than the site's 560px reading column, so this
-   page breaks out to its own editorial canvas. Everything inside stays on one
-   grid; nothing is placed by hand. */
-.breakout {
-  width: min(1240px, 100vw - 2 * var(--space-4));
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  padding-bottom: var(--space-6);
+/* The Garage: an open showcase. Each featured project is a ruled section —
+   text on the left and its screenshot on the right on wide screens, stacked
+   on narrow ones — sized by its content, never to a fixed height.
+   Screenshots keep their own proportions and their own colour; the page
+   around them stays monochrome. Everything else drops to a plain index. */
+
+.projects {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule);
 }
 
-/* Where the centered personal header ends and the left-aligned editorial
-   grid begins — whitespace only, no rule. The gap here is deliberately
-   tighter than the gap below the catalogue line, so the rhythm reads as one
-   composition opening up toward the projects rather than two stacked
-   sections. */
-/* Deliberately lopsided: a lot of air above the statement to break from the
-   centred identity block, and very little below it, so the statement binds
-   downward to the catalogue rail instead of floating between the two. */
-.intro {
-  padding: calc(var(--space-6) + var(--space-3)) 0 var(--space-4);
+.project {
+  border-bottom: var(--rule);
 }
 
-/* The opening runs on the same two columns as the covers below it, so the
-   statement, the voice line and the project grid all hang off one grid
-   rather than reading as stacked, unrelated blocks. */
-.opening {
+.projectInner {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(3.2rem, 5vw, 8rem);
+  align-items: start;
+  padding-block: clamp(3.2rem, 4.4vw, 6.4rem);
 }
 
-.statement {
-  margin: 0;
+/* the first project comes up a little sooner under the introduction's rule */
+.project:first-child .projectInner {
+  padding-top: clamp(3.2rem, 4vw, 5.6rem);
 }
 
-/* deliberately the same size as a project title but at thin weight — the
-   statement carries the page, the projects stay the solid objects on it */
-.loud {
-  display: block;
-  font-size: 3.3rem;
-  font-weight: var(--weight-thin);
-  line-height: 1.14;
-  letter-spacing: -0.025em;
-  color: var(--color-heading);
+/* ---- text column */
+
+.text {
+  display: grid;
+  gap: 1.6rem;
+  align-content: start;
+  min-width: 0;
 }
 
-.aside {
-  display: block;
-  margin-top: var(--space-2);
-  font-size: 1.9rem;
-  font-weight: var(--weight-thin);
-  line-height: 1.4;
-  color: var(--color-text);
-}
-
-.colophon {
-  margin: 0;
+.meta,
+.tech,
+.caption,
+.num,
+.rowTech,
+.othersLabel {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
-  color: var(--color-text);
-  opacity: 0.6;
-}
-
-/* the quiet catalogue line that makes this read as a released set, and the
-   rail the eye follows from the statement down into the projects */
-.catalogue {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin: var(--space-3) 0 0;
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  letter-spacing: 0.16em;
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-text);
-  opacity: 0.65;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
 }
 
-.rule {
-  flex: 1;
-  height: 1px;
-  background: var(--color-border);
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin: 0;
 }
 
-.covers {
+.meta span:first-child {
+  color: var(--ink-2);
+}
+
+/* name + illustration as one heading group: the mark sits on the name's
+   baseline, sized to about its cap height, and drops below the name rather
+   than squeezing it when there isn't room */
+.nameRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1rem 2rem;
+  margin-top: 0.4rem;
+}
+
+.name {
+  margin: 0;
+  font-size: var(--t-headline);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--ink-1);
+}
+
+/* the homepage's pixel illustration, small and dim: a signature, not a
+   second picture competing with the screenshot */
+.mark {
+  color: color-mix(in srgb, var(--color-heading) 42%, var(--color-surface));
+}
+
+.hook {
+  max-width: 30ch;
+  margin: 0.8rem 0 0;
+  font-size: clamp(1.9rem, 1.6vw, 2.3rem);
+  line-height: 1.35;
+  color: var(--ink-1);
+  text-wrap: pretty;
+}
+
+.description {
+  max-width: 52ch;
+  margin: 0;
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1.2rem 2.8rem;
+  margin-top: 1.2rem;
+}
+
+.primary,
+.secondary {
+  display: inline-block;
+  padding-block: 0.6rem;
+  font-size: var(--t-body);
+  text-decoration: none;
+  outline-offset: 0.3rem;
+}
+
+/* primary: full ink, a firm underline; secondary: a step back */
+.primary {
+  color: var(--ink-1);
+  font-weight: 500;
+  border-bottom: 1px solid var(--ink-1);
+}
+
+.secondary {
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--ink-3);
+}
+
+.primary span,
+.secondary span {
+  display: inline-block;
+}
+
+.primary:hover span,
+.primary:focus-visible span,
+.secondary:hover span,
+.secondary:focus-visible span {
+  transform: translate(0.2rem, -0.2rem);
+}
+
+.secondary:hover,
+.secondary:focus-visible {
+  color: var(--ink-1);
+  border-color: var(--ink-1);
+}
+
+/* ---- screenshot */
+
+/* The screenshot is capped by height as well as width, so a tall or roomy
+   capture scales down proportionally instead of setting the section's
+   height; the figure shrinks to the image, so the caption sits right under
+   it and both hang from the column's left edge. Never cropped or filtered. */
+.shot {
+  --max-h: min(42rem, 58vh);
+  justify-self: start;
+  /* the width a capture of this shape has at the height cap — known from its
+     intrinsic size (--ar), so the box is exact before the image loads */
+  width: min(100%, calc(var(--max-h) * var(--ar, 1.6)));
+  margin: 0;
+  min-width: 0;
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: var(--rule);
+  border-radius: 4px;
+  background: var(--color-surface-raised);
+}
+
+.caption {
+  margin-top: 1rem;
+}
+
+/* ---- the index of everything else */
+
+.others {
+  margin-top: clamp(4.8rem, 5vw, 7.2rem);
+}
+
+.othersLabel {
+  margin: 0 0 1.2rem;
+  font-weight: 400;
+}
+
+.index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule);
+}
+
+.index li {
+  border-bottom: var(--rule);
+}
+
+.row {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-4);
+  /* proportional tracks: the name gets the room it needs before wrapping,
+     the description the most, the tech labels a right-aligned share */
+  grid-template-columns: 3.2rem minmax(0, 5fr) minmax(0, 6fr) minmax(0, 3fr) 2rem;
+  align-items: first baseline;
+  gap: 0.4rem 1.6rem;
+  padding-block: clamp(1.3rem, 1.2vw, 1.7rem);
+  color: var(--ink-2);
+  text-decoration: none;
+  outline-offset: 0.4rem;
 }
 
-@media (min-width: 1000px) {
-  .covers,
-  .opening {
-    /* a quiet editorial imbalance instead of a rigid 50/50 split — ~55/45 */
-    grid-template-columns: 1.22fr 1fr;
-    gap: var(--space-5);
+.rowTitle {
+  font-size: var(--t-title);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+}
+
+.rowTech {
+  justify-self: end;
+  text-align: right;
+}
+
+.rowHook {
+  font-size: var(--t-body);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.arrow {
+  justify-self: end;
+  color: var(--ink-3);
+}
+
+a.row:hover .arrow,
+a.row:focus-visible .arrow {
+  color: var(--ink-1);
+  transform: translate(0.2rem, -0.2rem);
+}
+
+a.row:hover .rowHook,
+a.row:focus-visible .rowHook {
+  color: var(--ink-1);
+}
+
+.index li:has(> a.row:hover),
+.index li:has(> a.row:focus-visible) {
+  border-bottom-color: var(--ink-3);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .primary span,
+  .secondary span,
+  .arrow {
+    transition:
+      transform 0.25s var(--ease),
+      color 0.16s var(--ease);
   }
-  /* drops the voice line onto the statement's last baseline, and pins it to
-     the right margin so it stacks with the year range on the rail below */
-  .opening {
-    align-items: end;
-  }
-  .colophon {
-    padding-bottom: 3px;
-    text-align: right;
+  .secondary,
+  .rowHook,
+  .index li {
+    transition:
+      color 0.16s var(--ease),
+      border-color 0.16s var(--ease);
   }
 }
 
-@media (max-width: 620px) {
-  .loud {
-    font-size: 2.6rem;
+/* ---- narrower: one column, text above its screenshot */
+
+@media (max-width: 900px) {
+  .projectInner {
+    grid-template-columns: minmax(0, 1fr);
   }
-  .aside {
-    font-size: 1.7rem;
+  .shot {
+    width: 100%;
+  }
+  .row {
+    grid-template-columns: 3.2rem minmax(0, 1fr) 2rem;
+    grid-template-areas:
+      "num title arrow"
+      ".   hook  ."
+      ".   tech  .";
+  }
+  .num {
+    grid-area: num;
+  }
+  .rowTitle {
+    grid-area: title;
+  }
+  .rowHook {
+    grid-area: hook;
+  }
+  .rowTech {
+    grid-area: tech;
+    justify-self: start;
+    text-align: left;
+  }
+  .arrow {
+    grid-area: arrow;
+  }
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 2.8rem minmax(0, 1fr) 2rem;
   }
 }

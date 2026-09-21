@@ -1,26 +1,30 @@
 import { site } from "@/site";
 import styles from "./Footer.module.css";
 
-/**
- * `minimal` drops the RSS link — the homepage already exposes the feed in its
- * social row, and showing one destination twice on a page that small is noise.
- * Interior pages use the compact header, which renders no socials, so there
- * the footer link is the only visible way to reach the feed.
- */
-export default function Footer({ minimal = false }: { minimal?: boolean }) {
+const elsewhere = [
+  { label: "GitHub", href: site.social.github },
+  { label: "LinkedIn", href: site.social.linkedin },
+  { label: "Facebook", href: site.social.facebook },
+  { label: "RSS", href: "/feed.xml" },
+];
+
+/** The same quiet footer line on every page. */
+export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <p>
+      <span>
         © {new Date().getFullYear()} {site.name}
-        {!minimal && (
-          <>
-            {" · "}
-            <a className={styles.link} href="/feed.xml">
-              RSS
-            </a>
-          </>
-        )}
-      </p>
+      </span>
+      <ul className={styles.links}>
+        <li>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+        {elsewhere.map((s) => (
+          <li key={s.label}>
+            <a href={s.href}>{s.label}</a>
+          </li>
+        ))}
+      </ul>
     </footer>
   );
 }

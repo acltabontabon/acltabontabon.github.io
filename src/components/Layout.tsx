@@ -1,17 +1,18 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import SiteHeader from "./SiteHeader";
 import Footer from "./Footer";
+import styles from "./Layout.module.css";
 
-// Every page renders its own <Seo/> with page-specific title/description, so
-// Layout doesn't need a default one.
+// One shell for every page: the same gutters, header and footer. Each page
+// renders its own <Seo/> and decides its own content width inside <main>.
 export default function Layout() {
-  // The homepage is a full-height composition — identity optically centred,
-  // footer pinned at the bottom. Every other page is a normal document.
-  const isHome = useLocation().pathname === "/";
-
   return (
-    <div className={isHome ? "wrapper wrapper--home" : "wrapper"}>
-      <Outlet />
-      <Footer minimal={isHome} />
+    <div className={styles.shell}>
+      <SiteHeader />
+      <main className={styles.main}>
+        <Outlet />
+      </main>
+      <Footer />
     </div>
   );
 }

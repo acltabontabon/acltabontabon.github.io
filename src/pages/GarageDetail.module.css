@@ -1,0 +1,32 @@
+.status,
+.links {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status {
+  color: var(--ink-2);
+}
+
+.links {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.links a {
+  display: inline-block;
+  padding-block: 0.4rem;
+  color: var(--ink-1);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink-3);
+}
+
+.links a:hover,
+.links a:focus-visible {
+  border-color: var(--ink-1);
+}

@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/lib/date";
-import { GitHubIcon } from "./icons";
-import TagPill from "./TagPill";
 import Prose from "./Prose";
 import styles from "./ArticleLayout.module.css";
 
@@ -10,71 +8,65 @@ interface ArticleLayoutProps {
   title: string;
   date: string;
   readingTime?: string;
-  tags: string[];
+  /** A standfirst under the title. */
+  description?: string;
   html: string;
-  backTo: string;
-  backLabel: string;
-  statusBadge?: ReactNode;
-  github?: string;
-  liveUrl?: string;
+  /** The understated route back to the section this page belongs to. */
+  back: { to: string; label: string };
+  /** Anything else that belongs in the left rail (a status, project links). */
+  rail?: ReactNode;
+  /** Closing furniture under the body (next/previous, a closing link). */
+  footer?: ReactNode;
 }
 
+/**
+ * The reading layout shared by articles and garage write-ups. A narrow rail
+ * on the left carries the way back and the quiet metadata — the same column
+ * the writing index uses for dates — and the body reads in a single column
+ * of roughly 65–70 characters beside it. On narrow screens the rail folds
+ * into a line above the title.
+ */
 export default function ArticleLayout({
   title,
   date,
   readingTime,
-  tags,
+  description,
   html,
-  backTo,
-  backLabel,
-  statusBadge,
-  github,
-  liveUrl,
+  back,
+  rail,
+  footer,
 }: ArticleLayoutProps) {
   return (
     <article className={styles.article}>
-      <header className={styles.header}>
-        {statusBadge}
+      <header className={`${styles.grid} ${styles.header}`}>
+        <Link className={styles.back} to={back.to}>
+          <span aria-hidden="true">←</span> {back.label}
+        </Link>
         <h1 className={styles.title}>{title}</h1>
-        <p className={styles.meta}>
-          <time dateTime={date}>{formatDate(date)}</time>
-          {readingTime && (
-            <>
-              <span className={styles.dot}>·</span>
-              <span>{readingTime}</span>
-            </>
-          )}
-        </p>
-        {tags.length > 0 && (
-          <ul className={styles.tags}>
-            {tags.map((tag) => (
-              <li key={tag}>
-                <TagPill tag={tag} />
-              </li>
-            ))}
-          </ul>
-        )}
-        {(github || liveUrl) && (
-          <div className={styles.githubButtons}>
-            {github && (
-              <a className={styles.button} href={github} target="_blank" rel="noreferrer">
-                <GitHubIcon /> Source
-              </a>
-            )}
-            {liveUrl && (
-              <a className={styles.button} href={liveUrl} target="_blank" rel="noreferrer">
-                ↗ Live
-              </a>
-            )}
-          </div>
-        )}
+
+        <div className={styles.rail}>
+          <p className={styles.meta}>
+            <time dateTime={date}>{formatDate(date)}</time>
+            {readingTime && <span>{readingTime}</span>}
+          </p>
+          {rail}
+        </div>
+        {description && <p className={styles.standfirst}>{description}</p>}
       </header>
 
-      {html ? <Prose html={html} /> : null}
+      {html ? (
+        <div className={styles.grid}>
+          <div className={styles.content}>
+            <Prose html={html} />
+          </div>
+        </div>
+      ) : null}
 
-      <Link className={styles.backLink} to={backTo}>
-        ← {backLabel}
-      </Link>
+      {footer && (
+        <footer className={styles.grid}>
+          <div className={styles.body}>{footer}</div>
+        </footer>
+      )}
     </article>
   );
 }

@@ -1,4 +1,4 @@
-import HeaderAvatar from "@/components/HeaderAvatar";
+import PageHead from "@/components/PageHead";
 import TagPill from "@/components/TagPill";
 import Seo from "@/components/Seo";
 import { allTags } from "@/content/loader";
@@ -10,17 +10,14 @@ export default function Tags() {
   return (
     <>
       <Seo title="Tags" path="/tags" description="Everything on this site, grouped by topic." />
-      <HeaderAvatar compact />
-      <section className={styles.section}>
-        <p className={styles.intro}>Everything on the site, sliced by topic instead of section.</p>
-        <ul className={styles.tagCloud}>
-          {tags.map((tag) => (
-            <li key={tag}>
-              <TagPill tag={tag} />
-            </li>
-          ))}
-        </ul>
-      </section>
+      <PageHead title="Tags" lead="Everything on the site, sliced by topic instead of section." />
+      <ul className={styles.tagCloud}>
+        {tags.map((tag) => (
+          <li key={tag}>
+            <TagPill tag={tag} />
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

@@ -1,0 +1,79 @@
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(2rem, 2.6vw, 3.2rem);
+}
+
+.mark {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink-1);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: clamp(1.6rem, 3vw, 4rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  position: relative;
+  display: inline-block;
+  padding-block: 0.4rem; /* a comfortable tap target without changing the look */
+  color: var(--ink-1);
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.link:hover::after,
+.link:focus-visible::after,
+.link[aria-current]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .link::after {
+    transition: transform 0.4s var(--ease);
+  }
+}
+
+/* Touch: 44px+ hit areas, grown with padding and cancelled with negative
+   margins so the visual layout doesn't move. The underline sits inside the
+   padding, so it stays under the word. */
+@media (pointer: coarse), (max-width: 640px) {
+  .mark {
+    padding: 1.2rem 1rem 1.2rem 0;
+    margin: -1.2rem -1rem -1.2rem 0;
+  }
+  .link {
+    padding-block: 1.2rem;
+    margin-block: -0.8rem;
+  }
+  .link::after {
+    inset: auto 0 0.8rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    align-items: center;
+  }
+}

@@ -16,10 +16,10 @@ import { visit } from "unist-util-visit";
 
 const PUBLIC_DIR = path.join(path.dirname(path.dirname(fileURLToPath(import.meta.url))), "public");
 
-// Keep in sync with src/components/doodles/paths.ts — this is the only
-// place outside that component the squiggle shape needs to be known, so a
-// literal duplicate is simpler than wiring a shared module across the
-// app/build-tooling boundary for one string.
+// The hand-drawn squiggle the `---` dividers and media marks were drawn
+// with. The site now paints both as plain hairlines in CSS (see
+// Prose.module.css) and doesn't render this path, but it stays in the markup
+// so the generated HTML is unchanged.
 const SQUIGGLE_PATH =
   "M2 10 C 14 2, 26 18, 38 10 S 62 2, 74 10 S 98 18, 110 10 S 134 2, 146 10 S 170 18, 182 10 S 206 2, 218 10";
 const SQUIGGLE_VIEWBOX = "0 0 220 20";
@@ -69,27 +69,39 @@ function mediaScale(size) {
 
 /* An author can steer a single image with a hash on its URL:
 
-     ![The team](/images/blog/afpfw.jpg#ambient)
-     ![A diverse team](/images/blog/diverse-team.png#ambient+mono)
+     ![The team](/images/blog/afpfw.jpg#photo)
+     ![Life currencies](/images/blog/life-currencies.jpg#wide)
 
-   A *scale* overrides the automatic sizing. `ambient` is the one that changes
-   kind rather than size — the photograph stops being a block in the article and
-   becomes a background the section passes through. It's opt-in precisely
-   because it suits narrative photographs and almost nothing else: screenshots,
-   diagrams and GIFs stay as they are.
+   A *scale* overrides the automatic sizing (wide, column, inset, portrait).
 
-   A *tone* modifies how it's rendered. `soft` holds it further back for
-   artwork loud enough to tint a whole section from behind the prose; `mono`
-   drains the colour out entirely. Combine any of them with `+`; order doesn't
-   matter and tones stack. */
-const MEDIA_SCALES = new Set(["ambient", "wide", "column", "inset", "portrait"]);
-const MEDIA_TONES = new Set(["soft", "mono"]);
+   A *tone* says what kind of picture it is, so the stylesheet can treat it
+   accordingly — nothing is inferred from filenames:
+
+     photo  a personal or editorial photograph: gently toned so it sits with
+            the page (a touch less saturation and contrast, nothing crushed)
+     soft   bright artwork held a step further back
+     mono   the colour drained out entirely
+
+   Untoned images — screenshots, diagrams, charts, GIFs — are shown exactly as
+   they are. Combine tokens with `+`; order doesn't matter and tones stack.
+
+   `ambient` is the old name for a narrative photograph. It used to lift the
+   image out of the flow and lay it *behind* the paragraphs; it now means just
+   `photo`, sized like any other image, so the posts that use it keep their
+   intent without text ever sitting on a picture. */
+const MEDIA_SCALES = new Set(["wide", "column", "inset", "portrait"]);
+const MEDIA_TONES = new Set(["photo", "soft", "mono"]);
+const LEGACY = { ambient: "photo" };
 
 function readDirective(src) {
   const hash = src.indexOf("#");
   if (hash === -1) return { src, scale: null, tone: null };
 
-  const tokens = src.slice(hash + 1).split("+").filter(Boolean);
+  const tokens = src
+    .slice(hash + 1)
+    .split("+")
+    .filter(Boolean)
+    .map((t) => LEGACY[t] ?? t);
   // Only claim the hash if every token is one we understand — otherwise it's
   // someone's fragment identifier and the URL is left exactly as written.
   if (!tokens.every((t) => MEDIA_SCALES.has(t) || MEDIA_TONES.has(t))) {
@@ -99,7 +111,7 @@ function readDirective(src) {
   return {
     src: src.slice(0, hash),
     scale: tokens.find((t) => MEDIA_SCALES.has(t)) ?? null,
-    tone: tokens.filter((t) => MEDIA_TONES.has(t)).join(" ") || null,
+    tone: [...new Set(tokens.filter((t) => MEDIA_TONES.has(t)))].join(" ") || null,
   };
 }
 
@@ -132,25 +144,6 @@ function rehypeFigures() {
       img.properties.src = src;
       const size = src.startsWith("/") ? intrinsicSize(src) : null;
       const scale = override ?? mediaScale(size);
-
-      // Ambient media has no frame, no mark and no caption of its own — it is
-      // a layer the surrounding prose reads on top of.
-      if (scale === "ambient") {
-        parent.children[index] = {
-          type: "element",
-          tagName: "figure",
-          properties: { className: ["media"], "data-media": "ambient", ...(tone && { "data-tone": tone }) },
-          children: [
-            {
-              type: "element",
-              tagName: "span",
-              properties: { className: ["ambient"] },
-              children: [img],
-            },
-          ],
-        };
-        return;
-      }
 
       const children = [
         img,
@@ -243,7 +236,8 @@ function imageSize(buf) {
 
 const sizeCache = new Map();
 
-function intrinsicSize(src) {
+/** Intrinsic size of an image under public/ (by its site path), or null. */
+export function intrinsicSize(src) {
   if (!sizeCache.has(src)) {
     let size = null;
     try {
