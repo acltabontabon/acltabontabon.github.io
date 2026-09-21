@@ -4,6 +4,15 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+  # Garage versions come from each project's latest GitHub release at build
+  # time (scripts/releases.mjs), so the site is rebuilt daily to pick up new
+  # releases even when nothing here changes...
+  schedule:
+    - cron: "17 3 * * *"
+  # ...and a project repo can ask for an immediate rebuild when it publishes
+  # a release (how: see the header of scripts/releases.mjs).
+  repository_dispatch:
+    types: [project-released]
 
 permissions:
   contents: read
@@ -25,6 +34,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # read-only lookups of the projects' public releases; the token
+          # just raises the API rate limit
+          GITHUB_TOKEN: ${{ github.token }}
       # Draft Canvas / Vortex / Scuttle hosting under /draft-canvas/, /vortex/
       # and /scuttle/ is out of scope for this site — when that becomes real,
       # copy their build output into dist/<name>/ here, before the artifact upload.

@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { schemaFor } from "./schema.mjs";
 import { intrinsicSize, renderMarkdown } from "./markdown.mjs";
+import { resolveVersion } from "./releases.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CONTENT_DIR = path.join(ROOT, "content");
@@ -41,6 +42,8 @@ async function buildType(type) {
     }
     const meta = result.data;
     if (meta.draft) continue;
+    // a garage project's version follows its latest GitHub release (see releases.mjs)
+    if (type === "garage") meta.version = await resolveVersion(meta);
 
     const html = content.trim() ? await renderMarkdown(content) : "";
     const entry = { slug, meta, html, readingTime: readingTime(content) };
