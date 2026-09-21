@@ -25,9 +25,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      # Draft Canvas / Vortex hosting under /draft-canvas/ and /vortex/ is out of
-      # scope for this site — when that becomes real, copy their build output
-      # into dist/draft-canvas/ and dist/vortex/ here, before the artifact upload.
+      # Draft Canvas / Vortex / Scuttle hosting under /draft-canvas/, /vortex/
+      # and /scuttle/ is out of scope for this site — when that becomes real,
+      # copy their build output into dist/<name>/ here, before the artifact upload.
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
