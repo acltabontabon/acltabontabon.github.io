@@ -1,9 +1,16 @@
 import type { GarageStatus } from "@/content/types";
 
-/** The Garage's voice for each status — shared by the badge and the homepage rows. */
+/**
+ * Plain labels for a project's availability — shared by the homepage caption,
+ * the Garage and project write-ups. Each one should be backed by the
+ * project's own release notes or documentation, not guessed from a version
+ * number; an entry with no established status simply omits `status`.
+ */
 export const statusLabel: Record<GarageStatus, string> = {
-  stable: "shipped",
-  alpha: "on the bench",
-  wip: "wrenches out",
-  archived: "shelved",
+  stable: "Released",
+  beta: "Beta",
+  alpha: "Alpha",
+  wip: "In development",
+  paused: "Paused",
+  archived: "Archived",
 };

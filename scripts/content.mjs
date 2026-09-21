@@ -1,6 +1,6 @@
 // Node-only helper for reading the already-validated JSON that
 // build-content.mjs writes to generated/. Used by the postbuild scripts
-// (RSS/sitemap generation) — run `npm run content` first if generated/
+// (sitemap generation) — run `npm run content` first if generated/
 // doesn't exist yet (the `build` script always does).
 import fs from "node:fs";
 import path from "node:path";

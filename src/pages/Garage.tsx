@@ -48,7 +48,7 @@ function Project({ entry, number }: { entry: GarageEntry; number: number }) {
         <div className={styles.text}>
           <p className={styles.meta}>
             <span>{num}</span>
-            <span>{statusLabel[meta.status]}</span>
+            {meta.status && <span>{statusLabel[meta.status]}</span>}
             {meta.version && <span>v{meta.version}</span>}
           </p>
 
@@ -148,13 +148,6 @@ export default function Garage() {
           <>
             Things I&apos;ve built, things I&apos;m building,{" "}
             <PageHead.Soft>and a few things I should probably clean up.</PageHead.Soft>
-          </>
-        }
-        aside={
-          <>
-            mostly software.
-            <br />
-            occasionally overengineered.
           </>
         }
         meta={

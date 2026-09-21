@@ -5,7 +5,6 @@ const elsewhere = [
   { label: "GitHub", href: site.social.github },
   { label: "LinkedIn", href: site.social.linkedin },
   { label: "Facebook", href: site.social.facebook },
-  { label: "RSS", href: "/feed.xml" },
 ];
 
 /** The same quiet footer line on every page. */
@@ -13,7 +12,8 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <span>
-        © {new Date().getFullYear()} {site.name}
+        {/* the full name is already the homepage heading; the mark echoes the header */}
+        © {new Date().getFullYear()} act.
       </span>
       <ul className={styles.links}>
         <li>

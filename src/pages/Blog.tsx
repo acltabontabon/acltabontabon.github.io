@@ -23,8 +23,7 @@ export default function Blog() {
       <div className={styles.page}>
         <PageHead
           title="Writing"
-          lead="Longer thoughts, written when a note isn't enough room."
-          aside="things I probably should've kept to myself."
+          lead="Notes on software, building things, and the people involved."
           meta={
             total > 0 && (
               <>

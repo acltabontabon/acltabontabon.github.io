@@ -21,6 +21,7 @@
 }
 
 .screen {
+  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -269,6 +270,49 @@
   from {
     opacity: 0;
     transform: translateY(8px);
+  }
+}
+
+/* ====================================================== one screen (desktop)
+
+   The page fills the shell's middle row (see Layout.module.css). The band
+   takes whatever height the name and index leave — a taller portrait on a
+   tall screen, a shorter one on a laptop — never below a size where the eyes
+   still read and never so tall it swallows the page. Spacing and the name
+   scale with the window's height, so the whole composition fits without
+   vertical scrolling. */
+@media (min-width: 901px) {
+  .page {
+    display: grid;
+    /* the band's floor also scales with height, so a short laptop screen
+       keeps a thinner strip rather than scrolling */
+    grid-template-rows: minmax(min(15rem, 20vh), 1fr) auto;
+  }
+  .display {
+    height: auto;
+    max-height: 64vh;
+    min-height: 0;
+  }
+  .lower {
+    margin-top: clamp(4rem, 6.4vh, 8.8rem);
+  }
+  .name {
+    font-size: clamp(4rem, min(5.6vw, 8.6vh), 9.6rem);
+  }
+  .row {
+    padding-block: clamp(0.7rem, 1.4vh, 1.7rem);
+  }
+  .all {
+    margin-top: clamp(1rem, 2vh, 2rem);
+  }
+}
+
+/* Narrower desktops: the project index takes a larger share of the row, so
+   descriptions stay on one line rather than doubling each row's height (the
+   name column has room to spare). */
+@media (min-width: 901px) and (max-width: 1279px) {
+  .lower {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
   }
 }
 

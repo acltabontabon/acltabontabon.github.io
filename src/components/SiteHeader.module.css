@@ -3,7 +3,8 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 2rem;
-  margin-bottom: clamp(2rem, 2.6vw, 3.2rem);
+  /* a little less on short windows, where every row counts */
+  margin-bottom: clamp(1.6rem, min(2.6vw, 3.2vh), 3.2rem);
 }
 
 .mark {

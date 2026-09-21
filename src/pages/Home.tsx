@@ -114,7 +114,10 @@ export default function Home() {
             </span>
             <span>
               {shown
-                ? [statusLabel[shown.meta.status], shown.meta.version && `v${shown.meta.version}`]
+                ? [
+                    shown.meta.status && statusLabel[shown.meta.status],
+                    shown.meta.version && `v${shown.meta.version}`,
+                  ]
                     .filter(Boolean)
                     .join(" · ")
                 : "1-bit · 8×8 ordered dither"}
@@ -186,7 +189,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-
       </div>
     </>
   );

@@ -6,7 +6,7 @@
   "scripts": {
     "content": "node scripts/build-content.mjs",
     "dev": "npm run content && vite",
-    "build": "npm run content && vite-react-ssg build && node scripts/generate-rss.mjs && node scripts/generate-sitemap.mjs && node scripts/finalize-404.mjs",
+    "build": "npm run content && vite-react-ssg build && node scripts/generate-sitemap.mjs && node scripts/finalize-404.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"

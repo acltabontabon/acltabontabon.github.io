@@ -1,18 +1,47 @@
-/* Asymmetric: the heading and identity line hold the left, the prose and
-   the links read down the right at a comfortable measure. The left column
-   is sticky on wide screens, so the heading stays with the words beside it. */
+/* Narrow screens read straight down: heading, then the bio. Contact links
+   live in the site footer, so the page doesn't repeat them.
+
+   Desktop is asymmetric and fits one screen: the heading and identity line
+   top-left, the bio down the right at a comfortable measure. Type and
+   spacing scale with the window's height so it fits without vertical
+   scrolling (see the fitted shell in Layout.module.css). */
 
 .page {
+  /* One measure for the prose: ≈ 68 characters of body text at whatever size
+     it's set. In em of the prose size — not ch, which in Geist is much wider
+     than the average character. */
+  --size: clamp(1.8rem, 1.5vw, 2.1rem);
+  --measure: calc(var(--size) * 30.5);
+
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(4rem, 6vw, 10rem);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(4rem, 4.4vw, 5.6rem);
   padding-top: clamp(4rem, 5vw, 7.2rem);
 }
 
-.head {
-  position: sticky;
-  top: clamp(2.4rem, 4vw, 4.8rem);
+@media (min-width: 901px) {
+  .page {
+    /* scales with the window's height as well as its width, so the bio fits
+       beside the heading without scrolling; ~72 characters a line */
+    --size: clamp(1.55rem, min(1.5vw, 2.25vh), 2.1rem);
+    --measure: calc(var(--size) * 32);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-areas: "head prose";
+    column-gap: clamp(4rem, 6vw, 10rem);
+    row-gap: 3.2rem;
+    padding-top: clamp(1.6rem, 3.6vh, 7.2rem);
+  }
+  .head {
+    grid-area: head;
+  }
+  .prose {
+    grid-area: prose;
+    align-self: start;
+    line-height: 1.55;
+  }
+  .prose p + p {
+    margin-top: 1em;
+  }
 }
 
 .title {
@@ -30,19 +59,6 @@
   font-size: var(--t-body);
   line-height: 1.55;
   color: var(--ink-1);
-}
-
-.body {
-  /* One measure for the prose and the links beneath it: ≈ 68 characters of
-     body text at whatever size the prose is set. In em of the prose size —
-     not ch, which in Geist is much wider than the average character. */
-  --size: clamp(1.8rem, 1.5vw, 2.1rem);
-  --measure: calc(var(--size) * 30.5);
-
-  display: grid;
-  gap: clamp(4rem, 4.4vw, 5.6rem);
-  /* the prose starts on the heading's cap line rather than above it */
-  padding-top: 0.6rem;
 }
 
 .prose {
@@ -87,101 +103,10 @@
   }
 }
 
-/* ---- links: ruled rows, one link each */
-
-.label {
-  margin: 0 0 1.2rem;
-  font-family: var(--font-mono);
-  font-size: var(--t-label);
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.links {
-  max-width: var(--measure);
-}
-
-.invite {
-  margin: 0 0 1.6rem;
-  font-size: var(--t-body);
-  line-height: 1.55;
-  color: var(--ink-2);
-}
-
-.links ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: var(--rule);
-}
-
-.links li {
-  border-bottom: var(--rule);
-}
-
-.link {
-  display: grid;
-  grid-template-columns: 11rem minmax(0, 1fr) 2rem;
-  align-items: baseline;
-  gap: 1.6rem;
-  padding-block: 1.4rem;
-  color: var(--ink-1);
-  text-decoration: none;
-  outline-offset: 0.4rem;
-}
-
-.linkLabel {
-  font-family: var(--font-mono);
-  font-size: var(--t-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.linkText {
-  overflow-wrap: anywhere;
-  font-size: var(--t-body);
-}
-
-.arrow {
-  justify-self: end;
-  color: var(--ink-3);
-}
-
-.link:hover .arrow,
-.link:focus-visible .arrow {
-  color: var(--ink-1);
-  transform: translate(0.2rem, -0.2rem);
-}
-
-.links li:has(> .link:hover),
-.links li:has(> .link:focus-visible) {
-  border-bottom-color: var(--ink-3);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .arrow,
-  .links li {
-    transition:
-      color 0.16s var(--ease),
-      border-color 0.16s var(--ease),
-      transform 0.25s var(--ease);
-  }
-}
-
-@media (max-width: 900px) {
-  .page {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .head {
-    position: static;
-  }
-}
-
-@media (max-width: 640px) {
-  .link {
-    grid-template-columns: 8.4rem minmax(0, 1fr) 2rem;
+/* short desktop windows (a laptop with browser chrome): a touch tighter
+   leading so the bio still fits one screen */
+@media (min-width: 901px) and (max-height: 720px) {
+  .prose {
+    line-height: 1.5;
   }
 }

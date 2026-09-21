@@ -19,12 +19,15 @@ export const blogFrontmatter = z.object({
   image: z.string().optional(),
 });
 
-export const garageStatus = z.enum(["stable", "alpha", "wip", "archived"]);
+// stable = a release is confirmed · beta/alpha = explicitly labelled so ·
+// wip = ongoing development is documented · paused/archived = explicitly so.
+// Leave `status` out when the project's own docs don't establish one.
+export const garageStatus = z.enum(["stable", "beta", "alpha", "wip", "paused", "archived"]);
 
 export const garageFrontmatter = z.object({
   title: z.string(),
   description: z.string(),
-  status: garageStatus,
+  status: garageStatus.optional(),
   date: isoDate,
   tags: z.array(z.string()).default([]),
   draft: z.boolean().default(false),

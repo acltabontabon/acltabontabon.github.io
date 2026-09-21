@@ -15,3 +15,20 @@
   /* the least room a page ever leaves above the footer */
   padding-bottom: clamp(6.4rem, 7vw, 10rem);
 }
+
+/* Fitted pages (Home, About) on desktop: exactly one screen. The shell becomes
+   a three-row grid whose middle row is the leftover height, which the page
+   fills (and on Home, the portrait band absorbs). The rows keep their content
+   minimum, so a window too short for even the smallest composition grows and
+   scrolls rather than overlapping the footer. Phones scroll as usual. */
+@media (min-width: 901px) {
+  .fit {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  /* a grid, so the page inside stretches to this row's height */
+  .fit .main {
+    display: grid;
+    padding-bottom: clamp(2.4rem, 4.4vh, 5.6rem);
+  }
+}

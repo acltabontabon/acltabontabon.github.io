@@ -1,4 +1,4 @@
-export type GarageStatus = "stable" | "alpha" | "wip" | "archived";
+export type GarageStatus = "stable" | "beta" | "alpha" | "wip" | "paused" | "archived";
 
 export interface BlogMeta {
   title: string;
@@ -12,7 +12,8 @@ export interface BlogMeta {
 export interface GarageMeta {
   title: string;
   description: string;
-  status: GarageStatus;
+  /** Omitted when the project's docs don't establish one. */
+  status?: GarageStatus;
   date: string;
   tags: string[];
   draft: boolean;

@@ -14,7 +14,13 @@ export default function GarageDetail() {
 
   return (
     <>
-      <Seo title={meta.title} description={meta.description} path={`/garage/${entry.slug}`} image={meta.screenshot} type="article" />
+      <Seo
+        title={meta.title}
+        description={meta.description}
+        path={`/garage/${entry.slug}`}
+        image={meta.screenshot}
+        type="article"
+      />
       <ArticleLayout
         title={meta.title}
         date={meta.date}
@@ -25,8 +31,9 @@ export default function GarageDetail() {
         rail={
           <>
             <p className={styles.status}>
-              {statusLabel[meta.status]}
-              {meta.version && ` · v${meta.version}`}
+              {[meta.status && statusLabel[meta.status], meta.version && `v${meta.version}`]
+                .filter(Boolean)
+                .join(" · ")}
             </p>
             {(meta.liveUrl || meta.github) && (
               <ul className={styles.links}>
@@ -39,7 +46,12 @@ export default function GarageDetail() {
                 )}
                 {meta.github && (
                   <li>
-                    <a href={meta.github} target="_blank" rel="noreferrer" aria-label={`${meta.title} on GitHub`}>
+                    <a
+                      href={meta.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`${meta.title} on GitHub`}
+                    >
                       Source <span aria-hidden="true">↗</span>
                     </a>
                   </li>
