@@ -6,7 +6,7 @@ import { entriesOfType, garageDetailSlugs, allTags } from "./content.mjs";
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SITE_URL = "https://acltabontabon.com";
 
-const staticRoutes = ["/", "/blog", "/garage", "/about", "/tags"];
+const staticRoutes = ["/", "/blog", "/garage", "/about", "/muni", "/tags"];
 
 const routes = [
   ...staticRoutes,

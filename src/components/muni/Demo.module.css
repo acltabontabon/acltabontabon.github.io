@@ -1,0 +1,479 @@
+/* The interactive demo on /muni. It borrows the page's accent
+   (--muni-accent, with the site accent as a fallback) and otherwise uses the
+   site's ink, rule and type tokens, so it reads as a sheet of the product
+   laid on the page rather than a second design. Everything works at phone
+   width: the grids collapse to one column and the tap targets are 44px+. */
+
+.demo {
+  --accent: var(--muni-accent, var(--color-accent));
+  --accent-soft: var(--muni-accent-soft, var(--color-accent-soft));
+  --accent-ink: var(--muni-accent-ink, var(--color-surface));
+  display: grid;
+  gap: 2.4rem;
+  padding: clamp(1.6rem, 2.4vw, 3.2rem);
+  border: var(--rule);
+  border-radius: var(--radius);
+  background: var(--color-surface-raised);
+}
+
+/* ---- stepper */
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 2.4rem;
+  margin: 0;
+  padding: 0 0 1.6rem;
+  list-style: none;
+  border-bottom: var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.stepNum {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-variant-numeric: tabular-nums;
+}
+
+.step[aria-current] {
+  color: var(--ink-1);
+}
+
+.step[aria-current] .stepNum {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.step[data-done] {
+  color: var(--ink-2);
+}
+
+/* ---- a stage: one phase of the demo */
+
+.stage {
+  display: grid;
+  gap: 2.4rem;
+}
+
+.stageHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.2rem 3.2rem;
+}
+
+.stageTitle {
+  margin: 0 0 0.4rem;
+  font-size: var(--t-title);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+}
+
+.stageNote {
+  max-width: 60ch;
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.55;
+  color: var(--ink-3);
+  text-wrap: pretty;
+}
+
+/* capture: the composer beside the private list; stacked on phones */
+.stage:has(.composer) {
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(2.4rem, 3vw, 4rem);
+}
+
+@media (max-width: 760px) {
+  .stage:has(.composer) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.composer,
+.mineBox {
+  display: grid;
+  gap: 1.2rem;
+  align-content: start;
+  min-width: 0;
+}
+
+.mineBox {
+  padding-top: 0.4rem;
+}
+
+@media (min-width: 761px) {
+  .mineBox {
+    padding-top: 0;
+    padding-left: clamp(2.4rem, 3vw, 4rem);
+    border-left: var(--rule);
+  }
+}
+
+/* the text field comes first, before any chip */
+.field {
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--ink-1);
+  font: inherit;
+  font-size: var(--t-body);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.field::placeholder {
+  color: var(--ink-3);
+}
+
+.field:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.chip {
+  min-height: 3.6rem;
+  padding: 0.4rem 1.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--ink-3);
+  color: var(--ink-1);
+}
+
+.chip[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--ink-1);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem 2rem;
+}
+
+/* ---- buttons: one filled, one outlined; both at least 44px tall */
+
+.primary,
+.secondary,
+.voteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 4.4rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.primary {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.primary:hover {
+  filter: brightness(1.08);
+}
+
+.secondary,
+.voteBtn {
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--ink-1);
+}
+
+.secondary:hover,
+.voteBtn:hover:not(:disabled) {
+  border-color: var(--ink-3);
+}
+
+.secondary span,
+.voteBtn span {
+  display: inline-block;
+}
+
+.voteBtn {
+  min-width: 4.4rem;
+  justify-content: center;
+  padding-inline: 1.4rem;
+}
+
+.voteBtn:disabled {
+  color: var(--ink-3);
+  cursor: default;
+  opacity: 0.6;
+}
+
+.primary:focus-visible,
+.secondary:focus-visible,
+.voteBtn:focus-visible,
+.chip:focus-visible {
+  outline: 2px solid var(--ink-1);
+  outline-offset: 3px;
+}
+
+/* the quiet confirmation after a save; reserved height so nothing jumps */
+.status {
+  min-height: 1.6em;
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--ink-2);
+}
+
+/* ---- the private list */
+
+.mine,
+.entries {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mineItem,
+.entry {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  background: var(--color-surface);
+  font-size: 1.45rem;
+  line-height: 1.5;
+  color: var(--ink-1);
+  text-wrap: pretty;
+}
+
+.tag {
+  justify-self: start;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---- discover: themes in a responsive grid */
+
+.votesLeft {
+  margin: 0;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.votesLeft strong {
+  color: var(--ink-1);
+  font-weight: 500;
+}
+
+.themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+  gap: 1.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.theme,
+.ungrouped {
+  display: grid;
+  gap: 1.2rem;
+  align-content: start;
+  padding: 1.6rem;
+  border: var(--rule);
+  border-radius: var(--radius);
+  min-width: 0;
+}
+
+.theme[data-voted] {
+  border-color: var(--accent);
+}
+
+.themeTitle {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink-1);
+}
+
+.voteRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: auto;
+  padding-top: 0.4rem;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-right: auto;
+}
+
+.dots i {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--ink-3);
+  border-radius: 50%;
+}
+
+.dots i[data-on] {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* ---- results */
+
+.results {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.result {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr) auto;
+  grid-template-areas:
+    "num title count"
+    ".   bar   bar";
+  align-items: baseline;
+  gap: 0.6rem 1.2rem;
+  padding-block: 1.2rem;
+  border-bottom: var(--rule);
+}
+
+.result:last-child {
+  border-bottom: 0;
+}
+
+.resultNum {
+  grid-area: num;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.resultTitle {
+  grid-area: title;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--ink-1);
+}
+
+.resultCount {
+  grid-area: count;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.yours {
+  color: var(--accent);
+}
+
+.bar {
+  grid-area: bar;
+  display: block;
+  height: 0.6rem;
+  width: var(--w, 0%);
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* ---- motion, only for those who haven't asked for less */
+
+@media (prefers-reduced-motion: no-preference) {
+  .chip,
+  .secondary,
+  .voteBtn,
+  .theme {
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease);
+  }
+  .primary {
+    transition: filter 0.2s var(--ease);
+  }
+  .dots i {
+    transition:
+      background-color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+  .stage {
+    animation: demo-in 0.35s var(--ease) both;
+  }
+  .bar {
+    animation: demo-bar 0.6s var(--ease) both;
+  }
+}
+
+@keyframes demo-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes demo-bar {
+  from {
+    width: 0;
+  }
+}

@@ -6,6 +6,7 @@ import BlogPost from "./pages/BlogPost";
 import Garage from "./pages/Garage";
 import GarageDetail from "./pages/GarageDetail";
 import About from "./pages/About";
+import Muni from "./pages/Muni";
 import Tags from "./pages/Tags";
 import TagDetail from "./pages/TagDetail";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ export const routes: RouteRecord[] = [
         getStaticPaths: () => garageEntries.filter((e) => e.html).map((e) => `garage/${e.slug}`),
       },
       { path: "about", element: <About /> },
+      { path: "muni", element: <Muni /> },
       { path: "tags", element: <Tags /> },
       {
         path: "tags/:tag",
