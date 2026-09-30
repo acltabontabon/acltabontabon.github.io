@@ -307,6 +307,40 @@ const art: Record<string, (b: Bitmap) => void> = {
     b.hline(0, 51, 36);
   },
 
+  // a thought kept on a note, carried into the conversation
+  muni: (b) => {
+    // the note, corner folded over
+    b.hline(0, 14, 6);
+    b.vline(0, 6, 31);
+    b.hline(0, 20, 31);
+    b.vline(20, 12, 31);
+    for (let i = 0; i <= 5; i++) b.set(15 + i, 6 + i);
+    b.vline(15, 6, 11);
+    b.hline(15, 20, 11);
+    for (const [y, len] of [
+      [15, 13],
+      [19, 15],
+      [23, 10],
+    ])
+      b.hline(3, 3 + len, y);
+    // three votes on it
+    for (const x of [3, 7, 11]) b.fill(x, 27, 2, 2);
+
+    b.arrowRight(23, 30, 18);
+
+    // two voices, the second answering the first
+    b.rect(32, 5, 20, 12);
+    b.hline(35, 47, 9);
+    b.hline(35, 43, 12);
+    b.sprite(35, 17, ["###", "##.", "#.."]);
+
+    b.fill(33, 21, 17, 10);
+    b.sprite(45, 31, ["####", ".###", "..##", "...#"]);
+    // its words knocked out of the fill
+    for (let x = 36; x <= 46; x++) b.set(x, 24, false);
+    for (let x = 36; x <= 42; x++) b.set(x, 27, false);
+  },
+
   // a rocket on the pad beside its tower, and the pre-flight checklist
   launchpad: (b) => {
     // checklist: two done, one to go
