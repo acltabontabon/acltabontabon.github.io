@@ -3,7 +3,7 @@ import BlogArticle from "@/components/blog/BlogArticle";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import Seo from "@/components/Seo";
 import NotFound from "./NotFound";
-import { adjacentBlog } from "@/content/loader";
+import { adjacentBlog, blogEntries } from "@/content/loader";
 import type { BlogEntry } from "@/content/types";
 
 export default function BlogPost() {
@@ -23,6 +23,7 @@ export default function BlogPost() {
       />
       <ReadingProgress />
       <BlogArticle
+        noteNumber={blogEntries.length - blogEntries.findIndex(({ slug }) => slug === entry.slug)}
         title={entry.meta.title}
         date={entry.meta.date}
         readingTime={entry.readingTime}

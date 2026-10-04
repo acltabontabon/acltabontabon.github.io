@@ -37,8 +37,9 @@
 }
 
 .title {
+  font-family: var(--font-serif);
   font-size: var(--t-title);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.02em;
   text-wrap: balance;
@@ -66,7 +67,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .newer,
-  .older {
+  .newer + .older {
     grid-column: 1;
     padding-inline: 0;
     border-left: 0;

@@ -139,3 +139,71 @@ footer.grid {
     gap: 0.4rem;
   }
 }
+
+/* The writing notebook carries the index's margin into the reading view.
+   Prose retains its established measure and media/code overflow behavior. */
+.notebook {
+  position: relative;
+  max-width: var(--w-index);
+  margin-inline: auto;
+}
+
+.notebook .title { font-style: italic; }
+
+.notebook .content h2,
+.notebook .content h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+.notebook .content blockquote::before { background: var(--color-accent); }
+
+.notebook .content figcaption:not([data-rehype-pretty-code-title]) {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.6rem;
+}
+
+@media (min-width: 960px) {
+  .notebook::before {
+    content: "";
+    position: absolute;
+    top: clamp(4rem, 6vw, 8rem);
+    bottom: 0;
+    left: 14.5rem;
+    width: 1px;
+    background: rgb(var(--color-accent-rgb), 0.45);
+    pointer-events: none;
+  }
+
+  .notebook .grid {
+    grid-template-columns:
+      [rail-start] 14.5rem [rail-end]
+      3.2rem
+      [content-start title-start] minmax(0, 66rem) [content-end title-end]
+      minmax(0, 1fr);
+  }
+
+  .notebook .header > .title { grid-row: 1; }
+  .notebook .standfirst { grid-row: 2; }
+  .notebook .header::after { grid-row: 3; }
+  .notebook .back {
+    grid-column: rail;
+    grid-row: 1;
+    margin-top: 0.5em;
+  }
+  .notebook .rail {
+    grid-column: rail;
+    grid-row: 2 / 4;
+    padding-right: 2rem;
+  }
+  .notebook .meta { display: grid; gap: 0.4rem; }
+}
+
+@media (max-width: 959px) {
+  .notebook .rail { gap: 1.2rem; }
+  .notebook .content {
+    padding-left: clamp(1.6rem, 3vw, 2.4rem);
+    border-left: 1px solid rgb(var(--color-accent-rgb), 0.45);
+  }
+}

@@ -18,6 +18,8 @@ interface ArticleLayoutProps {
   rail?: ReactNode;
   /** Closing furniture under the body (next/previous, a closing link). */
   footer?: ReactNode;
+  /** Notebook treatment for writing; project write-ups keep the plain layout. */
+  notebook?: boolean;
 }
 
 /**
@@ -36,9 +38,10 @@ export default function ArticleLayout({
   back,
   rail,
   footer,
+  notebook = false,
 }: ArticleLayoutProps) {
   return (
-    <article className={styles.article}>
+    <article className={`${styles.article}${notebook ? ` ${styles.notebook}` : ""}`}>
       <header className={`${styles.grid} ${styles.header}`}>
         <Link className={`${styles.back} ${textLink.link}`} to={back.to}>
           Back to {back.label}
