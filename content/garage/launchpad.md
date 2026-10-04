@@ -5,7 +5,7 @@ description: "A preparation engine that deterministically scans a codebase and g
 status: wip
 version: "0.6.0"
 date: 2026-08-29
-featured: true
+featured: false
 tags: [open-source, java, spring-boot, mcp]
 tech: [Java, Spring Boot, MCP]
 github: https://github.com/acltabontabon/Launchpad

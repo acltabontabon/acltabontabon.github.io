@@ -91,32 +91,70 @@ function Project({ entry, first }: { entry: GarageSummary; first: boolean }) {
 export default function Garage() {
   const featured = garageEntries.filter((entry) => entry.meta.featured);
   const rest = garageEntries.filter((entry) => !entry.meta.featured);
+  const inProgress = garageEntries.filter((entry) =>
+    entry.meta.status === "wip" || (entry.meta.featured && ["alpha", "beta"].includes(entry.meta.status ?? "")),
+  );
 
   return (
     <>
       <Seo title="Garage" path="/garage" description={INTRO} />
       <header className={styles.heading}>
-        <h1>Garage</h1>
-        <p>{INTRO}<br /><span>Some finished. Some still becoming.</span></p>
+        <div>
+          <p className={styles.eyebrow}>A few things I've been making</p>
+          <h1>Garage</h1>
+        </div>
+        <p className={styles.intro}>{INTRO}<br /><em>Some finished. Some still becoming.</em></p>
       </header>
 
-      <ol className={styles.projects} aria-label="Selected projects">
-        {featured.map((entry, i) => <Project key={entry.slug} entry={entry} first={i === 0} />)}
-      </ol>
+      <section aria-labelledby="garage-pinned">
+        <div className={styles.wallHeading}>
+          <h2 id="garage-pinned">Pinned up lately</h2>
+          <p>Notes from the workshop</p>
+        </div>
+        <div className={styles.wall}>
+          <ol className={styles.projects} aria-label="Selected projects">
+            {featured.map((entry, i) => <Project key={entry.slug} entry={entry} first={i === 0} />)}
+          </ol>
+          <aside className={styles.workshopNote} aria-label="Workshop notes">
+            <p className={styles.handwritten}>Started with<br />“what if…”</p>
+            <span className={styles.scribble} aria-hidden="true" />
+            {inProgress.length > 0 && (
+              <div>
+                <h3>Still tinkering</h3>
+                <ul>
+                  {inProgress.map((entry) => (
+                    <li key={entry.slug}><a href={`#p-${entry.slug}`}>{entry.meta.title}</a></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <p className={styles.marginNote}>Made out of<br />curiosity.</p>
+          </aside>
+        </div>
+      </section>
 
       {rest.length > 0 && (
         <section className={styles.others} aria-labelledby="garage-others">
           <div className={styles.sectionHead}>
-            <h2 id="garage-others">More from the <em>workbench.</em></h2>
-            <p>Smaller things you can build on.</p>
+            <h2 id="garage-others">More in the <em>drawers.</em></h2>
+            <p>Pull a drawer to take a look.</p>
           </div>
           <ul className={styles.libraryList}>
-            {rest.map((entry) => (
+            {rest.map((entry, index) => (
               <li key={entry.slug}>
                 <article className={styles.library} aria-labelledby={`p-${entry.slug}`}>
-                  <h3 id={`p-${entry.slug}`} className={styles.libraryName}>{entry.meta.title}</h3>
-                  <p className={styles.description}>{entry.meta.description}</p>
-                  <ProjectActions entry={entry} />
+                  <details className={styles.drawer}>
+                    <summary className={styles.drawerFront}>
+                      <span className={styles.drawerNumber} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                      <h3 id={`p-${entry.slug}`} className={styles.libraryName}>{entry.meta.title}</h3>
+                      <span className={styles.drawerPull} aria-hidden="true" />
+                      <span className={styles.drawerHook}>{entry.meta.hook ?? entry.meta.description}</span>
+                    </summary>
+                    <div className={styles.drawerContents}>
+                      <p className={styles.description}>{entry.meta.description}</p>
+                      <ProjectActions entry={entry} />
+                    </div>
+                  </details>
                 </article>
               </li>
             ))}

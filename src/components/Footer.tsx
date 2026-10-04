@@ -5,14 +5,6 @@ import textLink from "./TextLink.module.css";
 export default function Footer({ compact = false }: { compact?: boolean }) {
   return (
     <footer className={`${styles.footer}${compact ? ` ${styles.compact}` : ""}`}>
-      {!compact && (
-        <div className={styles.invitation}>
-          <p>Have something in mind?</p>
-          <a className={textLink.link} href={`mailto:${site.email}`}>
-            Let’s talk.
-          </a>
-        </div>
-      )}
       <div className={styles.bottom}>
         <span>
           © {new Date().getFullYear()} {site.name}
