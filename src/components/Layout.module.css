@@ -18,6 +18,89 @@
   outline: none;
 }
 
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms var(--ease);
+}
+
+/* A cached page opens immediately; slower requests get a quiet branded veil. */
+.loading[data-loading="true"] {
+  opacity: 1;
+  transition-delay: 100ms;
+}
+
+.loadingIdentity {
+  display: grid;
+  justify-items: center;
+  gap: 1.6rem;
+}
+
+.loadingMark {
+  color: var(--ink-1);
+  font-size: 6.4rem;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.loadingMark span {
+  color: var(--color-accent);
+}
+
+.loadingTrack {
+  width: 6rem;
+  height: 1px;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.loadingTrack::after {
+  content: "";
+  display: block;
+  width: 40%;
+  height: 100%;
+  background: var(--color-accent);
+}
+
+.loadingLabel {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .page {
+    animation: pageEnter 240ms var(--ease) both;
+  }
+
+  .loading[data-loading="true"] .loadingTrack::after {
+    animation: loadingSweep 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loadingSweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(350%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading { transition: none; }
+}
+
 /* The introduction fills the space between the header and compact footer.
    Content can still grow when zoom or a short viewport needs more room. */
 .home {
