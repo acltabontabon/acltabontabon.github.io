@@ -3,7 +3,7 @@ title: "Personal Blueprint for a Tech Team"
 date: 2024-08-31
 description: "We're the ones who tell the computers what to do."
 tags: [life, lessons-learned]
-image: /images/blog/afpfw.jpg
+image: /images/blog/afpfw.webp
 ---
 
 Three years ago, I felt the need for a "reset" because I was frustrated that the profession I once
@@ -18,7 +18,7 @@ push my luck. Fortunately, I got hired and started working at Avaloq in August 2
 
 And that's where I met these amazing people.
 
-![The team](/images/blog/afpfw.jpg#ambient)
+![The team](/images/blog/afpfw.webp#ambient)
 
 _Shoutout to **Denisa**, **Marc** and **Simon** — couldn't make it to the team photo, but they're very much part
 of the squad and totally awesome too!_
@@ -148,4 +148,4 @@ Thank you for reading!
 
 _P.S. I want to give a special shoutout to my peers who have moved on to other opportunities. Man, I can't thank you guys enough for the things I've learned from you. Wherever your paths take you next, I hope it's somewhere you're happy to be._
 
-![The team, part two](/images/blog/afpfw-2.jpg#ambient)
+![The team, part two](/images/blog/afpfw-2.webp#ambient)

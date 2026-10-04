@@ -7,24 +7,31 @@ interface SeoProps {
   path?: string;
   image?: string;
   type?: "website" | "article";
+  noindex?: boolean;
 }
 
 export default function Seo({
   title,
   description = site.description,
   path = "/",
-  image = "/images/profile.jpg",
+  image = "/images/social.png",
   type = "website",
+  noindex = false,
 }: SeoProps) {
   const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`;
-  const url = `${site.url}${path}`;
-  const ogImage = `${site.url}${image}`;
+  const canonical = new URL(path, `${site.url}/`);
+  // Match the directory URLs served by GitHub Pages and listed in sitemap.xml.
+  canonical.pathname = `${canonical.pathname.replace(/\/$/, "")}/`;
+  canonical.search = "";
+  canonical.hash = "";
+  const url = canonical.href;
+  const ogImage = new URL(image, `${site.url}/`).href;
 
   return (
     <Head>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={url} />
+      {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={url} />}
       <meta property="og:type" content={type} />
       <meta property="og:site_name" content={site.name} />
       <meta property="og:title" content={fullTitle} />

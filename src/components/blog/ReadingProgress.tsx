@@ -20,7 +20,7 @@ export default function ReadingProgress() {
     const update = () => {
       frame = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      el.style.setProperty("--progress", String(max > 0 ? Math.min(1, window.scrollY / max) : 0));
+      el.style.setProperty("--progress", String(max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0));
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -29,10 +29,13 @@ export default function ReadingProgress() {
     update();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule, { passive: true });
+    const observer = new ResizeObserver(schedule);
+    observer.observe(document.body);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
+      observer.disconnect();
     };
   }, []);
 

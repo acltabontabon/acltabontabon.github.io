@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "@/lib/date";
 import Prose from "./Prose";
 import styles from "./ArticleLayout.module.css";
+import textLink from "./TextLink.module.css";
 
 interface ArticleLayoutProps {
   title: string;
@@ -39,8 +40,8 @@ export default function ArticleLayout({
   return (
     <article className={styles.article}>
       <header className={`${styles.grid} ${styles.header}`}>
-        <Link className={styles.back} to={back.to}>
-          <span aria-hidden="true">←</span> {back.label}
+        <Link className={`${styles.back} ${textLink.link}`} to={back.to}>
+          Back to {back.label}
         </Link>
         <h1 className={styles.title}>{title}</h1>
 

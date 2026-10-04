@@ -3,10 +3,10 @@ title: "A Diverse Team"
 date: 2021-11-26
 description: "The lessons I've learned from a diverse team."
 tags: [diversity, lessons-learned]
-image: /images/blog/diverse-team.png
+image: /images/blog/diverse-team.webp
 ---
 
-![A diverse team illustration](/images/blog/diverse-team.png#ambient+soft)
+![A diverse team illustration](/images/blog/diverse-team.webp#ambient+soft)
 
 It's been a couple of months since I became part of a diverse team. Not gonna lie it is a bit
 intimidating at first.

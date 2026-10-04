@@ -44,3 +44,8 @@ export type GarageEntry = Entry<GarageMeta> & {
   /** Intrinsic size of `meta.screenshot`, read at build time. */
   screenshotSize?: { width: number; height: number };
 };
+
+/** Index pages need metadata, not the HTML of every article. */
+export type EntrySummary<T extends Entry<unknown>> = Omit<T, "html"> & { hasBody: boolean };
+export type BlogSummary = EntrySummary<BlogEntry>;
+export type GarageSummary = EntrySummary<GarageEntry>;

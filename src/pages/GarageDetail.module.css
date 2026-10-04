@@ -19,14 +19,8 @@
 }
 
 .links a {
-  display: inline-block;
-  padding-block: 0.4rem;
-  color: var(--ink-1);
-  text-decoration: none;
-  border-bottom: 1px solid var(--ink-3);
-}
-
-.links a:hover,
-.links a:focus-visible {
-  border-color: var(--ink-1);
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  padding-block: 0.8rem;
 }

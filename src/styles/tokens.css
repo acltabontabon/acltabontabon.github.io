@@ -1,33 +1,20 @@
-/* Dark is the site's default theme — it is what `:root` says, with no media
-   query involved, so a visitor gets it regardless of their OS setting.
-   The light palette is still here and still complete; it applies only when
-   something explicitly asks for it with `data-theme="light"` on <html>.
-   Every dark-mode rule elsewhere in the codebase follows the same shape: the
-   dark value is the plain declaration, and light is the override. */
 :root {
   color-scheme: dark;
-
-  --color-text: #aaa;
-  --color-heading: #ededed;
-  --color-text-strong: #999;
-  --color-accent: #a855f7; /* violet-500 */
-  --color-accent-rgb: 168, 85, 247;
-  --color-accent-soft: rgba(168, 85, 247, 0.14);
-  --color-border: #2a2a2a;
-  --color-surface: #0b0b0d;
-  --color-surface-raised: #18181b;
-  --color-ink: #fff;
+  --color-text: #b1b1a7;
+  --color-heading: #ece9e1;
+  --color-text-strong: #cecbc3;
+  --color-accent: #c2ac82;
+  --color-accent-rgb: 194, 172, 130;
+  --color-accent-soft: rgb(194 172 130 / 10%);
+  --color-border: #363730;
+  --color-surface: #171816;
+  --color-surface-raised: #20211e;
+  --color-ink: #ece9e1;
   --shadow-color: 0, 0, 0;
-  --pegboard-dot: rgba(255, 255, 255, 0.08);
-  /* light noise reads weaker on near-black, and a warm dark surface goes
-     muddy fast — so the texture leans on grain here, not on hue. */
-  --grain-opacity: 0.042;
-  --sketch-opacity: 0.055;
 
-  /* One family, everywhere: Geist for words, Geist Mono for labels, data
-     and code. */
   --font-sans: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "Geist Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-serif: Georgia, "Times New Roman", serif;
   --font-display: var(--font-sans);
   --font-display-mono: var(--font-mono);
   --weight-thin: 300;
@@ -41,73 +28,38 @@
   --space-7: 56px;
   --space-8: 80px;
   --space-header: 125px;
-
   --content-width: 560px;
-
-  --radius: 12px;
+  --radius: 4px;
   --radius-pill: 20px;
-
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* ---- the site system (first built for the homepage) -------------------
-     ink: three steps of the heading colour mixed into the surface, so they
-     follow the theme — primary text, descriptions, labels/metadata. */
   --ink-1: var(--color-heading);
-  --ink-2: color-mix(in srgb, var(--color-heading) 74%, var(--color-surface));
-  --ink-3: color-mix(in srgb, var(--color-heading) 58%, var(--color-surface));
+  --ink-2: #b1b1a7;
+  --ink-3: #94958a;
   --rule: 1px solid var(--color-border);
-
-  --gutter: clamp(1.6rem, 4vw, 6.4rem);
-  --shell-max: 180rem;
-
-  /* type: the oversized display sizes, and the one small mono label size */
-  --t-display: clamp(4.4rem, 5.6vw, 9.6rem);
+  --gutter: clamp(2rem, 5vw, 8rem);
+  --shell-max: 128rem;
+  --t-display: clamp(5.6rem, 7vw, 9.6rem);
   --t-headline: clamp(3.2rem, 3.6vw, 5.6rem);
-  --t-title: clamp(1.8rem, 1.5vw, 2.2rem);
-  --t-body: clamp(1.45rem, 1.05vw, 1.6rem);
-  --t-label: 1.2rem;
-
-  /* widths for the kinds of page the site has */
+  --t-title: clamp(1.9rem, 1.5vw, 2.3rem);
+  --t-body: 1.5rem;
+  --t-label: 1.1rem;
   --w-prose: 68ch;
   --w-index: 104rem;
 }
 
-/* The display size tightens once the page is a single column; titles and
-   body text step up a touch on phones, where they're read at arm's length. */
-@media (max-width: 900px) {
-  :root {
-    --t-display: clamp(4.8rem, 9vw, 7.2rem);
-  }
-}
-
-@media (max-width: 640px) {
-  :root {
-    --t-title: 1.9rem;
-    --t-body: 1.5rem;
-  }
-}
-
 :root[data-theme="light"] {
   color-scheme: light;
-
-  --color-text: #666;
-  --color-heading: #222;
-  --color-text-strong: #575757;
-  --color-accent: #4b0082; /* indigo/purple */
-  --color-accent-rgb: 75, 0, 130;
-  --color-accent-soft: rgba(75, 0, 130, 0.08);
-  --color-border: #ededed;
-  /* not quite white — just warm enough to stop the page reading as a blank
-     browser canvas. Paired with the grain in global.css. */
-  --color-surface: #fcfbf8;
-  /* a step above --color-surface for cards/sheets that need to read as
-     "raised" — identical to surface here (elevation comes from shadow in
-     light), a lighter shade of it in dark (shadows barely read against a dark
-     page, so elevation there comes from color contrast) */
-  --color-surface-raised: #fff;
-  --color-ink: #000;
-  --shadow-color: 20, 10, 30;
-  --pegboard-dot: rgba(30, 20, 40, 0.09);
-  --grain-opacity: 0.035;
-  --sketch-opacity: 0.05;
+  --color-text: #62635b;
+  --color-heading: #262821;
+  --color-text-strong: #404238;
+  --color-accent: #75603b;
+  --color-accent-rgb: 117, 96, 59;
+  --color-accent-soft: rgb(117 96 59 / 8%);
+  --color-border: #d9d8cf;
+  --color-surface: #f3f1e9;
+  --color-surface-raised: #e9e7dd;
+  --color-ink: #262821;
+  --ink-2: #62635b;
+  --ink-3: #6d6f65;
 }

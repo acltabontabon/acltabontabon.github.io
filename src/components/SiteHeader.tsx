@@ -21,9 +21,12 @@ export default function SiteHeader() {
 
   return (
     <header className={styles.header}>
-      <Link to="/" className={styles.mark} aria-label={`${site.name} — home`} aria-current={path === "/" ? "page" : undefined}>
-        act.
-      </Link>
+      <div className={styles.brand}>
+        <Link to="/" className={styles.mark} aria-label={`${site.name} — home`} aria-current={path === "/" ? "page" : undefined}>
+          act.
+        </Link>
+        <span className={styles.tagline}>Software &amp; side quests</span>
+      </div>
       <nav aria-label="Main">
         <ul className={styles.nav}>
           {sections.map(({ to, label }) => {

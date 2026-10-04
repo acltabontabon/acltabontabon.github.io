@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import PageHead from "@/components/PageHead";
 import Seo from "@/components/Seo";
 import styles from "./NotFound.module.css";
+import textLink from "@/components/TextLink.module.css";
 
 export default function NotFound() {
   return (
     <>
-      <Seo title="Page not found" description="Nothing here." />
+      <Seo title="Page not found" description="Nothing here." noindex />
       <PageHead
         title="Nothing on the workbench here"
         lead={
@@ -16,8 +17,8 @@ export default function NotFound() {
         }
         meta="Error 404"
       />
-      <Link className={styles.home} to="/">
-        Back home <span aria-hidden="true">→</span>
+      <Link className={`${styles.home} ${textLink.link}`} to="/">
+        Back home
       </Link>
     </>
   );

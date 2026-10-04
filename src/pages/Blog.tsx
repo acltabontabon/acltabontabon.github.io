@@ -51,9 +51,6 @@ export default function Blog() {
                     <span className={styles.description}>{meta.description}</span>
                   </span>
                   <span className={styles.time}>{readingTime}</span>
-                  <span className={styles.arrow} aria-hidden="true">
-                    →
-                  </span>
                 </Link>
               </li>
             ))}

@@ -10,7 +10,7 @@ tags: [open-source, react, typescript]
 tech: [React, TypeScript, Local-first]
 github: https://github.com/acltabontabon/draft-canvas
 liveUrl: https://acltabontabon.com/draft-canvas/
-screenshot: /images/garage/draft-canvas-og.png
+screenshot: /images/garage/draft-canvas-og.webp
 art: draft-canvas
 accent: "#0c7d72"
 accentDark: "#5fd6c9"

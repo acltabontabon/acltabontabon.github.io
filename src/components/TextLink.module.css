@@ -1,0 +1,19 @@
+.link {
+  color: var(--ink-1);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  text-decoration-color: var(--ink-3);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .link {
+    transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
+  }
+}

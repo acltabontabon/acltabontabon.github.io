@@ -1,31 +1,27 @@
 import { Link } from "react-router-dom";
-import type { CSSProperties, ReactNode } from "react";
-import PageHead from "@/components/PageHead";
+import type { ReactNode } from "react";
 import Seo from "@/components/Seo";
-import PixelMark from "@/components/home/PixelMark";
-import { hasCard } from "@/components/home/pixelArt";
 import { actionsFor } from "@/components/garage/actions";
 import { garageEntries } from "@/content/loader";
-import type { GarageEntry } from "@/content/types";
+import type { GarageSummary } from "@/content/types";
 import { statusLabel } from "@/lib/garageStatus";
+import linkStyles from "@/components/TextLink.module.css";
 import styles from "./Garage.module.css";
 
-const INTRO = "Things I've built, things I'm building, and a few things I should probably clean up.";
+const INTRO = "Side projects, experiments, and tools I wanted to exist.";
 
-/** An external destination opens in a new tab, as it always has here. */
 function Destination({
   href,
   external,
-  className,
   label,
   children,
 }: {
   href: string;
   external: boolean;
-  className: string;
-  label?: string;
+  label: string;
   children: ReactNode;
 }) {
+  const className = `${styles.action} ${linkStyles.link}`;
   return external ? (
     <a className={className} href={href} target="_blank" rel="noreferrer" aria-label={label}>
       {children}
@@ -37,167 +33,94 @@ function Destination({
   );
 }
 
-function Project({ entry, number }: { entry: GarageEntry; number: number }) {
-  const { meta, slug, screenshotSize } = entry;
+function ProjectActions({ entry }: { entry: GarageSummary }) {
   const { primary, source } = actionsFor(entry);
-  const num = String(number).padStart(2, "0");
+  if (!primary && !source) return null;
 
   return (
-    <li className={styles.project}>
-      <article className={styles.projectInner} aria-labelledby={`p-${slug}`}>
-        <div className={styles.text}>
-          <p className={styles.meta}>
-            <span>{num}</span>
-            {meta.status && <span>{statusLabel[meta.status]}</span>}
-            {meta.version && <span>v{meta.version}</span>}
-          </p>
+    <div className={styles.actions}>
+      {primary && (
+        <Destination
+          href={primary.href}
+          external={primary.external}
+          label={`${primary.label}: ${entry.meta.title}`}
+        >
+          {primary.label}
+        </Destination>
+      )}
+      {source && (
+        <Destination href={source.href} external label={`Source code for ${entry.meta.title}`}>
+          Source code
+        </Destination>
+      )}
+    </div>
+  );
+}
 
-          <div className={styles.nameRow}>
-            <h2 id={`p-${slug}`} className={styles.name}>
-              {meta.title}
-            </h2>
-            {hasCard(meta.art) && <PixelMark id={meta.art} scale={1} className={styles.mark} />}
-          </div>
+function Project({ entry, first }: { entry: GarageSummary; first: boolean }) {
+  const { meta, slug, screenshotSize } = entry;
 
-          {meta.hook && <p className={styles.hook}>{meta.hook}</p>}
-          <p className={styles.description}>{meta.description}</p>
-
-          {meta.tech.length > 0 && (
-            <ul className={styles.tech} aria-label="Built with">
-              {meta.tech.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
-          )}
-
-          {(primary || source) && (
-            <div className={styles.actions}>
-              {primary && (
-                <Destination
-                  href={primary.href}
-                  external={primary.external}
-                  className={styles.primary}
-                  label={`${primary.label}: ${meta.title}`}
-                >
-                  {primary.label} <span aria-hidden="true">{primary.external ? "↗" : "→"}</span>
-                </Destination>
-              )}
-              {source && (
-                <a
-                  className={styles.secondary}
-                  href={source.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={source.label}
-                >
-                  {source.name} <span aria-hidden="true">↗</span>
-                </a>
-              )}
-            </div>
-          )}
-        </div>
-
+  return (
+    <li>
+      <article className={styles.project} aria-labelledby={`p-${slug}`}>
         {meta.screenshot && (
-          <figure
-            className={styles.shot}
-            style={
-              screenshotSize
-                ? ({ "--ar": screenshotSize.width / screenshotSize.height } as CSSProperties)
-                : undefined
-            }
-          >
+          <figure className={styles.preview}>
             <img
               src={meta.screenshot}
-              alt={`Screenshot of the ${meta.title} interface`}
+              alt={`${meta.title} project preview`}
               width={screenshotSize?.width}
               height={screenshotSize?.height}
-              loading={number === 1 ? "eager" : "lazy"}
+              loading={first ? "eager" : "lazy"}
               decoding="async"
             />
-            <figcaption className={styles.caption}>
-              Fig. {num} — {meta.title}
-            </figcaption>
           </figure>
         )}
+        <div className={styles.titleRow}>
+          <h2 id={`p-${slug}`} className={styles.name}>{meta.title}</h2>
+          {meta.status && meta.status !== "stable" && (
+            <span className={styles.status}>{statusLabel[meta.status]}</span>
+          )}
+        </div>
+        <p className={styles.description}>{meta.description}</p>
+        <ProjectActions entry={entry} />
       </article>
     </li>
   );
 }
 
 export default function Garage() {
-  // Visual weight follows the content: `featured` entries get a full section,
-  // everything else drops to the index. Nothing is hand-placed, so a new
-  // markdown file lands in the right tier on its own.
-  const featured = garageEntries.filter((e) => e.meta.featured);
-  const rest = garageEntries.filter((e) => !e.meta.featured);
-
-  const years = garageEntries.map((e) => e.meta.date.slice(0, 4)).sort();
-  const span =
-    years.length > 0
-      ? years[0] === years[years.length - 1]
-        ? years[0]
-        : `${years[0]} – ${years[years.length - 1]}`
-      : "";
+  const featured = garageEntries.filter((entry) => entry.meta.featured);
+  const rest = garageEntries.filter((entry) => !entry.meta.featured);
 
   return (
     <>
       <Seo title="Garage" path="/garage" description={INTRO} />
-      <PageHead
-        title="Garage"
-        lead={
-          <>
-            Things I&apos;ve built, things I&apos;m building,{" "}
-            <PageHead.Soft>and a few things I should probably clean up.</PageHead.Soft>
-          </>
-        }
-        meta={
-          <>
-            {String(garageEntries.length).padStart(2, "0")}{" "}
-            {garageEntries.length === 1 ? "project" : "projects"}
-            {span && ` · ${span}`}
-          </>
-        }
-      />
+      <header className={styles.heading}>
+        <h1>Garage</h1>
+        <p>{INTRO}<br /><span>Some finished. Some still becoming.</span></p>
+      </header>
 
-      <ol className={styles.projects}>
-        {featured.map((entry, i) => (
-          <Project key={entry.slug} entry={entry} number={i + 1} />
-        ))}
+      <ol className={styles.projects} aria-label="Selected projects">
+        {featured.map((entry, i) => <Project key={entry.slug} entry={entry} first={i === 0} />)}
       </ol>
 
       {rest.length > 0 && (
         <section className={styles.others} aria-labelledby="garage-others">
-          <h2 id="garage-others" className={styles.othersLabel}>
-            Other things
-          </h2>
-          <ol className={styles.index}>
-            {rest.map((entry, i) => {
-              const { meta, slug } = entry;
-              const { primary } = actionsFor(entry);
-              const row = (
-                <>
-                  <span className={styles.num}>{String(featured.length + i + 1).padStart(2, "0")}</span>
-                  <span className={styles.rowTitle}>{meta.title}</span>
-                  <span className={styles.rowHook}>{meta.hook ?? meta.description}</span>
-                  <span className={styles.rowTech}>{meta.tech.join(" / ")}</span>
-                  <span className={styles.arrow} aria-hidden="true">
-                    {primary?.external ? "↗" : "→"}
-                  </span>
-                </>
-              );
-              return (
-                <li key={slug}>
-                  {primary ? (
-                    <Destination href={primary.href} external={primary.external} className={styles.row}>
-                      {row}
-                    </Destination>
-                  ) : (
-                    <span className={styles.row}>{row}</span>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
+          <div className={styles.sectionHead}>
+            <h2 id="garage-others">More from the <em>workbench.</em></h2>
+            <p>Smaller things you can build on.</p>
+          </div>
+          <ul className={styles.libraryList}>
+            {rest.map((entry) => (
+              <li key={entry.slug}>
+                <article className={styles.library} aria-labelledby={`p-${entry.slug}`}>
+                  <h3 id={`p-${entry.slug}`} className={styles.libraryName}>{entry.meta.title}</h3>
+                  <p className={styles.description}>{entry.meta.description}</p>
+                  <ProjectActions entry={entry} />
+                </article>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
     </>

@@ -1,325 +1,190 @@
-/* The Garage: an open showcase. Each featured project is a ruled section —
-   text on the left and its screenshot on the right on wide screens, stacked
-   on narrow ones — sized by its content, never to a fixed height.
-   Screenshots keep their own proportions and their own colour; the page
-   around them stays monochrome. Everything else drops to a plain index. */
+.heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 3.2rem;
+  padding-block: clamp(4.8rem, 6vw, 8rem) clamp(4rem, 5vw, 6.4rem);
+}
 
-.projects {
+.heading h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--t-display);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+}
+
+.heading p {
+  max-width: 38ch;
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.6rem, 1.5vw, 1.9rem);
+  line-height: 1.6;
+  color: var(--ink-1);
+  text-wrap: pretty;
+}
+
+.heading p span {
+  color: var(--ink-3);
+}
+
+.projects,
+.libraryList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(4.8rem, 6vw, 7.2rem) clamp(2.4rem, 4vw, 5.6rem);
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: var(--rule);
 }
 
-.project {
-  border-bottom: var(--rule);
-}
-
-.projectInner {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: clamp(3.2rem, 5vw, 8rem);
-  align-items: start;
-  padding-block: clamp(3.2rem, 4.4vw, 6.4rem);
-}
-
-/* the first project comes up a little sooner under the introduction's rule */
-.project:first-child .projectInner {
-  padding-top: clamp(3.2rem, 4vw, 5.6rem);
-}
-
-/* ---- text column */
-
-.text {
-  display: grid;
-  gap: 1.6rem;
-  align-content: start;
+.projects > li,
+.libraryList > li {
   min-width: 0;
 }
 
-.meta,
-.tech,
-.caption,
-.num,
-.rowTech,
-.othersLabel {
-  font-family: var(--font-mono);
-  font-size: var(--t-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-}
-
-.meta {
+.project,
+.library {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.6rem;
-  margin: 0;
+  flex-direction: column;
+  height: 100%;
 }
 
-.meta span:first-child {
-  color: var(--ink-2);
-}
-
-/* name + illustration as one heading group: the mark sits on the name's
-   baseline, sized to about its cap height, and drops below the name rather
-   than squeezing it when there isn't room */
-.nameRow {
+.preview {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  margin: 0 0 2.4rem;
+  padding: clamp(1.6rem, 2.2vw, 2.8rem);
+  background: var(--color-surface-raised);
+  border: var(--rule);
+}
+
+.preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.titleRow {
+  display: flex;
   align-items: baseline;
-  gap: 1rem 2rem;
-  margin-top: 0.4rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.6rem;
+  margin-bottom: 1.2rem;
 }
 
-.name {
+.name,
+.libraryName {
   margin: 0;
-  font-size: var(--t-headline);
-  font-weight: 500;
-  line-height: 1;
+  font-size: clamp(2.5rem, 2.5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.2;
   letter-spacing: -0.045em;
   color: var(--ink-1);
+  overflow-wrap: anywhere;
 }
 
-/* the homepage's pixel illustration, small and dim: a signature, not a
-   second picture competing with the screenshot */
-.mark {
-  color: color-mix(in srgb, var(--color-heading) 42%, var(--color-surface));
-}
-
-.hook {
-  max-width: 30ch;
-  margin: 0.8rem 0 0;
-  font-size: clamp(1.9rem, 1.6vw, 2.3rem);
-  line-height: 1.35;
-  color: var(--ink-1);
-  text-wrap: pretty;
+.status {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .description {
-  max-width: 52ch;
+  max-width: 56ch;
   margin: 0;
   font-size: var(--t-body);
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--ink-2);
   text-wrap: pretty;
-}
-
-.tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.6rem;
-  margin: 0.4rem 0 0;
-  padding: 0;
-  list-style: none;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 1.2rem 2.8rem;
-  margin-top: 1.2rem;
+  gap: 0.4rem 2.4rem;
+  margin-top: auto;
+  padding-top: 1.6rem;
 }
 
-.primary,
-.secondary {
-  display: inline-block;
-  padding-block: 0.6rem;
-  font-size: var(--t-body);
-  text-decoration: none;
-  outline-offset: 0.3rem;
+.action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  font-size: 1.3rem;
 }
-
-/* primary: full ink, a firm underline; secondary: a step back */
-.primary {
-  color: var(--ink-1);
-  font-weight: 500;
-  border-bottom: 1px solid var(--ink-1);
-}
-
-.secondary {
-  color: var(--ink-2);
-  border-bottom: 1px solid var(--ink-3);
-}
-
-.primary span,
-.secondary span {
-  display: inline-block;
-}
-
-.primary:hover span,
-.primary:focus-visible span,
-.secondary:hover span,
-.secondary:focus-visible span {
-  transform: translate(0.2rem, -0.2rem);
-}
-
-.secondary:hover,
-.secondary:focus-visible {
-  color: var(--ink-1);
-  border-color: var(--ink-1);
-}
-
-/* ---- screenshot */
-
-/* The screenshot is capped by height as well as width, so a tall or roomy
-   capture scales down proportionally instead of setting the section's
-   height; the figure shrinks to the image, so the caption sits right under
-   it and both hang from the column's left edge. Never cropped or filtered. */
-.shot {
-  --max-h: min(42rem, 58vh);
-  justify-self: start;
-  /* the width a capture of this shape has at the height cap — known from its
-     intrinsic size (--ar), so the box is exact before the image loads */
-  width: min(100%, calc(var(--max-h) * var(--ar, 1.6)));
-  margin: 0;
-  min-width: 0;
-}
-
-.shot img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: var(--rule);
-  border-radius: 4px;
-  background: var(--color-surface-raised);
-}
-
-.caption {
-  margin-top: 1rem;
-}
-
-/* ---- the index of everything else */
 
 .others {
-  margin-top: clamp(4.8rem, 5vw, 7.2rem);
+  margin-top: clamp(7.2rem, 9vw, 11rem);
 }
 
-.othersLabel {
-  margin: 0 0 1.2rem;
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.2rem 3.2rem;
+  margin-bottom: 3.2rem;
+}
+
+.sectionHead h2 {
+  margin: 0;
+  font-size: clamp(2.8rem, 3vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.sectionHead h2 em {
+  font-family: var(--font-serif);
   font-weight: 400;
 }
 
-.index {
+.sectionHead p {
   margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: var(--rule);
-}
-
-.index li {
-  border-bottom: var(--rule);
-}
-
-.row {
-  display: grid;
-  /* proportional tracks: the name gets the room it needs before wrapping,
-     the description the most, the tech labels a right-aligned share */
-  grid-template-columns: 3.2rem minmax(0, 5fr) minmax(0, 6fr) minmax(0, 3fr) 2rem;
-  align-items: first baseline;
-  gap: 0.4rem 1.6rem;
-  padding-block: clamp(1.3rem, 1.2vw, 1.7rem);
-  color: var(--ink-2);
-  text-decoration: none;
-  outline-offset: 0.4rem;
-}
-
-.rowTitle {
-  font-size: var(--t-title);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--ink-1);
-}
-
-.rowTech {
-  justify-self: end;
-  text-align: right;
-}
-
-.rowHook {
-  font-size: var(--t-body);
-  line-height: 1.45;
-  text-wrap: pretty;
-}
-
-.arrow {
-  justify-self: end;
   color: var(--ink-3);
+  font-size: 1.3rem;
 }
 
-a.row:hover .arrow,
-a.row:focus-visible .arrow {
-  color: var(--ink-1);
-  transform: translate(0.2rem, -0.2rem);
+.library {
+  border-top: var(--rule);
+  padding-top: 2.4rem;
 }
 
-a.row:hover .rowHook,
-a.row:focus-visible .rowHook {
-  color: var(--ink-1);
-}
-
-.index li:has(> a.row:hover),
-.index li:has(> a.row:focus-visible) {
-  border-bottom-color: var(--ink-3);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .primary span,
-  .secondary span,
-  .arrow {
-    transition:
-      transform 0.25s var(--ease),
-      color 0.16s var(--ease);
-  }
-  .secondary,
-  .rowHook,
-  .index li {
-    transition:
-      color 0.16s var(--ease),
-      border-color 0.16s var(--ease);
-  }
-}
-
-/* ---- narrower: one column, text above its screenshot */
-
-@media (max-width: 900px) {
-  .projectInner {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .shot {
-    width: 100%;
-  }
-  .row {
-    grid-template-columns: 3.2rem minmax(0, 1fr) 2rem;
-    grid-template-areas:
-      "num title arrow"
-      ".   hook  ."
-      ".   tech  .";
-  }
-  .num {
-    grid-area: num;
-  }
-  .rowTitle {
-    grid-area: title;
-  }
-  .rowHook {
-    grid-area: hook;
-  }
-  .rowTech {
-    grid-area: tech;
-    justify-self: start;
-    text-align: left;
-  }
-  .arrow {
-    grid-area: arrow;
-  }
+.libraryName {
+  max-width: 26ch;
+  margin-bottom: 1.2rem;
+  font-size: clamp(2rem, 2vw, 2.6rem);
 }
 
 @media (max-width: 640px) {
-  .row {
-    grid-template-columns: 2.8rem minmax(0, 1fr) 2rem;
+  .heading {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4rem;
+    padding-block: 4rem;
+  }
+
+  .projects,
+  .libraryList {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 4rem;
+  }
+
+  .preview {
+    margin-bottom: 2rem;
+    padding: 1.6rem;
+  }
+
+  .sectionHead {
+    margin-bottom: 2.4rem;
   }
 }

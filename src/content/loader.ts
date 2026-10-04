@@ -1,24 +1,17 @@
-import type { BlogEntry, GarageEntry } from "./types";
+import blogIndex from "../../generated/blog-index.json";
+import garageIndex from "../../generated/garage-index.json";
+import type { BlogSummary, GarageSummary } from "./types";
 
 // Reads the JSON produced by scripts/build-content.mjs (run before `vite`/
 // `vite-react-ssg build` — see package.json). Deliberately dumb: no
 // frontmatter parsing or markdown rendering here, so none of that tooling
 // ends up in the client bundle.
-const blogFiles = import.meta.glob("/generated/blog/*.json", { import: "default", eager: true }) as Record<
-  string,
-  BlogEntry
->;
-const garageFiles = import.meta.glob("/generated/garage/*.json", {
-  import: "default",
-  eager: true,
-}) as Record<string, GarageEntry>;
-
 function byDateDesc<T extends { meta: { date: string } }>(a: T, b: T): number {
-  return a.meta.date < b.meta.date ? 1 : -1;
+  return b.meta.date.localeCompare(a.meta.date);
 }
 
-export const blogEntries: BlogEntry[] = Object.values(blogFiles).sort(byDateDesc);
-export const garageEntries: GarageEntry[] = Object.values(garageFiles).sort(byDateDesc);
+export const blogEntries = (blogIndex as BlogSummary[]).sort(byDateDesc);
+export const garageEntries = (garageIndex as GarageSummary[]).sort(byDateDesc);
 
 export function findBySlug<T extends { slug: string }>(
   entries: T[],
@@ -33,6 +26,8 @@ export interface TaggedEntry {
   title: string;
   date: string;
   tags: string[];
+  href: string;
+  external: boolean;
 }
 
 export function allTaggedEntries(): TaggedEntry[] {
@@ -43,6 +38,8 @@ export function allTaggedEntries(): TaggedEntry[] {
       title: e.meta.title,
       date: e.meta.date,
       tags: e.meta.tags,
+      href: `/blog/${e.slug}`,
+      external: false,
     })),
     ...garageEntries.map((e) => ({
       type: "garage" as const,
@@ -50,8 +47,11 @@ export function allTaggedEntries(): TaggedEntry[] {
       title: e.meta.title,
       date: e.meta.date,
       tags: e.meta.tags,
+      // A project without a write-up has no generated detail page.
+      href: e.hasBody ? `/garage/${e.slug}` : (e.meta.liveUrl ?? e.meta.sourceUrl ?? e.meta.github ?? "/garage"),
+      external: !e.hasBody && Boolean(e.meta.liveUrl ?? e.meta.sourceUrl ?? e.meta.github),
     })),
-  ].sort((a, b) => (a.date < b.date ? 1 : -1));
+  ].sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function allTags(): string[] {
@@ -66,7 +66,7 @@ export function allTags(): string[] {
  * The posts either side of `slug` in reading order. blogEntries is sorted
  * date-descending, so the entry before it in the array is the newer one.
  */
-export function adjacentBlog(slug: string | undefined): { newer?: BlogEntry; older?: BlogEntry } {
+export function adjacentBlog(slug: string | undefined): { newer?: BlogSummary; older?: BlogSummary } {
   const i = blogEntries.findIndex((e) => e.slug === slug);
   if (i === -1) return {};
   return { newer: blogEntries[i - 1], older: blogEntries[i + 1] };

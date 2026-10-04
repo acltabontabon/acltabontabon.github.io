@@ -1,4 +1,4 @@
-import type { GarageEntry } from "@/content/types";
+import type { GarageSummary } from "@/content/types";
 
 export type SourceProvider = "github" | "gitlab" | "generic";
 
@@ -42,26 +42,23 @@ function providerOf(url: string): SourceProvider {
  * repository — and the source link is only offered when it isn't already
  * where the primary action goes.
  */
-export function actionsFor(entry: GarageEntry): {
+export function actionsFor(entry: GarageSummary): {
   primary: PrimaryAction | undefined;
   source: SourceAction | undefined;
 } {
-  const { meta, slug, html } = entry;
+  const { meta, slug, hasBody } = entry;
   const sourceHref = meta.sourceUrl ?? meta.github;
-  const hasStory = html.length > 0;
 
   let primary: PrimaryAction | undefined;
   if (meta.liveUrl) {
-    primary = { href: meta.liveUrl, label: meta.actionLabel ?? "Explore project", external: true };
-  } else if (hasStory) {
+    primary = { href: meta.liveUrl, label: meta.actionLabel ?? "Visit project", external: true };
+  } else if (hasBody) {
     primary = { href: `/garage/${slug}`, label: meta.actionLabel ?? "Read more", external: false };
   } else if (sourceHref) {
-    // The repository is the destination here, so it's named the same way the
-    // separate source link names it — "GitHub" on one cover and "Source" on
-    // the next, for the same kind of link, reads like an oversight.
+    const provider = providerOf(sourceHref);
     primary = {
       href: sourceHref,
-      label: meta.actionLabel ?? providerName[providerOf(sourceHref)],
+      label: meta.actionLabel ?? (provider === "generic" ? "View source" : `View on ${providerName[provider]}`),
       external: true,
     };
   }

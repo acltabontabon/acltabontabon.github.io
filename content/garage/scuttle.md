@@ -10,7 +10,7 @@ tags: [open-source, rust, tauri, react, typescript]
 tech: [Tauri, Rust, React, TypeScript]
 github: https://github.com/acltabontabon/scuttle
 liveUrl: https://acltabontabon.com/scuttle/
-screenshot: /images/garage/scuttle-findings.png
+screenshot: /images/garage/scuttle-findings.webp
 art: scuttle
 accent: "#a16207"
 accentDark: "#f0b35a"

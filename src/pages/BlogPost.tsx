@@ -1,13 +1,13 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import BlogArticle from "@/components/blog/BlogArticle";
 import ReadingProgress from "@/components/blog/ReadingProgress";
 import Seo from "@/components/Seo";
 import NotFound from "./NotFound";
-import { adjacentBlog, blogEntries, findBySlug } from "@/content/loader";
+import { adjacentBlog } from "@/content/loader";
+import type { BlogEntry } from "@/content/types";
 
 export default function BlogPost() {
-  const { slug } = useParams();
-  const entry = findBySlug(blogEntries, slug);
+  const entry = useLoaderData() as BlogEntry | null;
   if (!entry) return <NotFound />;
 
   const { newer, older } = adjacentBlog(entry.slug);

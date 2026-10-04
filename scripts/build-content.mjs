@@ -30,6 +30,7 @@ async function buildType(type) {
 
   const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith(".md")) : [];
   let count = 0;
+  const summaries = [];
 
   for (const file of files) {
     const slug = file.replace(/\.md$/, "");
@@ -54,9 +55,14 @@ async function buildType(type) {
       if (size) entry.screenshotSize = size;
     }
     fs.writeFileSync(path.join(outDir, `${slug}.json`), JSON.stringify(entry));
+    const { html: body, ...summary } = entry;
+    summaries.push({ ...summary, hasBody: body.length > 0 });
     count++;
   }
 
+  // Keep article bodies out of the eagerly imported index used by the home,
+  // lists and tag pages. Detail routes load just the entry they need.
+  fs.writeFileSync(path.join(OUT_DIR, `${type}-index.json`), JSON.stringify(summaries));
   console.log(`Built ${count} ${type} entries`);
 }
 

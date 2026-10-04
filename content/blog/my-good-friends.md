@@ -3,10 +3,10 @@ title: "My Good Friends"
 date: 2021-08-01
 description: "The right ones."
 tags: [friendship, life, bounce-back]
-image: /images/blog/the-exodus.jpg
+image: /images/blog/the-exodus.webp
 ---
 
-![The Exodus](/images/blog/the-exodus.jpg#ambient)
+![The Exodus](/images/blog/the-exodus.webp#ambient)
 
 A few months ago, I wrote an article about my decision to turn a new page for my professional
 career. Originally, I plan to continue my grind overseas — Unfortunately, I blew my shot (on one of
@@ -27,7 +27,7 @@ When all jokes were set aside, they did give sound advice and were even kind eno
 opportunities for me to try on. And this is when I realized that life gets easier when you surround
 yourself with the right people.
 
-![My good friends](/images/blog/good-friends.jpg#photo)
+![My good friends](/images/blog/good-friends.webp#photo)
 
 ---
 

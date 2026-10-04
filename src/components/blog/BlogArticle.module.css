@@ -1,37 +1,13 @@
-/* Only the closing link is particular to blog posts; the layout itself is
-   ArticleLayout's. */
+/* The shared link treatment supplies decoration; this sets the reading
+   page's closing action spacing and typography. */
 .all {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
   margin-top: 3.2rem;
-  padding-block: 0.4rem;
-  border-bottom: 1px solid var(--ink-3);
+  padding-block: 0.8rem;
   font-family: var(--font-mono);
   font-size: var(--t-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-1);
-  text-decoration: none;
-}
-
-.all:hover,
-.all:focus-visible {
-  border-color: var(--ink-1);
-}
-
-.all span {
-  display: inline-block;
-}
-
-.all:hover span,
-.all:focus-visible span {
-  transform: translateX(0.3rem);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .all {
-    transition: border-color 0.25s var(--ease);
-  }
-  .all span {
-    transition: transform 0.25s var(--ease);
-  }
 }

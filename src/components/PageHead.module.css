@@ -1,34 +1,41 @@
 .head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 32rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
   align-items: end;
-  gap: 3.2rem clamp(4rem, 6vw, 10rem);
-  padding-top: clamp(4rem, 5vw, 7.2rem);
+  gap: 3.2rem clamp(4rem, 6vw, 8rem);
+  padding-top: clamp(5.6rem, 7vw, 10rem);
   padding-bottom: clamp(4.8rem, 6vw, 8rem);
+}
+
+.main {
+  min-width: 0;
 }
 
 .title {
   margin: 0;
+  font-family: var(--font-serif);
   font-size: var(--t-display);
-  font-weight: 500;
-  line-height: 0.96;
-  letter-spacing: -0.05em;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.055em;
   color: var(--ink-1);
+  overflow-wrap: anywhere;
 }
 
 .lead {
-  max-width: 26ch;
+  max-width: 38ch;
   margin: clamp(2rem, 2.4vw, 3.2rem) 0 0;
-  font-size: clamp(2.2rem, 2.2vw, 3.2rem);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.9rem, 1.8vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
   color: var(--ink-1);
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .soft {
-  color: var(--ink-3);
+  color: var(--ink-2);
 }
 
 .side {
@@ -40,25 +47,25 @@
 .aside {
   margin: 0;
   font-size: var(--t-body);
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--ink-2);
 }
 
 .meta {
   margin: 0;
-  padding-top: 1.2rem;
-  border-top: var(--rule);
   font-family: var(--font-mono);
   font-size: var(--t-label);
-  letter-spacing: 0.08em;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   .head {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
+    gap: 2.4rem;
   }
 }

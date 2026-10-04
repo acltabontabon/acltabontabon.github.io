@@ -1,16 +1,10 @@
 .home {
-  display: inline-block;
-  padding-block: 0.4rem;
-  border-bottom: 1px solid var(--ink-3);
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  padding-block: 0.8rem;
   font-family: var(--font-mono);
   font-size: var(--t-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-1);
-  text-decoration: none;
-}
-
-.home:hover,
-.home:focus-visible {
-  border-color: var(--ink-1);
 }

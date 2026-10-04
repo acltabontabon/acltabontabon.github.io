@@ -3,13 +3,13 @@ title: "The Luxury of Time"
 date: 2022-06-15
 description: "How much time do you have?"
 tags: [life, time, lessons-learned]
-image: /images/blog/life-currencies.jpg
+image: /images/blog/life-currencies.webp
 ---
 
 I used to believe that it's conventional wisdom to not have the luxury of time at some point in your
 life.
 
-![Life currencies](/images/blog/life-currencies.jpg#wide)
+![Life currencies](/images/blog/life-currencies.webp#wide)
 
 At work, we have this recurring meeting called `Chit-Chat` session to talk about anything under the
 sun that is not work-related. And through this, I get the chance to know what my colleagues are

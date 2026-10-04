@@ -1,8 +1,8 @@
 export const site = {
   name: "Alvin Cris Tabontabon",
-  shortName: "Cris",
+  shortName: "Alvin",
   tagline: "An Asian man who codes to eat noodles",
-  description: "The home of the stuff Cris builds — projects and the occasional long-form ramble.",
+  description: "Alvin Cris Tabontabon — backend engineer, maker of useful software, and occasional writer. Explore the projects and the thinking behind them.",
   url: "https://acltabontabon.com",
   email: "me@acltabontabon.com",
   social: {

@@ -8,6 +8,7 @@
   display: grid;
   align-content: start;
   gap: 0.8rem;
+  min-height: 4.4rem;
   padding: clamp(2rem, 2.2vw, 2.8rem) 0;
   color: var(--ink-1);
   text-decoration: none;
@@ -35,39 +36,28 @@
   color: var(--ink-3);
 }
 
-.arrow {
-  display: inline-block;
-}
-
 .title {
   font-size: var(--t-title);
   font-weight: 500;
   line-height: 1.25;
   letter-spacing: -0.02em;
   text-wrap: balance;
+  overflow-wrap: anywhere;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  text-decoration-color: transparent;
 }
 
-.link:hover .label,
-.link:focus-visible .label {
-  color: var(--ink-1);
-}
-
-.newer:hover .arrow,
-.newer:focus-visible .arrow {
-  transform: translateX(-0.3rem);
-}
-
-.older:hover .arrow,
-.older:focus-visible .arrow {
-  transform: translateX(0.3rem);
+.link:hover .title,
+.link:focus-visible .title {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .label {
-    transition: color 0.2s var(--ease);
-  }
-  .arrow {
-    transition: transform 0.25s var(--ease);
+  .title {
+    transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
   }
 }
 

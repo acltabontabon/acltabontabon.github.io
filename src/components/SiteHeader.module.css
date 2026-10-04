@@ -1,24 +1,40 @@
 .header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  /* a little less on short windows, where every row counts */
-  margin-bottom: clamp(1.6rem, min(2.6vw, 3.2vh), 3.2rem);
+  min-height: 6.8rem;
+  border-bottom: var(--rule);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .mark {
-  font-size: 2rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  font-size: 2.7rem;
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.08em;
   color: var(--ink-1);
   text-decoration: none;
 }
 
+.tagline {
+  padding-left: 2rem;
+  border-left: var(--rule);
+  color: var(--ink-3);
+  font-size: 1.1rem;
+}
+
 .nav {
   display: flex;
-  gap: clamp(1.6rem, 3vw, 4rem);
+  gap: clamp(1.8rem, 3vw, 3.6rem);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -26,55 +42,52 @@
 
 .link {
   position: relative;
-  display: inline-block;
-  padding-block: 0.4rem; /* a comfortable tap target without changing the look */
-  color: var(--ink-1);
+  display: inline-flex;
+  align-items: center;
+  min-height: 4.4rem;
+  color: var(--ink-2);
   text-decoration: none;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .link::after {
   content: "";
   position: absolute;
-  inset: auto 0 0;
+  inset: auto 0 0.6rem;
   height: 1px;
-  background: currentColor;
+  background: var(--color-accent);
   transform: scaleX(0);
-  transform-origin: right;
+  transform-origin: left;
+}
+
+.link:hover,
+.link:focus-visible,
+.link[aria-current] {
+  color: var(--ink-1);
 }
 
 .link:hover::after,
 .link:focus-visible::after,
 .link[aria-current]::after {
   transform: scaleX(1);
-  transform-origin: left;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .link::after {
-    transition: transform 0.4s var(--ease);
-  }
-}
-
-/* Touch: 44px+ hit areas, grown with padding and cancelled with negative
-   margins so the visual layout doesn't move. The underline sits inside the
-   padding, so it stays under the word. */
-@media (pointer: coarse), (max-width: 640px) {
-  .mark {
-    padding: 1.2rem 1rem 1.2rem 0;
-    margin: -1.2rem -1rem -1.2rem 0;
-  }
-  .link {
-    padding-block: 1.2rem;
-    margin-block: -0.8rem;
-  }
-  .link::after {
-    inset: auto 0 0.8rem;
+    transition: transform 180ms var(--ease);
   }
 }
 
 @media (max-width: 640px) {
+  .tagline {
+    display: none;
+  }
+
   .header {
-    align-items: center;
+    min-height: 6rem;
+  }
+
+  .link {
+    font-size: 1.25rem;
   }
 }

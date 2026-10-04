@@ -5,8 +5,7 @@ import { findBySlug, garageEntries } from "@/content/loader";
 import { site } from "@/site";
 import styles from "./About.module.css";
 
-/** A project named in the prose, linked to its existing destination (the
- *  Garage's primary action for it), with its name from the same entry. */
+/** Project names and destinations follow the Garage's source of truth. */
 function Project({ slug }: { slug: string }) {
   const entry = findBySlug(garageEntries, slug);
   const action = entry && actionsFor(entry).primary;
@@ -25,14 +24,19 @@ function Project({ slug }: { slug: string }) {
 export default function About() {
   return (
     <>
-      <Seo title="About" path="/about" description="Casual introduction — not a resume." />
+      <Seo title="About" path="/about" description={`A little about ${site.shortName} — software, side projects, and life away from the keyboard.`} />
       <div className={styles.page}>
         <header className={styles.head}>
           <h1 className={styles.title}>About</h1>
-          <p className={styles.identity}>{site.tagline}.</p>
+          <div className={styles.identity}>
+            <p className={styles.initials}>act.</p>
+            <p>{site.name}</p>
+            <p className={styles.aside}>The initials. And a reminder to turn ideas into something real.</p>
+          </div>
         </header>
 
         <div className={styles.prose}>
+          <p className={styles.hello}>Hi, I’m {site.shortName}.</p>
           <p>
             I build backend services with Java and Spring Boot. AWS and Kubernetes are part of the day job,
             along with figuring out why something that worked yesterday has developed opinions.
@@ -54,7 +58,7 @@ export default function About() {
           </p>
           <p>
             Away from the keyboard, there's usually a game, a podcast, a Reddit rabbit hole, or noodles
-            involved. Sometimes I launch Steam "for a few minutes." That remains an unreliable estimate.
+            involved. Sometimes I launch Steam “for a few minutes.” That remains an unreliable estimate.
           </p>
         </div>
       </div>

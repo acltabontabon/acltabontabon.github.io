@@ -13,6 +13,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100svh;
   background: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-sans);
@@ -73,19 +74,14 @@ code {
   border-radius: 4px;
 }
 
-/* A barely-there paper grain over the whole site. The turbulence is baked into
-   a background *image*, not a live CSS filter, so the browser rasterises one
-   140x140 tile at decode and then just repeats a bitmap — no per-frame or
-   per-scroll cost. `stitchTiles` hides the seams; `fixed` keeps it off the
-   scroll path. ~390 bytes. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+::selection {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+html {
+  scroll-padding-top: 2rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 .visually-hidden {

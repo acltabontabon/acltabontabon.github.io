@@ -9,7 +9,7 @@ featured: true
 tags: [open-source, java, spring-boot, mcp]
 tech: [Java, Spring Boot, MCP]
 github: https://github.com/acltabontabon/Launchpad
-screenshot: /images/garage/launchpad-commands.png
+screenshot: /images/garage/launchpad-commands.webp
 art: launchpad
 accent: "#b45309"
 accentDark: "#fbbf24"

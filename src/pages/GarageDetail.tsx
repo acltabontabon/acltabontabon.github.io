@@ -1,16 +1,17 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import ArticleLayout from "@/components/ArticleLayout";
 import Seo from "@/components/Seo";
 import NotFound from "./NotFound";
-import { garageEntries, findBySlug } from "@/content/loader";
+import type { GarageEntry } from "@/content/types";
 import { statusLabel } from "@/lib/garageStatus";
 import styles from "./GarageDetail.module.css";
+import textLink from "@/components/TextLink.module.css";
 
 export default function GarageDetail() {
-  const { slug } = useParams();
-  const entry = findBySlug(garageEntries, slug);
+  const entry = useLoaderData() as GarageEntry | null;
   if (!entry || !entry.html) return <NotFound />;
   const { meta } = entry;
+  const sourceUrl = meta.sourceUrl ?? meta.github;
 
   return (
     <>
@@ -35,24 +36,25 @@ export default function GarageDetail() {
                 .filter(Boolean)
                 .join(" · ")}
             </p>
-            {(meta.liveUrl || meta.github) && (
+            {(meta.liveUrl || sourceUrl) && (
               <ul className={styles.links}>
                 {meta.liveUrl && (
                   <li>
-                    <a href={meta.liveUrl} target="_blank" rel="noreferrer">
-                      {meta.actionLabel ?? "Live"} <span aria-hidden="true">↗</span>
+                    <a className={textLink.link} href={meta.liveUrl} target="_blank" rel="noreferrer">
+                      {meta.actionLabel ?? "Visit project"}
                     </a>
                   </li>
                 )}
-                {meta.github && (
+                {sourceUrl && (
                   <li>
                     <a
-                      href={meta.github}
+                      className={textLink.link}
+                      href={sourceUrl}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label={`${meta.title} on GitHub`}
+                      aria-label={`Source code for ${meta.title}`}
                     >
-                      Source <span aria-hidden="true">↗</span>
+                      Source code
                     </a>
                   </li>
                 )}

@@ -3,7 +3,7 @@ title: "My Ka-Globe Experience"
 date: 2021-03-14
 description: "Developer life as Ka-Globe."
 tags: [globe-telecom, developer-stories, lessons-learned]
-image: /images/blog/data-engineering-team.jpg
+image: /images/blog/data-engineering-team.webp
 ---
 
 I finally decided that it's about time to look for a new venture to another place...
@@ -12,7 +12,7 @@ I finally decided that it's about time to look for a new venture to another plac
 >
 > And I hope that you would be able to get a thing or two insight on my Ka-Globe journey.
 
-![Team photo from my time as a Data Engineer at Globe](/images/blog/data-engineering-team.jpg#ambient)
+![Team photo from my time as a Data Engineer at Globe](/images/blog/data-engineering-team.webp#ambient)
 
 I started working for Globe last Feb of 2018 as a vendor employee for a year and three months.
 One of the decision I never regretted. I remember my first task is to create a software addressing

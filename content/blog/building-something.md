@@ -3,7 +3,7 @@ title: "Building Something No One Asked For"
 date: 2025-05-13
 description: "Open source is fun, they said. You'll grow, they said."
 tags: [lessons-learned, open-source, dev-life]
-image: /images/blog/opensource-dev.jpg
+image: /images/blog/opensource-dev.webp
 ---
 
 It's 2 AM.

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import ArticleLayout from "@/components/ArticleLayout";
-import type { BlogEntry } from "@/content/types";
+import type { BlogSummary } from "@/content/types";
 import PostNav from "./PostNav";
 import styles from "./BlogArticle.module.css";
+import textLink from "@/components/TextLink.module.css";
 
 export interface BlogArticleProps {
   title: string;
@@ -10,8 +11,8 @@ export interface BlogArticleProps {
   readingTime: string;
   description: string;
   html: string;
-  newer?: BlogEntry;
-  older?: BlogEntry;
+  newer?: BlogSummary;
+  older?: BlogSummary;
 }
 
 export default function BlogArticle({
@@ -34,8 +35,8 @@ export default function BlogArticle({
       footer={
         <>
           <PostNav newer={newer} older={older} />
-          <Link className={styles.all} to="/blog">
-            All writing <span aria-hidden="true">→</span>
+          <Link className={`${styles.all} ${textLink.link}`} to="/blog">
+            All writing
           </Link>
         </>
       }

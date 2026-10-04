@@ -1,5 +1,3 @@
-/* The page shell: full-height column with the footer pushed to the bottom of
-   short pages and simply following long ones. */
 .shell {
   display: flex;
   flex-direction: column;
@@ -7,28 +5,59 @@
   min-height: 100svh;
   max-width: var(--shell-max);
   margin-inline: auto;
-  padding: clamp(1.6rem, 2.4vw, 2.8rem) var(--gutter) clamp(1.6rem, 2vw, 2.4rem);
+  padding: 1.8rem var(--gutter) 2.4rem;
 }
 
 .main {
   flex: 1 0 auto;
-  /* the least room a page ever leaves above the footer */
-  padding-bottom: clamp(6.4rem, 7vw, 10rem);
+  min-width: 0;
+  padding-bottom: clamp(6.4rem, 8vw, 11rem);
 }
 
-/* Fitted pages (Home, About) on desktop: exactly one screen. The shell becomes
-   a three-row grid whose middle row is the leftover height, which the page
-   fills (and on Home, the portrait band absorbs). The rows keep their content
-   minimum, so a window too short for even the smallest composition grows and
-   scrolls rather than overlapping the footer. Phones scroll as usual. */
-@media (min-width: 901px) {
-  .fit {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+.main:focus {
+  outline: none;
+}
+
+/* The introduction fills the space between the header and compact footer.
+   Content can still grow when zoom or a short viewport needs more room. */
+.home {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.home .main {
+  display: grid;
+  align-items: center;
+  padding-block: clamp(3.2rem, 6svh, 6.4rem);
+}
+
+.skip {
+  position: fixed;
+  top: 1rem;
+  left: 2rem;
+  z-index: 10;
+  padding: 1rem 1.6rem;
+  background: var(--ink-1);
+  color: var(--color-surface);
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .shell {
+    padding-top: 1rem;
   }
-  /* a grid, so the page inside stretches to this row's height */
-  .fit .main {
-    display: grid;
-    padding-bottom: clamp(2.4rem, 4.4vh, 5.6rem);
+}
+
+@media (max-height: 480px) {
+  .home {
+    padding-block: 1rem 1.2rem;
+  }
+
+  .home .main {
+    padding-block: 1.6rem;
   }
 }
