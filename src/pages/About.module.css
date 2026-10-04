@@ -1,10 +1,26 @@
 .page {
-  display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
-  gap: clamp(4rem, 8vw, 12rem);
-  max-width: 112rem;
+  max-width: var(--w-index);
   margin-inline: auto;
-  padding-top: clamp(5.6rem, 7vw, 10rem);
+  padding-top: clamp(4.8rem, 6vw, 8rem);
+}
+
+.head {
+  margin-bottom: clamp(4rem, 5vw, 6.4rem);
+}
+
+.eyebrow,
+.postscript {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.eyebrow {
+  margin: 0 0 1.6rem;
 }
 
 .title {
@@ -13,60 +29,70 @@
   font-size: var(--t-display);
   font-style: italic;
   font-weight: 400;
-  line-height: 1.02;
+  line-height: 1.05;
   letter-spacing: -0.055em;
   color: var(--ink-1);
 }
 
-.identity {
-  margin-top: 4rem;
-  max-width: 27rem;
-  font-size: 1.4rem;
-  color: var(--ink-2);
+.portrait {
+  display: grid;
+  gap: clamp(3.2rem, 4vw, 4.8rem);
 }
 
-.initials {
-  margin: 0 0 2rem;
-  font-size: 8rem;
-  letter-spacing: -0.08em;
-  line-height: 1;
+/* Each thought stays beside its own margin note, including in reading order. */
+.annotation {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(3.2rem, 6vw, 8rem);
+}
+
+.statement {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(3.2rem, 3.6vw, 4.8rem);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.035em;
+  color: var(--ink-1);
+}
+
+.statement em {
   color: var(--color-accent);
 }
 
-.aside {
-  color: var(--ink-3);
-  font-size: 1.3rem;
-  line-height: 1.6;
+.note {
+  border-left: 1px solid rgb(var(--color-accent-rgb), 0.55);
+  padding-left: clamp(2rem, 2.5vw, 3.2rem);
+  margin-top: 0.6rem;
 }
 
-.prose {
-  max-width: 60rem;
-  padding-top: 0.7rem;
-  font-size: clamp(1.7rem, 1.45vw, 1.9rem);
+.note h3 {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 2vw, 2.6rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--color-accent);
+}
+
+.note p {
+  max-width: 36ch;
+  margin: 0;
+  font-size: var(--t-body);
   line-height: 1.75;
   color: var(--ink-2);
+  text-wrap: pretty;
   overflow-wrap: anywhere;
 }
 
-.prose p {
-  margin: 0;
-  text-wrap: pretty;
-}
-
-.prose p + p {
-  margin-top: 1.3em;
-}
-
-.prose .hello {
-  font-size: clamp(3rem, 3vw, 4.2rem);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.045em;
-  color: var(--ink-1);
+.postscript {
+  margin: clamp(4rem, 5vw, 6.4rem) 0 0;
 }
 
 .inline {
-  color: var(--ink-1);
+  color: inherit;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
@@ -75,44 +101,39 @@
 
 .inline:hover,
 .inline:focus-visible {
-  text-decoration-color: var(--ink-1);
+  color: var(--ink-1);
+  text-decoration-color: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .inline {
-    transition: text-decoration-color 0.2s var(--ease);
+    transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 640px) {
   .page {
+    padding-top: 4rem;
+  }
+
+  .title {
+    font-size: clamp(4.2rem, 9vw, 5.6rem);
+  }
+
+  .annotation {
     grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+
+  .portrait {
     gap: 4rem;
   }
 
-  .head {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 18rem);
-    gap: 2.4rem;
-    align-items: start;
+  .note {
+    margin-top: 0;
   }
 
-  .identity {
-    margin: 0;
+  .note p {
+    max-width: 44ch;
   }
-
-  .initials {
-    font-size: 5rem;
-    margin-bottom: 1.6rem;
-  }
-}
-
-@media (max-width: 430px) {
-  .head {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 3.2rem;
-  }
-
-  .identity { max-width: 28rem; }
-  .initials { display: none; }
 }
